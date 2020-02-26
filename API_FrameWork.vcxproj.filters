@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="aStar.cpp" />
+    <ClCompile Include="effect.cpp" />
+    <ClCompile Include="gameNode.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="loading.cpp" />
+    <ClCompile Include="progressBar.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="txtData.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="winMain.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="animationManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="imageManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="effectManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="keyManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="soundManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="timeManager.cpp">
+      <Filter>매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="mainGame+Image.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
+    <ClCompile Include="mainGame.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
+    <ClCompile Include="mapTool.cpp">
+      <Filter>맵툴</Filter>
+    </ClCompile>
+    <ClCompile Include="testScene.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="animation.h" />
+    <ClInclude Include="API_FrameWork.h" />
+    <ClInclude Include="aStar.h" />
+    <ClInclude Include="commonMacroFunction.h" />
+    <ClInclude Include="effect.h" />
+    <ClInclude Include="gameNode.h" />
+    <ClInclude Include="image.h" />
+    <ClInclude Include="loading.h" />
+    <ClInclude Include="progressBar.h" />
+    <ClInclude Include="randomFunction.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="singletonBase.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="txtData.h" />
+    <ClInclude Include="utils.h" />
+    <ClInclude Include="animationManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="imageManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="effectManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="keyManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="soundManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="timeManager.h">
+      <Filter>매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="mainGame.h">
+      <Filter>인게임</Filter>
+    </ClInclude>
+    <ClInclude Include="mapTool.h">
+      <Filter>맵툴</Filter>
+    </ClInclude>
+    <ClInclude Include="tileNode.h">
+      <Filter>맵툴</Filter>
+    </ClInclude>
+    <ClInclude Include="testScene.h">
+      <Filter>인게임</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>인게임</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="매니저">
+      <UniqueIdentifier>{2da1abeb-3401-4da4-a200-2cc1aa5eb091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="인게임">
+      <UniqueIdentifier>{7048fa0c-f7d2-479a-a16f-66595da9b0b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="맵툴">
+      <UniqueIdentifier>{9576505b-c577-4f75-b6f0-d51a03d1db8d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
