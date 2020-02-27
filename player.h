@@ -5,6 +5,11 @@ class player : public singletonBase<player>
 private:
 	RECT rc;
 	int x, y;
+	int cnt;
+	int _currentX;
+	image* _bodyImg;
+	image* _headImg;
+
 public:
 	player();
 	~player();

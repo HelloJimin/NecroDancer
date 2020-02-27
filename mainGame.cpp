@@ -15,7 +15,7 @@ HRESULT mainGame::init()
 	SCENEMANAGER->addScene("맵툴", new mapTool);
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->changeScene("테스트신");
-
+	ANIMATIONMANAGER->init();
 	return S_OK;
 }
 
@@ -30,7 +30,7 @@ void mainGame::release()
 void mainGame::update()
 {
 	gameNode::update();
-		
+	ANIMATIONMANAGER->update();
 	SCENEMANAGER->update();
 	PLAYER->update();
 }
@@ -44,7 +44,7 @@ void mainGame::render(/*HDC hdc*/)
 	//============================================================================이 위로 건드리면 뒤짐=======================================================================================
 	
 
-
+	ANIMATIONMANAGER->render();
 	SCENEMANAGER->render();
 	PLAYER->render(getMemDC());
 	TIMEMANAGER->render(CAMERAMANAGER->getCameraDC());

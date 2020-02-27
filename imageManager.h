@@ -25,8 +25,8 @@ public:
 	image* addImage(string strKey, const char* fileName, int width, int height, bool trans, COLORREF transColor);
 	image* addImage(string strKey, const char* fileName, float x, float y, int width, int height, bool trans, COLORREF transColor);
 	//키값으로 프레임 이미지 파일 초기화
-	image* addFrameImage(string strKey, const char* fileName, float x, float y, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor);
-	image* addFrameImage(string strKey, const char* fileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor);
+	image* addFrameImage(string strKey, const char* fileName, float x, float y, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor = (255,0,255));
+	image* addFrameImage(string strKey, const char* fileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor = (255, 0, 255));
 
 	//이미지 키값으로 찾기
 	image* findImage(string strKey);
