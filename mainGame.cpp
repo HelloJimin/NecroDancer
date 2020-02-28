@@ -12,7 +12,7 @@ HRESULT mainGame::init()
 	imagesInit();
 
 	PLAYER->init(getMemDC());
-	SCENEMANAGER->addScene("맵툴", new mapTool);
+	SCENEMANAGER->addScene("맵툴신", new mapTool);
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->changeScene("테스트신");
 	ANIMATIONMANAGER->init();
@@ -48,8 +48,6 @@ void mainGame::render(/*HDC hdc*/)
 	SCENEMANAGER->render();
 	PLAYER->render(getMemDC());
 	TIMEMANAGER->render(CAMERAMANAGER->getCameraDC());
-
-
 
 	//============================================================================이 밑으로 건드리면 뒤짐=======================================================================================
 	//백버퍼의 내용을 HDC에 그린다.(지우지마!!)

@@ -4,9 +4,12 @@
 void mainGame::imagesInit()
 {
 	//맵툴
-	IMAGEMANAGER->addFrameImage("맵툴", "images/맵툴.bmp", 600 * 2, 550 * 2, 12, 11, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("맵툴던전", "images/맵툴던전.bmp", 522, 324, 12, 7, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("맵툴지형", "images/맵툴_지형.bmp", 104*2, 78*2, 4, 3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("맵툴벽", "images/맵툴_벽.bmp", 104*2, 117*2, 4, 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("셈플북", "images/셈플북.bmp", 826, 528, true, RGB(255, 0, 255));
+
+
 	IMAGEMANAGER->addImage("옆셈플북", "images/책옆.bmp", 46, 136, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("닫기", "images/닫기버튼.bmp", 64, 64, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("뒤로", "images/뒤로가기버튼.bmp", 64, 64, true, RGB(255, 0, 255));
@@ -26,6 +29,16 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("인트로나가기", "images/인트로나가기.bmp", 544 / 2, 133 / 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("던전저장버튼", "images/맵툴로드버튼1.bmp", 100, 100, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("마을저장버튼", "images/맵툴로드버튼2.bmp", 100, 100, true, RGB(255, 0, 255));
+
+
+	IMAGEMANAGER->addImage("샘플창", "images/샘플창.bmp", 300, WINSIZEY-200, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("오브젝트버튼", "images/오브젝트.bmp", 75, 70, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("벽버튼", "images/벽.bmp", 75, 70, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("지형버튼", "images/지형.bmp", 75, 70, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("몬스터버튼", "images/몬스터.bmp", 75, 70, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("세이브버튼", "images/저장.bmp", 35, 15, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("로드버튼", "images/로드.bmp", 35, 15, true, RGB(255, 0, 255));
 
 
 	//플레이어

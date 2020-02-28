@@ -1,5 +1,4 @@
 #pragma once
-
 #include "mapTool.h"
 class testScene : public mapTool
 {

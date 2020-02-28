@@ -33,25 +33,22 @@ void player::release()
 void player::update()
 {
 	cnt++;
-	if (KEYMANAGER->isStayKeyDown('W'))
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
 		y -= 3;
 	}
-	if (KEYMANAGER->isStayKeyDown('S'))
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
 		y += 3;
 	}
-	if (KEYMANAGER->isStayKeyDown('A'))
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-
 		_bodyImg = IMAGEMANAGER->findImage("기본몸L");
 		_headImg = IMAGEMANAGER->findImage("케이던스L");
 		x -= 3;
 	}
-	if (KEYMANAGER->isStayKeyDown('D'))
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-
-
 		_bodyImg = IMAGEMANAGER->findImage("기본몸R");
 		_headImg = IMAGEMANAGER->findImage("케이던스R");
 		x += 3;

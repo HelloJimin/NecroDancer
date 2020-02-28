@@ -14,6 +14,7 @@ testScene::~testScene()
 HRESULT testScene::init()
 {
 	setUp();
+	load();
 	return S_OK;
 }
 
