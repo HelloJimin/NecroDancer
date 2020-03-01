@@ -7,7 +7,7 @@ cameraManager::~cameraManager(){}
 
 HRESULT cameraManager::init()
 {
-	_camera = IMAGEMANAGER->addImage("카메라", WINSIZEX, WINSIZEY);
+	_camera = IMAGEMANAGER->addImage("카메라2", WINSIZEX, WINSIZEY);
 	_center = PointMake(WINSIZEX / 2, WINSIZEY / 2);
 
 	_cameraXY = PointMake(_center.x - WINSIZEX / 2, _center.y - WINSIZEY / 2);
@@ -31,7 +31,7 @@ void cameraManager::render(HDC hdc)
 
 void cameraManager::render(image * img)
 {
-	GdiTransparentBlt(img->getMemDC(), _center.x - WINSIZEX / 2, _center.y - WINSIZEY / 2, WINSIZEX, WINSIZEY, _camera->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, RGB(255, 255, 255));
+	GdiTransparentBlt(img->getMemDC(), _center.x - WINSIZEX / 2, _center.y - WINSIZEY / 2, WINSIZEX, WINSIZEY, _camera->getMemDC(), 0, 0, WINSIZEX, WINSIZEY, RGB(255, 0, 255));
 }
 
 void cameraManager::setCameraCenter(POINT point)

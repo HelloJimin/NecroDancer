@@ -43,22 +43,25 @@ void timeManager::render(HDC hdc)
 	//배경모드
 	SetBkMode(hdc, TRANSPARENT);
 	//색상
-	SetTextColor(hdc, RGB(0, 0, 255));
+	SetTextColor(hdc, RGB(255, 255, 0));
 	//디버그 모드라면
 #ifdef _DEBUG
 
 	if (_timer != nullptr)
 	{
-		//FPS
-		sprintf_s(str, "FPS :  %d", _timer->getFrameRate());
-		TextOut(hdc, 0, 0, str, strlen(str));
+		if(KEYMANAGER->isToggleKey(VK_TAB))
+		{
+			//FPS
+			sprintf_s(str, "FPS :  %d", _timer->getFrameRate());
+			TextOut(hdc, WINSIZEX-150, 0, str, strlen(str));
 
-		//전체 경과 시간
-		sprintf_s(str, "worldTime :  %f", _timer->getWorldTime());
-		TextOut(hdc, 0, 20, str, strlen(str));
-		//한프레임당 경과시간
-		sprintf_s(str, "ElapsedTime :  %f", _timer->getElapsedTime());
-		TextOut(hdc, 0, 40, str, strlen(str));
+			//전체 경과 시간
+			sprintf_s(str, "worldTime :  %f", _timer->getWorldTime());
+			TextOut(hdc, WINSIZEX - 150, 20, str, strlen(str));
+			//한프레임당 경과시간
+			sprintf_s(str, "ElapsedTime :  %f", _timer->getElapsedTime());
+			TextOut(hdc, WINSIZEX - 150, 40, str, strlen(str));
+		}
 	}
 
 #else

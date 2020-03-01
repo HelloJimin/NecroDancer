@@ -2,24 +2,6 @@
 #include"gameNode.h"
 #include"tileNode.h"
 
-struct tagBottun
-{
-	RECT rc;
-	image* img;
-	int x, y;
-};
-
-
-struct tagSampleBook
-{
-	tagBottun bottun[3];
-	RECT rc;
-	RECT sampleRc[10];
-	image* img;
-	bool Summons;
-	int x, y;
-};
-
 enum PAGE
 {
 	PAGE_TERRAIN,
@@ -28,42 +10,57 @@ enum PAGE
 	PAGE_MONSTER,
 	ERASER
 };
-struct saveLoad
+
+struct tagBottun
+{
+	RECT rc;
+	image* img;
+	int x, y;
+};
+
+struct tagSampleWindow
+{
+	tagBottun button[3];
+	RECT rc;
+	image* img;
+	bool open;
+	int x, y;
+};
+
+struct tagSaveLoad
 {
 	RECT rc;
 	image* image;
 };
 
+struct tagSampleImage
+{
+	image* image;
+	RECT rc;
+};
+
 class mapTool : public gameNode
 {
 private:
+	PAGE _page;
+
 	tagTile _tiles[TILEX * TILEY];
-	tagTile _temp[TILEX * TILEY];
 	tagCurrentTile _currnetTile;
 
-	tagSampleBook _sampleBook;
+	tagSampleWindow _sampleWindow;
+	tagSampleImage _sampleImage[12]; // 페이지에 맞춰서 뿌려줄 이미지
 
-	
-	tagBottun bottun[4];
+	tagBottun   _button[4];
+	tagSaveLoad _save[4];
+	tagSaveLoad _load[4];
 
-	RECT rc[12];
 
-	saveLoad _save[4];
-	saveLoad _load[4];
-	
-
-	PAGE _page;
-	//페이지 1~7 던전
-	//페이지 8~14 마을
-	//페이지 15~16 세이브로드
-	image* sampleImage[12]; // 페이지에 맞춰서 뿔려줄 이미지
-	bool first;
-	bool mouse;
 
 	POINT _start;
 	POINT _end;
-	POINT mousePoint;
+	POINT _mousePoint;
 
+	bool _mouse;
 
 public:
 	mapTool();
@@ -81,22 +78,20 @@ public:
 	void cameraMove();
 	void setUp();
 	void mapInit();
-	void setSampleBook();
-	void controlSampleBook();
-	void sampleBookKey();
-	void setSampleBookBottun();
-	void sampleBookBottunControl();
+	void setSampleWindow();
+	void controlSampleWindow();
+	void sampleWindowKey();
+	void setSampleWindowBottun();
 	void sampleSetRc();
-	void setPageSample();
+	void setSamplePage();
 	void setMap();
 	void setSampleMap();
 
 	void drage();
-
-
-	void tileRender();
-
+	void pageControl();
 	void tileAttribute();
+
+
 	TERRAIN terrainSelect(int frameX, int frameY);
 	OBJECT	objSelect(int frameX, int frameY);
 };

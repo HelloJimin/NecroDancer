@@ -54,9 +54,9 @@ gameNode * sceneManager::addScene(string sceneName, gameNode * scene)
 {
 
 	if(!scene)return nullptr;
-
+	
 	_mSceneList.insert(make_pair(sceneName, scene));
-
+	
 	return nullptr;
 
 }
@@ -76,10 +76,11 @@ HRESULT sceneManager::changeScene(string sceneName)
 	{
 		//혹시 기존에 씬이 있다면 릴리즈
 		if (_currentScene)_currentScene->release();
-
+		
 		_currentScene = find->second;
 		return S_OK;
 	}
-
 	return E_FAIL;
 }
+
+

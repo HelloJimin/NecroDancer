@@ -1,7 +1,11 @@
 #pragma once
-#include "mapTool.h"
-class testScene : public mapTool
+#include "gameNode.h"
+#include"tileNode.h"
+class testScene : public gameNode
 {
+private:
+	tagTile _tiles[TILEX * TILEY];
+
 public:
 	testScene();
 	~testScene();
@@ -11,5 +15,7 @@ public:
 	void update();
 	void render(/*HDC hdc*/);
 
+	void setUp();
+	void tileRender();
+	void load();
 };
-

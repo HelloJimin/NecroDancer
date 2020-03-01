@@ -50,7 +50,7 @@
       <Filter>인게임</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>인게임</Filter>
+      <Filter>플레이어</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +108,7 @@
       <Filter>인게임</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>인게임</Filter>
+      <Filter>플레이어</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +120,12 @@
     </Filter>
     <Filter Include="맵툴">
       <UniqueIdentifier>{9576505b-c577-4f75-b6f0-d51a03d1db8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="플레이어">
+      <UniqueIdentifier>{424d6f7a-da40-444b-a4b9-9f4ea839a721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="아이템">
+      <UniqueIdentifier>{fc98bad9-9c42-4a82-911d-e44f504c330b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
