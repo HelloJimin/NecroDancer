@@ -17,6 +17,9 @@ HRESULT testScene::init()
 	setUp();
 	load();
 	PLAYER->setCurrentTile(_tiles);
+	_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
+	_vItem[0]->setRect(PointMake(_tiles[319].x, _tiles[319].y));
+
 	return S_OK;
 }
 
@@ -27,11 +30,29 @@ void testScene::release()
 void testScene::update()
 {
 	PLAYER->update();
+
+	for (int i = 0; i < _vItem.size(); i++)
+	{
+		_vItem[i]->update();
+		RECT temp;
+		if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_vItem[i]->getImg()->getBoundingBox()))
+		{
+			PLAYER->getInven()->addItem(_vItem[i]);
+			_vItem.erase(_vItem.begin() + i);
+			break;
+		}
+	}
 }
 
 void testScene::render()
 {
 	tileRender();
+
+	for (int i = 0; i < _vItem.size(); i++)
+	{
+		_vItem[i]->render(getMemDC());
+	}
+
 	PLAYER->render(getMemDC());
 
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -41,6 +62,25 @@ void testScene::render()
 			if (_tiles[i].obj == OBJ_NONE) continue;
 
 			IMAGEMANAGER->frameRender("맵툴벽", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top - 25, _tiles[i].objFrameX, _tiles[i].objFrameY);
+		}
+	}
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+			{
+				if (PLAYER->playerTile() < i)
+				{
+					SetBkMode(getMemDC(), TRANSPARENT);
+					//색상
+					SetTextColor(getMemDC(), RGB(255, 0, 0));
+
+					char str[128];
+					sprintf_s(str, "%d", i);
+					TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+				}
+			}
 		}
 	}
 	PLAYER->UIrender(getMemDC());
@@ -97,15 +137,17 @@ void testScene::tileRender()
 		{
 			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 			{
+				if (PLAYER->playerTile() >= i)
+				{
+					SetBkMode(getMemDC(), TRANSPARENT);
+					//색상
+					SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-				SetBkMode(getMemDC(), TRANSPARENT);
-				//색상
-				SetTextColor(getMemDC(), RGB(255, 0, 0));
+					char str[128];
+					sprintf_s(str, "%d", i);
+					TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
 
-				char str[128];
-				sprintf_s(str, "%d", i);
-				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-
+				}
 			}
 		}
 	}
@@ -116,7 +158,7 @@ void testScene::load()
 	HANDLE file;
 	DWORD read;
 	file = CreateFile
-	("save/맵2.map",			//생성할 파일또는 열 장치나 파일이름
+	("save/맵3.map",			//생성할 파일또는 열 장치나 파일이름
 		GENERIC_READ,		//파일이나 장치를 만들거나 열때 사용할 권한
 		0,					//파일 공유 모드입력
 		NULL,				//파일또는 장치를 열때 보안 및 특성

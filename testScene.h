@@ -5,6 +5,7 @@ class testScene : public gameNode
 {
 private:
 	tagTile _tiles[TILEX * TILEY];
+	vector<item*> _vItem;
 
 public:
 	testScene();

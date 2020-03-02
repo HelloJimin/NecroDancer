@@ -52,6 +52,18 @@
     <ClCompile Include="player.cpp">
       <Filter>플레이어</Filter>
     </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="itemManager.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="shovel.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.cpp">
+      <Filter>플레이어</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -108,6 +120,18 @@
       <Filter>인게임</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
+      <Filter>플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="itemManager.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="shovel.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory.h">
       <Filter>플레이어</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,6 +6,9 @@ player::~player(){}
 
 HRESULT player::init()
 {
+	_inven = new inventory;
+	_inven->init();
+
 	_bodyImg = IMAGEMANAGER->findImage("기본몸R");
 	_headImg = IMAGEMANAGER->findImage("케이던스R");
 
@@ -49,12 +52,17 @@ HRESULT player::init()
 	return S_OK;
 }
 
-void player::release(){}
+void player::release()
+{
+//	SAFE_DELETE(_inven);
+}
 
 void player::update()
 {
+	_inven->update();
 	turn();
-
+	
+	_turn.check = true;
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
 		if (rhythmCheck())
@@ -100,24 +108,9 @@ void player::render(HDC hdc)
 	//앞타일 확인용 렌더
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		if (_pCurrentMap[_nextTileIndex].obj != OBJ_NONE)
-		{
-			HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(255, 0, 0));
-			HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
-			Rectangle(hdc, _pCurrentMap[_nextTileIndex].rc.left, _pCurrentMap[_nextTileIndex].rc.top, _pCurrentMap[_nextTileIndex].rc.right, _pCurrentMap[_nextTileIndex].rc.bottom);
-			SelectObject(hdc, oldBrush);
-			DeleteObject(myBrush);
-		}
-		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
-		HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
-		Rectangle(hdc, _pCurrentMap[_currentTileIndex].rc.left, _pCurrentMap[_currentTileIndex].rc.top, _pCurrentMap[_currentTileIndex].rc.right, _pCurrentMap[_currentTileIndex].rc.bottom);
-		SelectObject(hdc, oldBrush);
-		DeleteObject(myBrush);
-
 		Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
 
 	}
-
 	switch (_direction)
 	{
 	case LEFT:
@@ -150,6 +143,7 @@ void player::frontCheck()
 	_tileX = _rc.left / TILESIZE;
 	_tileY = _rc.top / TILESIZE;
 
+
 	switch (_direction)
 	{
 	case LEFT:
@@ -169,12 +163,15 @@ void player::frontCheck()
 		_nextTileIndex = _tileX + _tileY * TILEX + TILEX ;
 		break;
 	}
-
 	//앞타일이 비어있으면 이동
 	if (_pCurrentMap[_nextTileIndex].obj == OBJ_NONE)
 	{
 		_isMove = true;
 		_isJump = true;
+	}
+	else
+	{
+		_nextTileIndex = _currentTileIndex;
 	}
 }
 
@@ -291,6 +288,26 @@ void player::turn()
 
 void player::UIrender(HDC hdc)
 {
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		if (_pCurrentMap[_nextTileIndex].obj != OBJ_NONE)
+		{
+			HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(255, 0, 0));
+			HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
+			Rectangle(hdc, _pCurrentMap[_nextTileIndex].rc.left, _pCurrentMap[_nextTileIndex].rc.top, _pCurrentMap[_nextTileIndex].rc.right, _pCurrentMap[_nextTileIndex].rc.bottom);
+			SelectObject(hdc, oldBrush);
+			DeleteObject(myBrush);
+		}
+		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
+		HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
+		Rectangle(hdc, _pCurrentMap[_currentTileIndex].rc.left, _pCurrentMap[_currentTileIndex].rc.top, _pCurrentMap[_currentTileIndex].rc.right, _pCurrentMap[_currentTileIndex].rc.bottom);
+		SelectObject(hdc, oldBrush);
+		DeleteObject(myBrush);
+
+	}
+	//인벤토리 렌더....
+	_inven->render(hdc);
+
 	//우상단 코인다이아 부분 렌더
 	IMAGEMANAGER->render("코인다이아", CAMERAMANAGER->getCameraDC(), WINSIZEX - 50*3 , 20 );
 	SetTextColor(CAMERAMANAGER->getCameraDC(), RGB(255, 255, 255));

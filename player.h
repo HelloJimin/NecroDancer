@@ -1,6 +1,8 @@
 #pragma once
-#include"singletonBase.h"
+#include "singletonBase.h"
 #include "tileNode.h"
+#include "inventory.h"
+
 enum DIRECTION
 {
 	LEFT,
@@ -56,6 +58,7 @@ private:
 	int _nextTileIndex;
 	int _currentTileIndex;
 
+
 	note _note;
 
 	float _moveSpeed;
@@ -66,6 +69,7 @@ private:
 
 
 	tagTile* _pCurrentMap;		//콜바이레퍼런스용 변수
+	inventory* _inven;
 
 	int _currentFrameX;
 	
@@ -102,5 +106,13 @@ public:
 	void removeNote();
 
 	int playerTile() { return _currentTileIndex; }
+	int playerNextTile() { return _nextTileIndex; }
+
+	tagTile* getTile() { return _pCurrentMap; }
+
+	RECT getCollisionRc() { return _collisionRc; }
+
+	inventory* getInven() { return _inven; }
+	//void addItem(item* item){ _inven.}
 };
 

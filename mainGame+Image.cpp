@@ -34,11 +34,26 @@ void mainGame::imagesInit()
 
 	//UI
 	IMAGEMANAGER->addImage("코인다이아", "images/UI/coinDiamond.bmp", 25*2, 47*2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("심장", "images/UI/heart.bmp",80*3, 50*2, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("심장", "images/UI/heart.bmp",80*2, 50*2, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("노트전부", "images/UI/noteAll.bmp",18*2, 30*2, 3, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("노트", "images/UI/note1.bmp",6*2, 30*2, true, RGB(255, 0, 255));
 
 
+
+	//아이템
+	IMAGEMANAGER->addImage("삽", "images/item/shovel.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("무기", "images/item/attack.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보디", "images/item/body.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("폭탄", "images/item/bomb.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("아이템", "images/item/item.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("횃불", "images/item/torch.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("신발", "images/item/feet.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("던지기", "images/item/THROW.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("던지세요", "images/item/press.bmp",50, 50, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("기본삽", "images/item/nomalShovel.bmp",30, 30,30,30 ,true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("티타늄삽", "images/item/titaniumShovel.bmp",30, 30, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("유리삽", "images/item/glassShovel.bmp",30, 30, true, RGB(255, 0, 255));
 
 
 
