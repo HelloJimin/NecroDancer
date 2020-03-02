@@ -25,7 +25,6 @@ void inventory::update()
 {
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
-		_vItem[i]->setRect(PointMake(i+1 * 50, 50));
 		_vItem[i]->update();
 	}
 }
@@ -35,5 +34,15 @@ void inventory::render(HDC hdc)
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
 		_vItem[i]->render(CAMERAMANAGER->getCameraDC());
+	}
+}
+
+void inventory::addItem(item * item)
+{
+	item->setInven(true);
+	_vItem.push_back(item);
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		_vItem[i]->setRect(PointMake(i + 1 * 50, 50));
 	}
 }

@@ -46,8 +46,10 @@ public:
 	void animation();
 	void draw(HDC hdc);
 	string getName() { return _name; }
+
 	void setRect(POINT xy) { _x = xy.x; _y = xy.y; }
 	void setRect(RECT tile) { _rc = tile; }
+
 	RECT getRc() { return _rc; }
 
 	image* getImg() { return _itemImg; }

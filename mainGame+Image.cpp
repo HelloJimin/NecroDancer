@@ -51,9 +51,9 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("´øÁö±â", "images/item/THROW.bmp",50, 50, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("´øÁö¼¼¿ä", "images/item/press.bmp",50, 50, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addImage("±âº»»ð", "images/item/nomalShovel.bmp",30, 30,30,30 ,true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Æ¼Å¸´½»ð", "images/item/titaniumShovel.bmp",30, 30, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("À¯¸®»ð", "images/item/glassShovel.bmp",30, 30, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("±âº»»ð", "images/item/nomalShovel.bmp",38, 38 ,true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½»ð", "images/item/titaniumShovel.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®»ð", "images/item/glassShovel.bmp",48, 48, true, RGB(255, 0, 255));
 
 
 

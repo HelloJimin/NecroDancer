@@ -14,24 +14,23 @@ HRESULT player::init()
 
 	//플레이어 시작위치
 	_currentX = _collisionX = 494;
-	_currentY = _collisionY = 338;
+	_currentY = _collisionY = 390;
 	
 	_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
-	_collisionRc = _rc;
-
-	_tileX = _rc.left / TILESIZE;
-	_tileY = _rc.top / TILESIZE;
-	_nextTileIndex = (_tileX + 1 + _tileY * TILEX) + TILEX - 1;
+	_collisionRc = RectMakeCenter(_collisionX, _collisionY, 50, 50);
+	
+	_currentTileIndex = 373;
+	_nextTileIndex = 374;
 
 	_direction = DOWN;
 	_weapon = SWORD;
 
 	_isJump = false;
-	_isMove = false;
 
 	_moveSpeed = 13;
 	_coin = _diamond = 0;
 
+	_rhythm = 0;
 
 	//턴초기화
 	_turn.cnt = 0;
@@ -47,6 +46,7 @@ HRESULT player::init()
 		_note.x[1] = WINSIZEX / 2 + (4 * 234);
 		_note.y = WINSIZEY - 100;
 		_note.rc[i] = RectMakeCenter(_note.x[i], _note.y, _note.img[i]->getWidth(), _note.img[i]->getHeight());
+		_note.alpha = 0;
 	}
 
 	return S_OK;
@@ -60,56 +60,73 @@ void player::release()
 void player::update()
 {
 	_inven->update();
-	turn();
-	
-	_turn.check = true;
-	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
-	{
-		if (rhythmCheck())
-		{
-			_direction = LEFT;
-			frontCheck();
-			removeNote();
-		}
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
-	{
-		if (rhythmCheck())
-		{
-			_direction = RIGHT;
-			frontCheck();
-			removeNote();
-		}
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_UP))
-	{
-		if (rhythmCheck())
-		{
-			_direction = UP;
-			frontCheck();
-			removeNote();
-		}
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
-	{
-		if (rhythmCheck())
-		{
-			_direction = DOWN;
-			frontCheck();
-			removeNote();
-		}
-	}
 
+	turn();
+	//_turn.check = true;
+
+	if (_pCurrentMap[_currentTileIndex].y == _currentY)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			if (rhythmCheck())
+			{
+				_direction = LEFT;
+				frontCheck();
+				removeNote();
+			}
+			else
+			{
+				_rhythm = 0;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			if (rhythmCheck())
+			{
+				_direction = RIGHT;
+				frontCheck();
+				removeNote();
+			}
+			else
+			{
+				_rhythm = 0;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			if (rhythmCheck())
+			{
+				_direction = UP;
+				frontCheck();
+				removeNote();
+			}
+			else
+			{
+				_rhythm = 0;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			if (rhythmCheck())
+			{
+				_direction = DOWN;
+				frontCheck();
+				removeNote();
+			}
+			else
+			{
+				_rhythm = 0;
+			}
+		}
+	}
 	move();
 }
 
 void player::render(HDC hdc)
 {
-	//앞타일 확인용 렌더
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
-
 	}
 	switch (_direction)
 	{
@@ -135,6 +152,7 @@ void player::render(HDC hdc)
 
 void player::frontCheck()
 {
+	_rhythm++;
 	//타일 앞의 몬스터가 공격인지 판별 후
 
 
@@ -166,8 +184,8 @@ void player::frontCheck()
 	//앞타일이 비어있으면 이동
 	if (_pCurrentMap[_nextTileIndex].obj == OBJ_NONE)
 	{
-		_isMove = true;
 		_isJump = true;
+		_currentTileIndex = _nextTileIndex;
 	}
 	else
 	{
@@ -177,7 +195,7 @@ void player::frontCheck()
 
 void player::move()
 {
-	if (_isMove&& _pCurrentMap[_nextTileIndex].obj == OBJ_NONE)//좌우이동
+	if (_isJump)//상하좌우이동
 	{
 		switch (_direction)
 		{
@@ -186,8 +204,10 @@ void player::move()
 			{
 				_currentX -= _moveSpeed;
 				_collisionX -= _moveSpeed;
+		
 			}
-			else _isMove = false;
+			if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
+			if (_pCurrentMap[_nextTileIndex].x == _currentX && _pCurrentMap[_nextTileIndex].y - 26 == _currentY)  _isJump = false;
 			break;
 		case RIGHT:
 			if (_pCurrentMap[_nextTileIndex].x!= _currentX)
@@ -195,48 +215,28 @@ void player::move()
 				_currentX += _moveSpeed;
 				_collisionX += _moveSpeed;
 			}
-			else _isMove = false;
+			if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
+			if(_pCurrentMap[_nextTileIndex].x == _currentX && _pCurrentMap[_nextTileIndex].y - 26 == _currentY)  _isJump = false;
 			break;
 		case UP:
 			if (_pCurrentMap[_nextTileIndex].y != _collisionY)
 			{
 				_collisionY -= _moveSpeed;
 			}
-			else _isMove = false;
+			else if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
+			else _isJump = false;
 			break;
 		case DOWN:
 			if (_pCurrentMap[_nextTileIndex].y != _collisionY)
 			{
 				_collisionY += _moveSpeed;
 			}
-			else _isMove = false;
-			break;
-		}
-	}
-
-	if (_isJump)  //상하이동
-	{
-		switch (_direction)
-		{
-		case LEFT:
-			if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
-			else _isJump = false;
-			break;
-		case RIGHT:
-			if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
-			else _isJump = false;
-			break;
-		case UP:
-			if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
-			else _isJump = false;
-			break;
-		case DOWN:
-			if (_pCurrentMap[_nextTileIndex].y - 78 != _currentY) _currentY -= _moveSpeed;
+			else if (_pCurrentMap[_nextTileIndex].y - 78 != _currentY) _currentY -= _moveSpeed;
 			else _isJump = false;
 			break;
 		}
 	}
-	else if (!_isJump && _pCurrentMap[_nextTileIndex].obj == OBJ_NONE)
+	else
 	{
 		if (_pCurrentMap[_nextTileIndex].y != _currentY) _currentY += _moveSpeed;
 	}
@@ -263,6 +263,7 @@ void player::turn()
 
 	for (int i = 0; i < _turn.vNote.size(); i++)
 	{
+		_turn.vNote[i].alpha += 7;
 		_turn.vNote[i].x[0] += _turn.speed;
 		_turn.vNote[i].x[1] -= _turn.speed;
 
@@ -276,6 +277,8 @@ void player::turn()
 		
 		if (_turn.vNote[i].rc[0].right >= _turn.heartBox.right + _turn.vNote[i].img[0]->getWidth())
 		{
+			if (!KEYMANAGER->isOnceKeyDown(VK_DOWN) && !KEYMANAGER->isOnceKeyDown(VK_UP) &&
+				!KEYMANAGER->isOnceKeyDown(VK_LEFT) && !KEYMANAGER->isOnceKeyDown(VK_RIGHT))_rhythm = 0;
 			_turn.check = false;
 			_turn.vNote.erase(_turn.vNote.begin() + i);
 			break;
@@ -320,11 +323,14 @@ void player::UIrender(HDC hdc)
 	SelectObject(CAMERAMANAGER->getCameraDC(), oldFont);
 	DeleteObject(myFont);
 
+	wsprintf(_str, "박자맞춘 횟수%d", _rhythm);
+	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX - 60, 125, _str, strlen(_str));
+
 	//박자부분 렌더
 	for (int i = 0; i < _turn.vNote.size(); i++)
 	{
-		if (_turn.vNote[i].rc[0].right <= _turn.heartBox.right-40) _turn.vNote[i].img[0]->alphaRender(CAMERAMANAGER->getCameraDC(), _turn.vNote[i].rc[0].left, _turn.vNote[i].rc[0].top, 255);
-		if (_turn.vNote[i].rc[1].left >= _turn.heartBox.left+40) _turn.vNote[i].img[1]->alphaRender(CAMERAMANAGER->getCameraDC(), _turn.vNote[i].rc[1].left, _turn.vNote[i].rc[1].top, 255);
+		if (_turn.vNote[i].rc[0].right <= _turn.heartBox.right-40) _turn.vNote[i].img[0]->alphaRender(CAMERAMANAGER->getCameraDC(), _turn.vNote[i].rc[0].left, _turn.vNote[i].rc[0].top, _turn.vNote[i].alpha);
+		if (_turn.vNote[i].rc[1].left >= _turn.heartBox.left+40) _turn.vNote[i].img[1]->alphaRender(CAMERAMANAGER->getCameraDC(), _turn.vNote[i].rc[1].left, _turn.vNote[i].rc[1].top, _turn.vNote[i].alpha);
 	}
 	_turn.heart->frameRender(CAMERAMANAGER->getCameraDC(), _turn.heartBox.left, _turn.heartBox.top, _turn.anime ,0);
 

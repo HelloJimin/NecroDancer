@@ -64,17 +64,25 @@ void item::setItem(itemType type, string name, string description)
 		_slotImg = IMAGEMANAGER->findImage("ÆøÅº");
 		break;
 	}
+
 	_waveCnt = 0;
 	_inInventory = false;
 	_x = 0;
 	_y = 0;
-	_rc = RectMakeCenter(_x, _y, _slotImg->getWidth(), _slotImg->getHeight());
+
 }
 
 void item::animation()
 {
-	if (!_inInventory)
+	if (_inInventory)
 	{
+		_rc = RectMakeCenter(_x+10, _y+10, _itemImg->getWidth(), _itemImg->getHeight());
+	}
+	else
+	{
+		_x = _rc.left + 10;
+		_y = _rc.top + 10;
+
 		_waveCnt++;
 
 		if (_upDown)
@@ -92,7 +100,6 @@ void item::animation()
 			}
 		}
 	}
-	_rc = RectMakeCenter(_x, _y, _slotImg->getWidth(), _slotImg->getHeight());
 }
 
 void item::draw(HDC hdc)
@@ -100,11 +107,11 @@ void item::draw(HDC hdc)
 	if (_inInventory)
 	{
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
-		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left+5, _rc.top+10);
+		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
 	}
 	else
 	{
 		Rectangle(hdc, _rc.left, _rc.top, _rc.right, _rc.bottom);
-		_itemImg->render(hdc, _rc.left, _rc.top);
+		_itemImg->render(hdc, _x, _y);
 	}
 }

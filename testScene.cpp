@@ -18,7 +18,12 @@ HRESULT testScene::init()
 	load();
 	PLAYER->setCurrentTile(_tiles);
 	_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
-	_vItem[0]->setRect(PointMake(_tiles[319].x, _tiles[319].y));
+	_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
+	_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
+	_vItem[0]->setRect(_tiles[312].rc);
+	_vItem[1]->setRect(_tiles[313].rc);
+	_vItem[2]->setRect(_tiles[350].rc);
+
 
 	return S_OK;
 }
@@ -35,7 +40,7 @@ void testScene::update()
 	{
 		_vItem[i]->update();
 		RECT temp;
-		if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_vItem[i]->getImg()->getBoundingBox()))
+		if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_vItem[i]->getRc()))
 		{
 			PLAYER->getInven()->addItem(_vItem[i]);
 			_vItem.erase(_vItem.begin() + i);
@@ -158,7 +163,7 @@ void testScene::load()
 	HANDLE file;
 	DWORD read;
 	file = CreateFile
-	("save/맵3.map",			//생성할 파일또는 열 장치나 파일이름
+	("save/맵2.map",			//생성할 파일또는 열 장치나 파일이름
 		GENERIC_READ,		//파일이나 장치를 만들거나 열때 사용할 권한
 		0,					//파일 공유 모드입력
 		NULL,				//파일또는 장치를 열때 보안 및 특성

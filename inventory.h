@@ -12,6 +12,6 @@ public:
 	void update();
 	void render(HDC hdc);
 
-	void addItem(item* item) { item->setInven(true); _vItem.push_back(item); }
+	void addItem(item* item);
 };
 

@@ -25,18 +25,12 @@ void itemManager::release()
 
 void itemManager::update()
 {
-	for (int i = 0; i < _vItem.size(); i++)
-	{
-		_vItem[i]->update();
-	}
+
 }
 
 void itemManager::render()
 {
-	for (int i = 0; i < _vItem.size(); i++)
-	{
-		_vItem[i]->render(CAMERAMANAGER->getCameraDC());
-	}
+
 }
 
 item * itemManager::addItem(string name)

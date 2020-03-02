@@ -27,6 +27,7 @@ enum FRONT
 };
 struct note
 {
+	int alpha;
 	float x[2],y;
 	RECT rc[2];
 	image* img[2];
@@ -40,7 +41,6 @@ struct turn
 	RECT heartBox;
 	image* heart;
 	vector<note> vNote;
-
 	bool check;
 };
 
@@ -58,6 +58,7 @@ private:
 	int _nextTileIndex;
 	int _currentTileIndex;
 
+	int _rhythm;
 
 	note _note;
 
@@ -79,7 +80,6 @@ private:
 	int _coin;
 	int _diamond;
 
-	bool _isMove;
 	bool _isJump;
 
 
@@ -113,6 +113,5 @@ public:
 	RECT getCollisionRc() { return _collisionRc; }
 
 	inventory* getInven() { return _inven; }
-	//void addItem(item* item){ _inven.}
 };
 
