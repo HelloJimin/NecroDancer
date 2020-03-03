@@ -64,6 +64,12 @@
     <ClCompile Include="inventory.cpp">
       <Filter>플레이어</Filter>
     </ClCompile>
+    <ClCompile Include="monster.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="monsterManager.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -134,6 +140,12 @@
     <ClInclude Include="inventory.h">
       <Filter>플레이어</Filter>
     </ClInclude>
+    <ClInclude Include="monster.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="monsterManager.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="매니저">
@@ -150,6 +162,9 @@
     </Filter>
     <Filter Include="아이템">
       <UniqueIdentifier>{fc98bad9-9c42-4a82-911d-e44f504c330b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="몬스터">
+      <UniqueIdentifier>{d9c1b41b-9897-4aac-a27c-937bf0d4d09f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -20,8 +20,6 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("세이브버튼", "images/maptool/저장.bmp", 35, 15, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("로드버튼", "images/maptool/로드.bmp", 35, 15, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addImage("커서", "images/maptool/cursor.bmp", 52, 52, true, RGB(255, 0, 255));
-
 
 	//플레이어
 
@@ -36,7 +34,9 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("코인다이아", "images/UI/coinDiamond.bmp", 25*2, 47*2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("심장", "images/UI/heart.bmp",80*2, 50*2, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("노트전부", "images/UI/noteAll.bmp",18*2, 30*2, 3, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("HP바", "images/UI/hpBar.bmp",72*2, 22*2,3,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("노트", "images/UI/note1.bmp",6*2, 30*2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("빗나감", "images/UI/missed.bmp",36*2, 13*2, true, RGB(255, 0, 255));
 
 
 
@@ -52,8 +52,8 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("던지세요", "images/item/press.bmp",50, 50, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("기본삽", "images/item/nomalShovel.bmp",38, 38 ,true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("티타늄삽", "images/item/titaniumShovel.bmp",48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("유리삽", "images/item/glassShovel.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("티타늄삽", "images/item/titaniumShovel.bmp",38, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("유리삽", "images/item/glassShovel.bmp",38, 38, true, RGB(255, 0, 255));
 
 
 

@@ -18,5 +18,7 @@ public:
 	void render(/*HDC hdc*/);
 
 	item* addItem(string name);
+
+
 };
 

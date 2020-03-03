@@ -27,13 +27,14 @@ void shovel::update()
 {
 	animation();
 
-	if (_inInventory)
+	bool ok = PLAYER->isMine1();
+	if (_inInventory && ok)
 	{
 		tagTile* temp = PLAYER->getTile();
-		if(temp[PLAYER->playerNextTile()].obj != OBJ_NONE && _power>= temp[PLAYER->playerNextTile()].strength)
-		{
-			temp[PLAYER->playerNextTile()].obj = OBJ_NONE;
-		}
+		if(temp[PLAYER->wallTile()].strength<=_power) temp[PLAYER->wallTile()].obj = OBJ_NONE;
+		//PLAYER->setIsMine(false);
+		ok = false;
+		
 	}
 }
 

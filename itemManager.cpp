@@ -35,12 +35,9 @@ void itemManager::render()
 
 item * itemManager::addItem(string name)
 {
-	for (int i = 0; i < _vItem.size(); i++)
-	{
-		if (_vItem[i]->getName() == name)
-		{
-			return _vItem[i];
-		}
-	}
+	if (name == "±âº»»ð")return new shovel(SHOVEL, 1, "±âº»»ð", "°­µµ 1ÀÇ »ðÀÌ´Ù");
+	if (name == "Æ¼Å¸´½»ð")return new shovel(SHOVEL, 2, "Æ¼Å¸´½»ð", "°­µµ 2ÀÇ »ðÀÌ´Ù");
+	if (name == "À¯¸®»ð")return new shovel(SHOVEL, 3, "À¯¸®»ð", "°­µµ 3ÀÇ »ðÀÌ´Ù");
+
 }
 

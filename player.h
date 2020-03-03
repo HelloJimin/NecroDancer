@@ -25,6 +25,13 @@ enum FRONT
 	MONSTER,
 	WALL
 };
+struct miss
+{
+	int alpha;
+	int speed;
+	RECT rc;
+	image* img;
+};
 struct note
 {
 	int alpha;
@@ -43,7 +50,13 @@ struct turn
 	vector<note> vNote;
 	bool check;
 };
-
+struct hp
+{
+	image* img;
+	RECT rc;
+	int currentX;
+	float hp;
+};
 class player : public singletonBase<player>
 {
 private:
@@ -57,6 +70,7 @@ private:
 	int _tileX, _tileY;
 	int _nextTileIndex;
 	int _currentTileIndex;
+	int _wallIndex;
 
 	int _rhythm;
 
@@ -71,18 +85,21 @@ private:
 
 	tagTile* _pCurrentMap;		//콜바이레퍼런스용 변수
 	inventory* _inven;
+	
+	miss _miss;
+	vector<miss> _vMiss;
 
 	int _currentFrameX;
 	
-	float _lifePoint;
+	hp _hp;
+	vector<hp> _vHp;
 	turn _turn;
 
 	int _coin;
 	int _diamond;
 
 	bool _isJump;
-
-
+	bool _isMine;
 	char _str[128];
 public:
 	player();
@@ -107,11 +124,19 @@ public:
 
 	int playerTile() { return _currentTileIndex; }
 	int playerNextTile() { return _nextTileIndex; }
+	int wallTile() { return _wallIndex; }
 
 	tagTile* getTile() { return _pCurrentMap; }
 
 	RECT getCollisionRc() { return _collisionRc; }
 
 	inventory* getInven() { return _inven; }
+
+	void HPbarSet();
+	bool isMine() { return _isMine; }
+	bool* isMine1() { return &_isMine; }
+
+	void setIsMine(bool mine) { _isMine = mine; }
+
 };
 

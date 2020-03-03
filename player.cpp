@@ -26,7 +26,7 @@ HRESULT player::init()
 	_weapon = SWORD;
 
 	_isJump = false;
-
+	_isMine = false;
 	_moveSpeed = 13;
 	_coin = _diamond = 0;
 
@@ -49,12 +49,27 @@ HRESULT player::init()
 		_note.alpha = 0;
 	}
 
+	_miss.alpha = 0;
+	_miss.img = IMAGEMANAGER->findImage("ºø³ª°¨");
+	_miss.rc = RectMake(_turn.heartBox.left, _turn.heartBox.top, _miss.img->getWidth(), _miss.img->getHeight());
+	_miss.speed = 1;
+
+	_hp.currentX = 2;
+	_hp.img = IMAGEMANAGER->findImage("HP¹Ù");
+	_hp.hp = 1.0f;
+	_hp.rc = RectMakeCenter(WINSIZEX - 50 * 4, 50, _hp.img->getFrameWidth(), _hp.img->getFrameHeight());
+	_vHp.push_back(_hp);
+	_hp.rc = RectMakeCenter(WINSIZEX - 50 * 5, 50, _hp.img->getFrameWidth(), _hp.img->getFrameHeight());
+	_vHp.push_back(_hp);
+	_hp.rc = RectMakeCenter(WINSIZEX - 50 * 6, 50, _hp.img->getFrameWidth(), _hp.img->getFrameHeight());
+	_vHp.push_back(_hp);
+	HPbarSet();
 	return S_OK;
 }
 
 void player::release()
 {
-//	SAFE_DELETE(_inven);
+	//	SAFE_DELETE(_inven);
 }
 
 void player::update()
@@ -63,6 +78,39 @@ void player::update()
 
 	turn();
 	//_turn.check = true;
+
+
+	if (KEYMANAGER->isOnceKeyDown('H')) //´ïÁö
+	{
+		for (int i = 0; i < _vHp.size(); i++)
+		{
+			if (_vHp[i].hp > 0)
+			{
+				_vHp[i].hp -= 0.5f;
+				break;
+			}
+			else continue;
+		}
+	}
+	if (KEYMANAGER->isOnceKeyDown('J')) //È¸º¹
+	{
+
+		for (int i = _vHp.size()-1; i >= 0; i--)
+		{
+			if (_vHp[i].hp <= 0.5f)
+			{
+				_vHp[i].hp += 0.5f;
+				break;
+			}
+			else continue;
+		}
+	}
+	if (KEYMANAGER->isOnceKeyDown('K')) //Ãß°¡
+	{
+		_hp.rc = RectMakeCenter(WINSIZEX - 50 * 7, 50, _hp.img->getFrameWidth(), _hp.img->getFrameHeight());
+		_vHp.push_back(_hp);
+	}
+
 
 	if (_pCurrentMap[_currentTileIndex].y == _currentY)
 	{
@@ -76,6 +124,7 @@ void player::update()
 			}
 			else
 			{
+				_vMiss.push_back(_miss);
 				_rhythm = 0;
 			}
 		}
@@ -89,6 +138,7 @@ void player::update()
 			}
 			else
 			{
+				_vMiss.push_back(_miss);
 				_rhythm = 0;
 			}
 		}
@@ -102,6 +152,7 @@ void player::update()
 			}
 			else
 			{
+				_vMiss.push_back(_miss);
 				_rhythm = 0;
 			}
 		}
@@ -115,8 +166,20 @@ void player::update()
 			}
 			else
 			{
+				_vMiss.push_back(_miss);
 				_rhythm = 0;
 			}
+		}
+	}
+	for (int i = 0; i < _vMiss.size(); i++)
+	{
+		_vMiss[i].rc.top -= _vMiss[i].speed;
+		_vMiss[i].rc.bottom -= _vMiss[i].speed;
+
+		if (_vMiss[i].rc.top <= WINSIZEY / 2+150)
+		{
+			_vMiss.erase(_vMiss.begin() + i);
+			break;
 		}
 	}
 	move();
@@ -189,6 +252,8 @@ void player::frontCheck()
 	}
 	else
 	{
+		_isMine = true;
+		_wallIndex = _nextTileIndex;
 		_nextTileIndex = _currentTileIndex;
 	}
 }
@@ -284,8 +349,8 @@ void player::turn()
 			break;
 		}
 
-		if(_turn.check) _turn.anime = 1;
-		if(!_turn.check) _turn.anime = 0;
+		if(_turn.check )_turn.anime = 1;
+		if(!_turn.check )_turn.anime = 0;
 	}
 }
 
@@ -308,6 +373,11 @@ void player::UIrender(HDC hdc)
 		DeleteObject(myBrush);
 
 	}
+
+	for (int i = 0; i < _vHp.size(); i++)
+	{
+		_vHp[i].img->frameRender(CAMERAMANAGER->getCameraDC(), _vHp[i].rc.left, _vHp[i].rc.top,_vHp[i].currentX,0);
+	}
 	//ÀÎº¥Åä¸® ·»´õ....
 	_inven->render(hdc);
 
@@ -326,7 +396,12 @@ void player::UIrender(HDC hdc)
 	wsprintf(_str, "¹ÚÀÚ¸ÂÃá È½¼ö%d", _rhythm);
 	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX - 60, 125, _str, strlen(_str));
 
+
 	//¹ÚÀÚºÎºÐ ·»´õ
+	for (int i = 0; i < _vMiss.size(); i++)
+	{
+		_vMiss[i].img->render(CAMERAMANAGER->getCameraDC(), _vMiss[i].rc.left, _vMiss[i].rc.top);
+	}
 	for (int i = 0; i < _turn.vNote.size(); i++)
 	{
 		if (_turn.vNote[i].rc[0].right <= _turn.heartBox.right-40) _turn.vNote[i].img[0]->alphaRender(CAMERAMANAGER->getCameraDC(), _turn.vNote[i].rc[0].left, _turn.vNote[i].rc[0].top, _turn.vNote[i].alpha);
@@ -352,6 +427,16 @@ void player::removeNote()
 			_turn.vNote.erase(_turn.vNote.begin() + i);
 			break;
 		}
+	}
+}
+
+void player::HPbarSet()
+{
+	for (int i = 0; i < _vHp.size(); i++)
+	{
+		if (_vHp[i].hp == 0.0f) _vHp[i].currentX = 2;
+		if (_vHp[i].hp == 0.5f) _vHp[i].currentX = 1;
+		if (_vHp[i].hp == 1.0f) _vHp[i].currentX = 0;
 	}
 }
 

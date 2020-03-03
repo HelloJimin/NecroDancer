@@ -18,11 +18,11 @@ HRESULT testScene::init()
 	load();
 	PLAYER->setCurrentTile(_tiles);
 	_vItem.push_back(ITEMMANAGER->addItem("±âº»»ð"));
+	_vItem.push_back(ITEMMANAGER->addItem("À¯¸®»ð"));
 	_vItem.push_back(ITEMMANAGER->addItem("±âº»»ð"));
-	_vItem.push_back(ITEMMANAGER->addItem("±âº»»ð"));
-	_vItem[0]->setRect(_tiles[312].rc);
-	_vItem[1]->setRect(_tiles[313].rc);
-	_vItem[2]->setRect(_tiles[350].rc);
+	_vItem[0]->setRect(_tiles[315].rc);
+	_vItem[1]->setRect(_tiles[316].rc);
+	_vItem[2]->setRect(_tiles[319].rc);
 
 
 	return S_OK;
@@ -42,7 +42,7 @@ void testScene::update()
 		RECT temp;
 		if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_vItem[i]->getRc()))
 		{
-			PLAYER->getInven()->addItem(_vItem[i]);
+			PLAYER->getInven()->addItem(ITEMMANAGER->addItem(_vItem[i]->getName()));
 			_vItem.erase(_vItem.begin() + i);
 			break;
 		}

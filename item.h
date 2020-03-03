@@ -53,5 +53,7 @@ public:
 	RECT getRc() { return _rc; }
 
 	image* getImg() { return _itemImg; }
+
+	itemType getType() { return _type; }
 };
 
