@@ -23,7 +23,7 @@
     <ProjectGuid>{8FF13C43-33AC-4F4E-825D-B864A3A51362}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>APIFrameWork</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -151,11 +151,16 @@
     <ClInclude Include="animationManager.h" />
     <ClInclude Include="API_FrameWork.h" />
     <ClInclude Include="aStar.h" />
+    <ClInclude Include="attack.h" />
+    <ClInclude Include="body.h" />
+    <ClInclude Include="bomb.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
+    <ClInclude Include="feet.h" />
     <ClInclude Include="gameNode.h" />
+    <ClInclude Include="greenSlime.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="inventory.h" />
@@ -171,6 +176,7 @@
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="shovel.h" />
     <ClInclude Include="singletonBase.h" />
@@ -181,6 +187,7 @@
     <ClInclude Include="tileNode.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="torch.h" />
     <ClInclude Include="txtData.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -188,10 +195,15 @@
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="animationManager.cpp" />
     <ClCompile Include="aStar.cpp" />
+    <ClCompile Include="attack.cpp" />
+    <ClCompile Include="body.cpp" />
+    <ClCompile Include="bomb.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
+    <ClCompile Include="feet.cpp" />
     <ClCompile Include="gameNode.cpp" />
+    <ClCompile Include="greenSlime.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="inventory.cpp" />
@@ -212,6 +224,7 @@
     <ClCompile Include="testScene.cpp" />
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="torch.cpp" />
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="winMain.cpp" />
@@ -221,6 +234,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="API_FrameWork.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

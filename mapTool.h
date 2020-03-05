@@ -48,7 +48,7 @@ private:
 	tagCurrentTile _currnetTile;
 
 	tagSampleWindow _sampleWindow;
-	tagSampleImage _sampleImage[12]; // 페이지에 맞춰서 뿌려줄 이미지
+	tagSampleImage _sampleImage[16]; // 페이지에 맞춰서 뿌려줄 이미지
 
 	tagBottun   _button[4];
 	tagSaveLoad _save[4];

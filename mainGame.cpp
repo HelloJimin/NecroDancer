@@ -11,7 +11,7 @@ HRESULT mainGame::init()
 	gameNode::init(true);
 	imagesInit();
 	ITEMMANAGER->init();
-
+	MONSTERMANAGER->init();
 	ANIMATIONMANAGER->init();
 	PLAYER->init();
 	SetTextAlign(CAMERAMANAGER->getCameraDC(), TA_RIGHT);
@@ -34,6 +34,7 @@ void mainGame::update()
 {
 	gameNode::update();
 	ANIMATIONMANAGER->update();
+	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
 }
 
@@ -50,9 +51,9 @@ void mainGame::render(/*HDC hdc*/)
 	DeleteObject(myBrush);
 	//============================================================================이 위로 건드리면 뒤짐=======================================================================================
 	
-
 	ANIMATIONMANAGER->render();
 	SCENEMANAGER->render();
+	EFFECTMANAGER->render();
 	TIMEMANAGER->render(CAMERAMANAGER->getCameraDC());
 
 	//============================================================================이 밑으로 건드리면 뒤짐=======================================================================================

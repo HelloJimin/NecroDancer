@@ -23,19 +23,23 @@ HRESULT player::init()
 	_nextTileIndex = 374;
 
 	_direction = DOWN;
-	_weapon = SWORD;
 
 	_isJump = false;
-	_isMine = false;
 	_moveSpeed = 13;
 	_coin = _diamond = 0;
 
 	_rhythm = 0;
 
+	//스탯
+	_status.atk = 0;
+	_status.def = 0;
+	_status.minePower = 0;
+
 	//턴초기화
 	_turn.cnt = 0;
 	_turn.speed = 6;
 	_turn.anime = 0;
+	_turn.turn = 0;
 	_turn.heart = IMAGEMANAGER->findImage("심장");
 	_turn.heartBox = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, _turn.heart->getFrameWidth(), _turn.heart->getFrameHeight());
 
@@ -223,37 +227,36 @@ void player::frontCheck()
 	//앞 타일이 비어있는지 판별
 	_tileX = _rc.left / TILESIZE;
 	_tileY = _rc.top / TILESIZE;
-
+	_currentTileIndex = _tileX + _tileY * TILEX;
 
 	switch (_direction)
 	{
 	case LEFT:
-		_currentTileIndex = _tileX + _tileY * TILEX;
-		_nextTileIndex = _tileX - 1 + _tileY * TILEX;
+		_nextTileIndex = _tileX + _tileY * TILEX - 1;
 		break;
 	case RIGHT:
-		_currentTileIndex = (_tileX + _tileY * TILEX);
-		_nextTileIndex = (_tileX + _tileY * TILEX) + 1;
+		_nextTileIndex = _tileX + _tileY * TILEX + 1;
 		break;
 	case UP:
-		_currentTileIndex = _tileX + _tileY * TILEX;
 		_nextTileIndex = _tileX + (_tileY - 1) * TILEX;
 		break;
 	case DOWN:
-		_currentTileIndex = _tileX + (_tileY-1) * TILEX + TILEX;
-		_nextTileIndex = _tileX + _tileY * TILEX + TILEX ;
+		_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
 		break;
 	}
 	//앞타일이 비어있으면 이동
 	if (_pCurrentMap[_nextTileIndex].obj == OBJ_NONE)
 	{
+		if (_pCurrentMap[_nextTileIndex].item != NULL)
+		{
+			getItem();
+		}
 		_isJump = true;
 		_currentTileIndex = _nextTileIndex;
 	}
 	else
 	{
-		_isMine = true;
-		_wallIndex = _nextTileIndex;
+		mine();
 		_nextTileIndex = _currentTileIndex;
 	}
 }
@@ -269,7 +272,6 @@ void player::move()
 			{
 				_currentX -= _moveSpeed;
 				_collisionX -= _moveSpeed;
-		
 			}
 			if (_pCurrentMap[_nextTileIndex].y - 26 != _currentY) _currentY -= _moveSpeed;
 			if (_pCurrentMap[_nextTileIndex].x == _currentX && _pCurrentMap[_nextTileIndex].y - 26 == _currentY)  _isJump = false;
@@ -319,10 +321,12 @@ void player::move()
 
 void player::turn()
 {
-	_turn.speed = 300 * TIMEMANAGER->getElapsedTime();
+	_turn.speed = 290 * TIMEMANAGER->getElapsedTime();
 	_turn.cnt++;
 	if (_turn.cnt % 29 == 0)
 	{
+		_turn.turn++;
+
 		_turn.vNote.push_back(_note);
 	}
 
@@ -439,4 +443,46 @@ void player::HPbarSet()
 		if (_vHp[i].hp == 1.0f) _vHp[i].currentX = 0;
 	}
 }
+
+void player::mine()
+{
+	if (_status.minePower >= _pCurrentMap[_nextTileIndex].strength)
+	{
+		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
+		_pCurrentMap[_nextTileIndex].strength = 0;
+	}
+}
+
+void player::getItem()
+{
+	if (_inven->getItemList().empty())
+	{
+		_inven->addItem(_pCurrentMap[_nextTileIndex].item);
+		_pCurrentMap[_nextTileIndex].item = NULL;
+	}
+	else
+	{
+		int check = 0;
+		for (int i = 0; i < _inven->getItemList().size(); ++i)
+		{
+			if (_inven->getItemList()[i]->getType() != _pCurrentMap[_nextTileIndex].item->getType())
+			{
+				check++;
+			}
+			if (_inven->getItemList()[i]->getType() == _pCurrentMap[_nextTileIndex].item->getType())
+			{
+				swap((*_inven->getItemList_Reference())[i], _pCurrentMap[_nextTileIndex].item);
+				break;
+			}
+
+			if (check == _inven->getItemList().size())
+			{
+				_inven->addItem(_pCurrentMap[_nextTileIndex].item);
+				_pCurrentMap[_nextTileIndex].item = NULL;
+				break;
+			}
+		}
+	}
+}
+
 

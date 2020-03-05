@@ -15,13 +15,13 @@
 enum TERRAIN
 {
 	//아무것도없는		땅
-	TERRAIN_NONE, TERRAIN_GROUND , TERRAIN_DOOR
+	TERRAIN_NONE, TERRAIN_GROUND
 };
 
 //오브젝트
 enum OBJECT
 {
-	OBJ_NONE, OBJ_NOMALWALL, OBJ_SKULLWALL, OBJ_WHITEWALL, OBJ_IRONWALL, OBJ_GOLDWALL
+	OBJ_NONE, OBJ_NOMALWALL, OBJ_SKULLWALL, OBJ_WHITEWALL, OBJ_IRONWALL, OBJ_GOLDWALL , OBJ_DOOR
 };
 
 //포지션 정의
@@ -42,6 +42,7 @@ struct tagTile
 	int objFrameY;
 	int x, y;					//타일 중점좌표
 	int strength;				//타일의 강도
+	item* item;
 };
 
 //셈플타일 구조체

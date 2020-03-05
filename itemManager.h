@@ -1,12 +1,14 @@
 #pragma once
 #include "shovel.h"
+#include "attack.h"
+#include"body.h"
+#include"feet.h"
+#include"torch.h"
 #include "singletonBase.h"
 
 class itemManager :  public singletonBase<itemManager>
 {
 private:
-	vector<item*> _vItem;
-
 
 public:
 	itemManager();

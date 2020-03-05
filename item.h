@@ -1,6 +1,6 @@
 #pragma once
 
-enum itemType
+enum slotType
 {
 	SHOVEL,
 	ATTACK,
@@ -19,16 +19,16 @@ protected:
 	image* _slotImg;
 	image* _itemImg;
 	RECT _rc;
-	itemType _type;
+	slotType _type;
 
 	bool _inInventory;
 	bool _upDown;
-	//bool _silhouette;
 	float _x, _y;
 	int _waveCnt;
 
 	int price;
 	int diamondPrice;
+
 public:
 	item();
 	~item();
@@ -41,12 +41,12 @@ public:
 	virtual int getInfo();
 
 
-	void setItem(itemType type, string name, string description);
-	void setInven(bool inven) { _inInventory = inven; }
+	void setItem(slotType type, string name, string description);
 	void animation();
 	void draw(HDC hdc);
-	string getName() { return _name; }
 
+
+	void setInven(bool inven) { _inInventory = inven; }
 	void setRect(POINT xy) { _x = xy.x; _y = xy.y; }
 	void setRect(RECT tile) { _rc = tile; }
 
@@ -54,6 +54,6 @@ public:
 
 	image* getImg() { return _itemImg; }
 
-	itemType getType() { return _type; }
+	slotType getType() { return _type; }
 };
 

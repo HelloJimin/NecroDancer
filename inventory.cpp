@@ -25,6 +25,8 @@ void inventory::update()
 {
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
+		_vItem[i]->setInven(true);
+		_vItem[i]->setRect(PointMake(30+i* 66, 20));
 		_vItem[i]->update();
 	}
 }
@@ -39,10 +41,11 @@ void inventory::render(HDC hdc)
 
 void inventory::addItem(item * item)
 {
-	item->setInven(true);
 	_vItem.push_back(item);
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
-		_vItem[i]->setRect(PointMake(i + 1 * 50, 50));
+		_vItem[i]->setInven(true);
+		_vItem[i]->setRect(PointMake(30+i * 66, 20));
+		//_vItem[i]->update();
 	}
 }

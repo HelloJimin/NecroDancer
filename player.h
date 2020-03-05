@@ -11,14 +11,6 @@ enum DIRECTION
 	DOWN,
 	IDLE
 };
-enum CURRENT_WEAPON
-{
-	SWORD,
-	BIGSWORD,
-	SPEAR,
-	whip,
-	BOW
-};
 enum FRONT
 {
 	NONE,
@@ -43,6 +35,7 @@ struct turn
 {
 	int anime;
 	int cnt;
+	int turn;
 	float speed;
 
 	RECT heartBox;
@@ -56,6 +49,13 @@ struct hp
 	RECT rc;
 	int currentX;
 	float hp;
+};
+struct status
+{
+
+	int atk;
+	int def;
+	int minePower;
 };
 class player : public singletonBase<player>
 {
@@ -80,8 +80,6 @@ private:
 	image* _bodyImg;
 	image* _headImg;
 	DIRECTION _direction;
-	CURRENT_WEAPON _weapon;
-
 
 	tagTile* _pCurrentMap;		//콜바이레퍼런스용 변수
 	inventory* _inven;
@@ -99,8 +97,11 @@ private:
 	int _diamond;
 
 	bool _isJump;
-	bool _isMine;
 	char _str[128];
+
+
+	//스탯
+	status _status;
 public:
 	player();
 	~player();
@@ -133,10 +134,17 @@ public:
 	inventory* getInven() { return _inven; }
 
 	void HPbarSet();
-	bool isMine() { return _isMine; }
-	bool* isMine1() { return &_isMine; }
+	//auto getTurn() { return _turn; }
 
-	void setIsMine(bool mine) { _isMine = mine; }
+
+	auto getTurnCnt() { return _turn.cnt; }
+	auto& playerStatus() { return _status; }
+	auto& Hp() { return _vHp; }
+
+	void mine();
+
+	void getItem();
+	//void statusUpdate();
 
 };
 

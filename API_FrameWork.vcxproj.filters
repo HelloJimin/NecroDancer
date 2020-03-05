@@ -70,6 +70,24 @@
     <ClCompile Include="monsterManager.cpp">
       <Filter>몬스터</Filter>
     </ClCompile>
+    <ClCompile Include="greenSlime.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="attack.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="body.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="feet.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="torch.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="bomb.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -146,6 +164,25 @@
     <ClInclude Include="monsterManager.h">
       <Filter>몬스터</Filter>
     </ClInclude>
+    <ClInclude Include="greenSlime.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="attack.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="body.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="feet.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="torch.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="bomb.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="매니저">
@@ -166,5 +203,8 @@
     <Filter Include="몬스터">
       <UniqueIdentifier>{d9c1b41b-9897-4aac-a27c-937bf0d4d09f}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="API_FrameWork.rc" />
   </ItemGroup>
 </Project>

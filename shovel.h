@@ -7,14 +7,11 @@ private:
 
 public:
 	shovel();
-	shovel(itemType type, int power, string name, string description);
+	shovel(slotType type, int power, string name, string description);
 
 	~shovel();
 
-	void release() override;
 	void update() override;
-	void render(/*HDC hdc*/);
 
-	int getInfo() override { return _power; }
 };
 

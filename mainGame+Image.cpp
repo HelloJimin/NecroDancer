@@ -6,8 +6,8 @@ void mainGame::imagesInit()
 	//¸ÊÅø
 	IMAGEMANAGER->addImage("»ùÇÃÃ¢", "images/maptool/»ùÇÃÃ¢.bmp", 300, WINSIZEY-200, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addFrameImage("¸ÊÅøÁöÇü", "images/maptool/¸ÊÅø_ÁöÇü.bmp", 104*2, 78*2, 4, 3, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("¸ÊÅøº®", "images/maptool/¸ÊÅø_º®.bmp", 104*2, 117*2, 4, 3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("¸ÊÅøÁöÇü", "images/maptool/¸ÊÅø_ÁöÇü.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("¸ÊÅøº®", "images/maptool/¸ÊÅø_º®.bmp", 104*2, 156*2, 4, 4, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("´İ±â", "images/maptool/´İ±â¹öÆ°.bmp", 64, 64, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("µÚ·Î", "images/maptool/µÚ·Î°¡±â¹öÆ°.bmp", 64, 64, true, RGB(255, 0, 255));
@@ -32,7 +32,7 @@ void mainGame::imagesInit()
 
 	//UI
 	IMAGEMANAGER->addImage("ÄÚÀÎ´ÙÀÌ¾Æ", "images/UI/coinDiamond.bmp", 25*2, 47*2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("½ÉÀå", "images/UI/heart.bmp",80*2, 50*2, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("½ÉÀå", "images/UI/heart.bmp",80*3, 50*2, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("³ëÆ®ÀüºÎ", "images/UI/noteAll.bmp",18*2, 30*2, 3, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("HP¹Ù", "images/UI/hpBar.bmp",72*2, 22*2,3,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("³ëÆ®", "images/UI/note1.bmp",6*2, 30*2, true, RGB(255, 0, 255));
@@ -41,22 +41,52 @@ void mainGame::imagesInit()
 
 
 	//¾ÆÀÌÅÛ
-	IMAGEMANAGER->addImage("»ğ", "images/item/shovel.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("¹«±â", "images/item/attack.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("º¸µğ", "images/item/body.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("ÆøÅº", "images/item/bomb.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("¾ÆÀÌÅÛ", "images/item/item.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("È¶ºÒ", "images/item/torch.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("½Å¹ß", "images/item/feet.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("´øÁö±â", "images/item/THROW.bmp",50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("´øÁö¼¼¿ä", "images/item/press.bmp",50, 50, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("»ğ", "images/item/shovel.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("¹«±â", "images/item/attack.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("º¸µğ", "images/item/body.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ÆøÅº", "images/item/bomb.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("¾ÆÀÌÅÛ", "images/item/item.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("È¶ºÒ", "images/item/torch.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("½Å¹ß", "images/item/feet.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("´øÁö±â", "images/item/THROW.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("´øÁö¼¼¿ä", "images/item/press.bmp",60, 66, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addImage("±âº»»ğ", "images/item/nomalShovel.bmp",38, 38 ,true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Æ¼Å¸´½»ğ", "images/item/titaniumShovel.bmp",38, 38, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("À¯¸®»ğ", "images/item/glassShovel.bmp",38, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("±âº»»ğ", "images/item/nomalShovel.bmp",48, 48 ,true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½»ğ", "images/item/titaniumShovel.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®»ğ", "images/item/glassShovel.bmp",48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("±âº»´Ü°Ë", "images/item/nomalShort.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½´Ü°Ë", "images/item/titaniumShort.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®´Ü°Ë", "images/item/glassShort.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®Á¶°¢", "images/item/glass.bmp",48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("°¡Á×°©¿Ê", "images/item/°¡Á×°©¿Ê.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("¼è°©¿Ê", "images/item/¼è°©¿Ê.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("µµº¹", "images/item/µµº¹.bmp",48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("¹ß·¹½´Áî", "images/item/¹ß·¹½´Áî.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("³¯°³ÀåÈ­", "images/item/³¯°³ÀåÈ­.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ÈûÀÇÀåÈ­", "images/item/ÈûÀÇÀåÈ­.bmp",48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("±âº»È¶ºÒ", "images/item/±âº»È¶ºÒ.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ºû³ª´ÂÈ¶ºÒ", "images/item/ºû³ª´Â È¶ºÒ.bmp",48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("ÆøÅº", "images/item/ÆøÅº.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ÆøÅº3°³", "images/item/ÆøÅº3°³.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("ÆøÅº¾Ö´Ï", "images/item/ÆøÅº¾Ö´Ï.bmp",96*2, 48,4,1, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("»ç°ú", "images/item/»ç°ú.bmp",48, 48, true, RGB(255, 0, 255));
+
+
+
+	//¸ó½ºÅÍ
+	IMAGEMANAGER->addFrameImage("±×¸°½½¶óÀÓ", "images/monster/greenSlime.bmp",92*3, 40*3,4,2, true, RGB(255, 0, 255));
 
 
 
 	//SOUND
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.mp3", true, true);
+
+	//EFFECT
+	EFFECTMANAGER->addEffect("ÇÒÄû±â", "images/effect/ÇÒÄû±â.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.5f, 100);
 }

@@ -17,6 +17,7 @@ public:
 	void render(/*HDC hdc*/);
 
 	void setUp();
-	void tileRender();
+	void frontTileRender();
+	void backTileRender();
 	void load();
 };

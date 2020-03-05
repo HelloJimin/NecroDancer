@@ -6,7 +6,6 @@ item::item()
 {
 }
 
-
 item::~item()
 {
 }
@@ -35,10 +34,12 @@ int item::getInfo()
 	return 0;
 }
 
-void item::setItem(itemType type, string name, string description)
+void item::setItem(slotType type, string name, string description)
 {
 	_name = name;
+	_itemImg = IMAGEMANAGER->findImage(name);
 	_description = description;
+	_type = type;
 
 	switch (type)
 	{
@@ -80,9 +81,6 @@ void item::animation()
 	}
 	else
 	{
-		_x = _rc.left + 10;
-		_y = _rc.top + 10;
-
 		_waveCnt++;
 
 		if (_upDown)
@@ -107,11 +105,11 @@ void item::draw(HDC hdc)
 	if (_inInventory)
 	{
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
-		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
+		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left+ 8, _rc.top+11);
 	}
 	else
 	{
-		Rectangle(hdc, _rc.left, _rc.top, _rc.right, _rc.bottom);
-		_itemImg->render(hdc, _x, _y);
+		//Rectangle(hdc, _rc.left, _rc.top, _rc.right, _rc.bottom);
+		_itemImg->render(hdc, _x-20, _y-40);
 	}
 }

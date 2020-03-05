@@ -10,10 +10,10 @@ HRESULT mapTool::init()
 	setUp();
 	setSampleWindow();
 
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		_sampleImage[i].image = new image;
-		_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 78 * 2, 4, 3, true, RGB(255, 0, 255));
+		_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2, 4, 4, true, RGB(255, 0, 255));
 	}
 	_mouse = false;
 	
@@ -62,6 +62,18 @@ void mapTool::update()
 	}
 	controlSampleWindow();
 	cameraMove();
+
+	if (PLAYER->rhythmCheck())
+	{
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (_tiles[i].terrain == TERRAIN_GROUND)
+			{
+				_tiles[i].terrainFrameX += 1;
+				if (_tiles[i].terrainFrameX > 2)_tiles[i].terrainFrameX = 0;
+			}
+		}
+	}
 }
 
 void mapTool::render()
@@ -118,7 +130,7 @@ void mapTool::render()
 			_button[i].img->render(CAMERAMANAGER->getCameraDC(), _button[i].rc.left, _button[i].rc.top-20);
 		}
 		_sampleWindow.img->render(CAMERAMANAGER->getCameraDC(), _sampleWindow.rc.left, _sampleWindow.rc.top);
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < 16; i++)
 		{
 			_sampleImage[i].image->frameRender(CAMERAMANAGER->getCameraDC(), _sampleImage[i].rc.left, _sampleImage[i].rc.top);
 		}
@@ -233,6 +245,7 @@ void mapTool::setUp()
 	{
 		_tiles[i].x = _tiles[i].rc.left + (_tiles[i].rc.right - _tiles[i].rc.left) / 2;
 		_tiles[i].y = _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2;
+		_tiles[i].item = NULL;
 	}
 
 	mapInit();
@@ -386,18 +399,19 @@ void mapTool::sampleSetRc()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 12; j++)
+		for (int j = 0; j < 16; j++)
 		{
-			_sampleImage[i].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 150, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
-			_sampleImage[i + 4].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 300, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
-			_sampleImage[i + 8].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 450, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 100, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i + 4].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 180, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i + 8].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 260, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i + 12].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 340, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
 		}
 	}
 }
 
 void mapTool::setSamplePage()
 {
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		if (i < 4)
 		{
@@ -409,10 +423,15 @@ void mapTool::setSamplePage()
 			_sampleImage[i].image->setFrameX(i-4);
 			_sampleImage[i].image->setFrameY(1);
 		}
+		else if (i < 12)
+		{
+			_sampleImage[i].image->setFrameX(i - 8);
+			_sampleImage[i].image->setFrameY(2);
+		}
 		else
 		{
-			_sampleImage[i].image->setFrameX(i-8);
-			_sampleImage[i].image->setFrameY(2);
+			_sampleImage[i].image->setFrameX(i-12);
+			_sampleImage[i].image->setFrameY(3);
 		}
 	}
 }
@@ -461,7 +480,7 @@ void mapTool::setMap()
 
 void mapTool::setSampleMap() //책열어서 타일클릭했을때
 {
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		if (PtInRect(&_sampleImage[i].rc, m_ptMouse))
 		{
@@ -548,17 +567,17 @@ void mapTool::pageControl()
 	switch (_page)
 	{
 	case PAGE_TERRAIN:
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < 16; i++)
 		{
 			_sampleImage[i].image = new image;
-			_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 78 * 2, 4, 3, true, RGB(255, 0, 255));
+			_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2, 4, 4, true, RGB(255, 0, 255));
 		}
 		break;
 	case PAGE_WALL:
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < 16; i++)
 		{
 			_sampleImage[i].image = new image;
-			_sampleImage[i].image->init("images/maptool/맵툴_벽.bmp", 104 * 2, 117 * 2, 4, 3, true, RGB(255, 0, 255));
+			_sampleImage[i].image->init("images/maptool/맵툴_벽.bmp", 104 * 2, 156 * 2, 4, 4, true, RGB(255, 0, 255));
 		}
 		break;
 	case PAGE_OBJ:
@@ -582,15 +601,18 @@ void mapTool::tileAttribute()
 		else if (_tiles[i].obj == OBJ_WHITEWALL) _tiles[i].strength = 3;
 		else if (_tiles[i].obj == OBJ_IRONWALL) _tiles[i].strength = 4;
 		else if (_tiles[i].obj == OBJ_GOLDWALL) _tiles[i].strength = 5;
+		else if (_tiles[i].obj == OBJ_DOOR) _tiles[i].strength = 0;
 	}
 }
 
 TERRAIN mapTool::terrainSelect(int frameX, int frameY)
 {
-	for (int i = 0; i < 12; i++)
+	for(int i =0 ;i<4; i++)
 	{
-		if (i == 2 || i == 3) return TERRAIN_DOOR;
-		return TERRAIN_GROUND;
+		for (int k = 0; k < 4; k++)
+		{
+			if (frameX == i && frameY == k) return TERRAIN_GROUND;
+		}
 	}
 
 	return TERRAIN_NONE;
@@ -615,6 +637,12 @@ OBJECT mapTool::objSelect(int frameX, int frameY)
 
 	if (frameX == 2 && frameY == 2) return OBJ_GOLDWALL;
 	if (frameX == 3 && frameY == 2) return OBJ_GOLDWALL;
+
+	if (frameX == 0 && frameY == 3) return OBJ_GOLDWALL;
+	if (frameX == 1 && frameY == 3) return OBJ_GOLDWALL;
+
+	if (frameX == 2 && frameY == 3) return OBJ_DOOR;
+	if (frameX == 3 && frameY == 3) return OBJ_DOOR;
 	
 	return OBJ_NONE;
 }
