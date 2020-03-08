@@ -33,38 +33,33 @@ void monsterManager::frontRender(HDC hdc)
 {
 	for (int i = 0; i < _vMonster.size(); ++i)
 	{
-		if (PLAYER->playerTile() >= _vMonster[i]->currentTile())
+		if (PLAYER->currentTile() >= _vMonster[i]->currentTile())
 		{
 			_vMonster[i]->render(hdc);
-
 		}
 	}
-
 }
 
 void monsterManager::backRender(HDC hdc)
 {
 	for (int i = 0; i < _vMonster.size(); ++i)
 	{
-		if (PLAYER->playerTile() < _vMonster[i]->currentTile())
+		if (PLAYER->currentTile() < _vMonster[i]->currentTile())
 		{
 			_vMonster[i]->render(hdc);
-
 		}
 	}
 }
 
-//void monsterManager::render(HDC hdc)
-//{
-//	for (int i = 0; i < _vMonster.size(); ++i)
-//	{
-//		_vMonster[i]->render(hdc);
-//	}
-//}
-
 void monsterManager::summonGreenSlime(string name, int x, int y)
 {
 	monster* mob = new greenSlime;
+	mob->init(name, x, y, _map);
+	_vMonster.push_back(mob);
+}
+void monsterManager::summonSkeleton(string name, int x, int y)
+{
+	monster* mob = new skeleton;
 	mob->init(name, x, y, _map);
 	_vMonster.push_back(mob);
 }

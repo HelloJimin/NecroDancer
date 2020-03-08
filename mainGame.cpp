@@ -13,13 +13,13 @@ HRESULT mainGame::init()
 	ITEMMANAGER->init();
 	MONSTERMANAGER->init();
 	ANIMATIONMANAGER->init();
+	BEAT->init();
 	PLAYER->init();
 	SetTextAlign(CAMERAMANAGER->getCameraDC(), TA_RIGHT);
 	
 	SCENEMANAGER->addScene("맵툴신", new mapTool);
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->changeScene("테스트신");
-	
 	return S_OK;
 }
 

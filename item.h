@@ -45,10 +45,9 @@ public:
 	void animation();
 	void draw(HDC hdc);
 
-
 	void setInven(bool inven) { _inInventory = inven; }
 	void setRect(POINT xy) { _x = xy.x; _y = xy.y; }
-	void setRect(RECT tile) { _rc = tile; }
+	void rcSet();
 
 	RECT getRc() { return _rc; }
 

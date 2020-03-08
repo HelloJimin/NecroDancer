@@ -13,11 +13,10 @@ public:
 	void render(HDC hdc);
 
 	void addItem(item* item);
+	void swapItem(int arrNum, item*& item);
 
 	vector<item*> getItemList() { return _vItem; }
 	vector<item*>* getItemList_Reference() { return &_vItem; }
-	
-
 
 };
 

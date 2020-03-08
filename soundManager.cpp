@@ -187,3 +187,40 @@ bool soundManager::isPauseSound(string keyName)
 	}
 	return isPause;
 }
+
+int soundManager::getLength(string keyName)
+{
+	int count = 0;
+	int count_BGM;
+	UINT start = 0;
+
+	arrSoundIter iter_BGM = m_totalSounds.begin();									//¹è°æÀ½¾Ç¿ë iter
+	arrSoundIter iter = m_totalSounds.begin();
+
+	for (iter; iter != m_totalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			count_BGM = count;
+			m_sound[count_BGM]->getLength(&start, FMOD_TIMEUNIT_MS);
+			return start;
+		}
+	}
+}
+
+int soundManager::getPosition(string keyName)
+{
+	int count = 0;
+	UINT now = 0;
+
+	arrSoundIter iter = m_totalSounds.begin();
+
+	for (iter; iter != m_totalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			m_channel[count]->getPosition(&now, FMOD_TIMEUNIT_MS);
+			return now;
+		}
+	}
+}

@@ -59,5 +59,8 @@ public:
 	int getCurrentNum() { return currentNum; }
 	void setCurrentNum(int num) { currentNum = num; }
 	string getCurrentSong() { return songName[currentNum]; }
+
+	int getPosition(string keyName);							//현재길이 받아옴
+	int getLength(string keyName);
 };
 

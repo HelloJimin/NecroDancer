@@ -24,6 +24,8 @@ protected:
 	int _coin;
 
 	int _rhythm;
+	float _moveSpeed;
+	bool _isMove;
 public:
 	monster();
 	~monster();
@@ -38,9 +40,8 @@ public:
 	virtual void attack();
 
 	int currentTile() { return _currentTileIndex; }
-	void rhythmUpdate();
 	void setMap(tagTile tile[]) { _pCurrentMap = tile; }
 
-
+	virtual void move();
 };
 

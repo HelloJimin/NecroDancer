@@ -75,22 +75,18 @@ void item::setItem(slotType type, string name, string description)
 
 void item::animation()
 {
-	if (_inInventory)
-	{
-		_rc = RectMakeCenter(_x+10, _y+10, _itemImg->getWidth(), _itemImg->getHeight());
-	}
-	else
+	if (!_inInventory)
 	{
 		_waveCnt++;
 
 		if (_upDown)
 		{
-			_y -= 0.5;
+			_y -= 0.5f;
 			if (_waveCnt > 15) _upDown = false;
 		}
 		else
 		{
-			_y += 0.5;
+			_y += 0.5f;
 			if (_waveCnt > 30)
 			{
 				_upDown = true;
@@ -112,4 +108,9 @@ void item::draw(HDC hdc)
 		//Rectangle(hdc, _rc.left, _rc.top, _rc.right, _rc.bottom);
 		_itemImg->render(hdc, _x-20, _y-40);
 	}
+}
+
+void item::rcSet()
+{
+	_rc = RectMakeCenter(_x + 10, _y + 10, _itemImg->getWidth(), _itemImg->getHeight());
 }

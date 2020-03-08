@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
-    <ClCompile Include="aStar.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
@@ -88,11 +87,19 @@
     <ClCompile Include="bomb.cpp">
       <Filter>아이템</Filter>
     </ClCompile>
+    <ClCompile Include="aStar.cpp">
+      <Filter>맵툴</Filter>
+    </ClCompile>
+    <ClCompile Include="skeleton.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="beat.cpp">
+      <Filter>플레이어</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="API_FrameWork.h" />
-    <ClInclude Include="aStar.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="gameNode.h" />
@@ -182,6 +189,15 @@
     </ClInclude>
     <ClInclude Include="bomb.h">
       <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="aStar.h">
+      <Filter>맵툴</Filter>
+    </ClInclude>
+    <ClInclude Include="skeleton.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="beat.h">
+      <Filter>플레이어</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

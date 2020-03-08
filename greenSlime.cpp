@@ -23,8 +23,7 @@ HRESULT greenSlime::init(string name, int x, int y, tagTile * map)
 void greenSlime::update()
 {
 	animation();
-	rhythmUpdate();
-	if (PLAYER->getTurnCnt() % 58 == 0)
+	if (BEAT->getCnt() % 58 == 0)
 	{
 		frontCheck();
 	}
@@ -34,12 +33,14 @@ void greenSlime::update()
 
 void greenSlime::frontCheck()
 {
-	_tileX = _rc.left / TILESIZE;
-	_tileY = _rc.top / TILESIZE;
-	front[0] = _tileX - 1 + _tileY * TILEX;
-	front[1] = (_tileX + _tileY * TILEX) + 1;
+	_tileX = _collisionRc.left / TILESIZE;
+	_tileY = _collisionRc.top / TILESIZE;
+	_currentTileIndex = _tileX + _tileY * TILEX;
+
+	front[0] = _tileX + _tileY * TILEX - 1;
+	front[1] = _tileX + _tileY * TILEX + 1;
 	front[2] = _tileX + (_tileY - 1) * TILEX;
-	front[3] = _tileX + _tileY * TILEX + TILEX;
+	front[3] = _tileX + (_tileY + 1) * TILEX;
 	
 	RECT temp;
 	for (int i = 0; i < 4; i++)
@@ -60,9 +61,8 @@ void greenSlime::attack()
 {
 	if (_attack)
 	{
-		PLAYER->Hp()[0].hp -= 0.5f;
+		PLAYER->hit(_atk);
 		_attack = false;
-		PLAYER->HPbarSet();
 	}
 }
 

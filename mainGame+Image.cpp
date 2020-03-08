@@ -32,7 +32,7 @@ void mainGame::imagesInit()
 
 	//UI
 	IMAGEMANAGER->addImage("코인다이아", "images/UI/coinDiamond.bmp", 25*2, 47*2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("심장", "images/UI/heart.bmp",80*3, 50*2, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("심장", "images/UI/heart.bmp",80*2, 50*2, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("노트전부", "images/UI/noteAll.bmp",18*2, 30*2, 3, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("HP바", "images/UI/hpBar.bmp",72*2, 22*2,3,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("노트", "images/UI/note1.bmp",6*2, 30*2, true, RGB(255, 0, 255));

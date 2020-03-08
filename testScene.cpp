@@ -30,6 +30,7 @@ HRESULT testScene::init()
 	_tiles[317].item = ITEMMANAGER->addItem("¼è°©¿Ê");
 
 	MONSTERMANAGER->summonGreenSlime("±×¸°½½¶óÀÓ", _tiles[322].x, _tiles[322].y);
+	MONSTERMANAGER->summonSkeleton("±×¸°½½¶óÀÓ", _tiles[327].x, _tiles[327].y);
 	return S_OK;
 }
 
@@ -39,6 +40,7 @@ void testScene::release()
 
 void testScene::update()
 {
+	BEAT->update();
 	PLAYER->update();
 	MONSTERMANAGER->update();
 
@@ -59,8 +61,8 @@ void testScene::update()
 		{
 			if (_tiles[i].terrain == TERRAIN_GROUND)
 			{
-				//if(PLAYER->getTurn()%2==0) _tiles[i].terrainFrameX += 1;
-				//if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
+				if(BEAT->getCnt() %58==0) _tiles[i].terrainFrameX += 1;
+				if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
 			}
 			if (_tiles[i].item != NULL)
 			{
@@ -81,7 +83,7 @@ void testScene::render()
 
 	backTileRender();
 	MONSTERMANAGER->backRender(getMemDC());
-
+	BEAT->render(getMemDC());
 	PLAYER->UIrender(getMemDC());
 }
 
@@ -119,12 +121,12 @@ void testScene::frontTileRender()
 
 			if (_tiles[i].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
-			if(_tiles[i].item !=NULL && PLAYER->playerTile() >= i )_tiles[i].item->draw(getMemDC());
+			if(_tiles[i].item !=NULL && PLAYER->currentTile() >= i )_tiles[i].item->draw(getMemDC());
 			//if (_tiles[i].obj == OBJ_WALL) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
 			if (_tiles[i].obj == OBJ_NONE) continue;
 
-			if (PLAYER->playerTile() >= i)
+			if (PLAYER->currentTile() >= i)
 			{
 				IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top - 25, _tiles[i].objFrameX, _tiles[i].objFrameY);
 			}
@@ -138,7 +140,7 @@ void testScene::frontTileRender()
 		{
 			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 			{
-				if (PLAYER->playerTile() >= i)
+				if (PLAYER->currentTile() >= i)
 				{
 					SetBkMode(getMemDC(), TRANSPARENT);
 					//»ö»ó
@@ -158,7 +160,7 @@ void testScene::backTileRender()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (PLAYER->playerTile() < i)
+		if (PLAYER->currentTile() < i)
 		{
 			if (_tiles[i].item != NULL)_tiles[i].item->draw(getMemDC());
 			if (_tiles[i].obj == OBJ_NONE) continue;
@@ -172,7 +174,7 @@ void testScene::backTileRender()
 		{
 			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 			{
-				if (PLAYER->playerTile() < i)
+				if (PLAYER->currentTile() < i)
 				{
 					SetBkMode(getMemDC(), TRANSPARENT);
 					//»ö»ó

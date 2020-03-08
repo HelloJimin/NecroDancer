@@ -63,7 +63,7 @@ void mapTool::update()
 	controlSampleWindow();
 	cameraMove();
 
-	if (PLAYER->rhythmCheck())
+	if (BEAT->getCheck())
 	{
 		for (int i = 0; i < TILEX * TILEY; i++)
 		{
@@ -83,15 +83,9 @@ void mapTool::render()
 	{
 		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 		{
-			if (_tiles[i].terrain == TERRAIN_NONE)
-			{
-				Rectangle(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].rc.right, _tiles[i].rc.bottom);
-			}
-				
-			if (_tiles[i].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("맵툴지형", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+			if (_tiles[i].terrain == TERRAIN_NONE) Rectangle(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].rc.right, _tiles[i].rc.bottom);
 			
-			//if (_tiles[i].obj == OBJ_WALL) IMAGEMANAGER->frameRender("맵툴벽", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
-
+			if (_tiles[i].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("맵툴지형", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
 			if (_tiles[i].obj == OBJ_NONE) continue;
 
@@ -105,7 +99,6 @@ void mapTool::render()
 		{
 			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 			{
-	
 				SetBkMode(getMemDC(), TRANSPARENT);
 				//색상
 				SetTextColor(getMemDC(), RGB(255, 0, 0));
@@ -113,7 +106,6 @@ void mapTool::render()
 				char str[128];
 				sprintf_s(str, "%d", i);
 				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-		
 			}
 		}
 	}
@@ -245,9 +237,7 @@ void mapTool::setUp()
 	{
 		_tiles[i].x = _tiles[i].rc.left + (_tiles[i].rc.right - _tiles[i].rc.left) / 2;
 		_tiles[i].y = _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2;
-		_tiles[i].item = NULL;
 	}
-
 	mapInit();
 }
 
@@ -270,17 +260,17 @@ void mapTool::mapInit()
 
 		//강도
 		_tiles[i].strength = 0;
+
+		_tiles[i].item = NULL;
+		_tiles[i].parent = NULL;
+		_tiles[i].walkable = true;
+		_tiles[i].listOn = false;
+		_tiles[i].F = BIGNUM;
+		_tiles[i].H = 0;			//계산전이므로 0
 	}
 }
 
-
-//=================================================================================
-//
-//				샘					플						북	
-//
-//=================================================================================
-
-//샘플북 설정
+//샘플창 설정
 void mapTool::setSampleWindow()
 {
 	_sampleWindow.open = false;
@@ -289,7 +279,7 @@ void mapTool::setSampleWindow()
 	_sampleWindow.y = WINSIZEY / 2 + 50;
 	_sampleWindow.rc = RectMakeCenter(_sampleWindow.x, _sampleWindow.y, _sampleWindow.img->getWidth(), _sampleWindow.img->getHeight());
 }
-//샘플북 클릭으로 조종
+//샘플창 클릭으로 조종
 void mapTool::controlSampleWindow()
 {
 	sampleWindowKey();
@@ -370,8 +360,8 @@ void mapTool::setSampleWindowBottun()
 		case 3: _button[3].y -= 10;
 			break;
 		}
-		_button[_page].rc = RectMakeCenter(_button[_page].x + 40, _button[_page].y, _button[_page].img->getWidth(), _button[_page].img->getHeight());
 
+		_button[_page].rc = RectMakeCenter(_button[_page].x + 40, _button[_page].y, _button[_page].img->getWidth(), _button[_page].img->getHeight());
 
 		_sampleWindow.button[0].img = IMAGEMANAGER->findImage("닫기");
 		_sampleWindow.button[0].x = _sampleWindow.rc.right - _sampleWindow.button[0].img->getWidth()/2;
@@ -592,22 +582,47 @@ void mapTool::pageControl()
 }
 
 //타일에 강도 넣기
+//타일에 강도 넣기
 void mapTool::tileAttribute()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (_tiles[i].obj == OBJ_NOMALWALL) _tiles[i].strength = 1;
-		else if (_tiles[i].obj == OBJ_SKULLWALL) _tiles[i].strength = 2;
-		else if (_tiles[i].obj == OBJ_WHITEWALL) _tiles[i].strength = 3;
-		else if (_tiles[i].obj == OBJ_IRONWALL) _tiles[i].strength = 4;
-		else if (_tiles[i].obj == OBJ_GOLDWALL) _tiles[i].strength = 5;
-		else if (_tiles[i].obj == OBJ_DOOR) _tiles[i].strength = 0;
+		if (_tiles[i].obj == OBJ_NOMALWALL)
+		{
+			_tiles[i].strength = 1;
+			_tiles[i].walkable = false;
+		}
+		else if (_tiles[i].obj == OBJ_SKULLWALL)
+		{
+			_tiles[i].strength = 2;
+			_tiles[i].walkable = false;
+		}
+		else if (_tiles[i].obj == OBJ_WHITEWALL)
+		{
+			_tiles[i].strength = 3;
+			_tiles[i].walkable = false;
+		}
+		else if (_tiles[i].obj == OBJ_IRONWALL)
+		{
+			_tiles[i].strength = 4;
+			_tiles[i].walkable = false;
+		}
+		else if (_tiles[i].obj == OBJ_GOLDWALL)
+		{
+			_tiles[i].strength = 5;
+			_tiles[i].walkable = false;
+		}
+		else if (_tiles[i].obj == OBJ_DOOR)
+		{
+			_tiles[i].strength = 0;
+			_tiles[i].walkable = false;
+		}
 	}
 }
 
 TERRAIN mapTool::terrainSelect(int frameX, int frameY)
 {
-	for(int i =0 ;i<4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		for (int k = 0; k < 4; k++)
 		{

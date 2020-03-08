@@ -8,8 +8,7 @@ enum DIRECTION
 	LEFT,
 	RIGHT,
 	UP,
-	DOWN,
-	IDLE
+	DOWN
 };
 enum FRONT
 {
@@ -17,32 +16,7 @@ enum FRONT
 	MONSTER,
 	WALL
 };
-struct miss
-{
-	int alpha;
-	int speed;
-	RECT rc;
-	image* img;
-};
-struct note
-{
-	int alpha;
-	float x[2],y;
-	RECT rc[2];
-	image* img[2];
-};
-struct turn
-{
-	int anime;
-	int cnt;
-	int turn;
-	float speed;
 
-	RECT heartBox;
-	image* heart;
-	vector<note> vNote;
-	bool check;
-};
 struct hp
 {
 	image* img;
@@ -52,7 +26,7 @@ struct hp
 };
 struct status
 {
-
+	vector<hp> vHp;
 	int atk;
 	int def;
 	int minePower;
@@ -60,48 +34,38 @@ struct status
 class player : public singletonBase<player>
 {
 private:
-	RECT _temp;
+	int _currentX, _currentY;
 	RECT _rc;
+	int _collisionX, _collisionY;
 	RECT _collisionRc;
 
-	int _currentX, _currentY;
-	int _collisionX, _collisionY;
+	int _currentFrameX;
 
 	int _tileX, _tileY;
-	int _nextTileIndex;
 	int _currentTileIndex;
-	int _wallIndex;
-
-	int _rhythm;
-
-	note _note;
+	int _nextTileIndex;
 
 	float _moveSpeed;
 	image* _bodyImg;
 	image* _headImg;
 	DIRECTION _direction;
 
-	tagTile* _pCurrentMap;		//콜바이레퍼런스용 변수
-	inventory* _inven;
+	tagTile* _pCurrentMap;	
 	
-	miss _miss;
-	vector<miss> _vMiss;
-
-	int _currentFrameX;
-	
-	hp _hp;
-	vector<hp> _vHp;
-	turn _turn;
-
-	int _coin;
-	int _diamond;
-
-	bool _isJump;
-	char _str[128];
-
+	int _rhythm;
 
 	//스탯
 	status _status;
+	hp _hp;
+	int _coin;
+	int _diamond;
+	inventory* _inven;
+
+	bool _isDrop;
+	bool _isMove;
+	char _str[128];
+	RECT _temp;
+	float n;
 public:
 	player();
 	~player();
@@ -110,41 +74,32 @@ public:
 	void release();
 	void update();
 	void render(HDC hdc);
-
-	void frontCheck();
-
-	void move();
-	void setCurrentTile(tagTile tile[]) { _pCurrentMap = tile; }	//콜바이밸류를 통해서 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
-
-	void turn();
 	void UIrender(HDC hdc);
 
-	bool rhythmCheck() { return _turn.check; }
+	void setCurrentTile(tagTile tile[]) { _pCurrentMap = tile; }	// 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
 
-	void removeNote();
-
-	int playerTile() { return _currentTileIndex; }
-	int playerNextTile() { return _nextTileIndex; }
-	int wallTile() { return _wallIndex; }
-
-	tagTile* getTile() { return _pCurrentMap; }
+	void frontCheck();
+	void move();
+	int currentTile() { return _currentTileIndex; }
+	int nextTile() { return _nextTileIndex; }
 
 	RECT getCollisionRc() { return _collisionRc; }
 
 	inventory* getInven() { return _inven; }
 
-	void HPbarSet();
-	//auto getTurn() { return _turn; }
-
-
-	auto getTurnCnt() { return _turn.cnt; }
 	auto& playerStatus() { return _status; }
-	auto& Hp() { return _vHp; }
 
+	void HPbarSet();
 	void mine();
-
 	void getItem();
-	//void statusUpdate();
+	void hit(float damege);
 
+	void keyControl();
+	void animation();
+	bool wallCheck();
+
+	float lerp(float p1, float p2, float d1) {
+		return (1 - d1)*p1 + d1 * p2;
+	}
 };
 

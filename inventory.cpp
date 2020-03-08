@@ -25,8 +25,6 @@ void inventory::update()
 {
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
-		_vItem[i]->setInven(true);
-		_vItem[i]->setRect(PointMake(30+i* 66, 20));
 		_vItem[i]->update();
 	}
 }
@@ -46,6 +44,21 @@ void inventory::addItem(item * item)
 	{
 		_vItem[i]->setInven(true);
 		_vItem[i]->setRect(PointMake(30+i * 66, 20));
-		//_vItem[i]->update();
+		_vItem[i]->rcSet();
+	}
+}
+
+void inventory::swapItem(int arrNum, item*& item)
+{
+	_vItem[arrNum]->setInven(false);
+
+	swap(_vItem[arrNum], item);
+
+	//이부분함수화할수있으면 함수화 해보자. 폭탄 위치 조정해야됨
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		_vItem[i]->setInven(true);
+		_vItem[i]->setRect(PointMake(30 + i * 66, 20));
+		_vItem[i]->rcSet();
 	}
 }
