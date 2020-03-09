@@ -29,7 +29,7 @@ void item::render(HDC hdc)
 	draw(hdc);
 }
 
-int item::getInfo()
+int item::getValue()
 {
 	return 0;
 }

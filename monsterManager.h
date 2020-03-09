@@ -21,5 +21,7 @@ public:
 	void summonGreenSlime(string name, int x, int y);
 	void summonSkeleton(string name, int x, int y);
 	void setMap(tagTile* map) { _map = map; }
+
+	vector<monster*> getMonster() { return _vMonster; }
 };
 

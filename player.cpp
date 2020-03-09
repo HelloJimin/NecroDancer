@@ -55,6 +55,11 @@ void player::release()
 
 void player::update()
 {
+	if (KEYMANAGER->isOnceKeyDown('B'))
+	{
+		MONSTERMANAGER->getMonster()[0]->hit(0.5);
+	}
+
 	_inven->update();
 	keyControl();
 	move();
@@ -313,6 +318,14 @@ void player::mine()
 
 void player::getItem()
 {
+	if (_pCurrentMap[_nextTileIndex].item->getName() == "ÄÚÀÎ")
+	{
+		_coin += _pCurrentMap[_nextTileIndex].item->getValue();
+		_pCurrentMap[_nextTileIndex].item = NULL;
+		return;
+	}
+
+
 	if (_inven->getItemList().empty())
 	{
 		_inven->addItem(_pCurrentMap[_nextTileIndex].item);

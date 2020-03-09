@@ -12,9 +12,9 @@ greenSlime::~greenSlime()
 }
 
 
-HRESULT greenSlime::init(string name, int x, int y, tagTile * map)
+HRESULT greenSlime::init(string name, int x, int y, int coin, tagTile * map)
 {
-	monster::init(name, x, y, map);
+	monster::init(name, x, y, coin, map);
 	_atk = 0.5f;
 	return S_OK;
 
@@ -23,11 +23,9 @@ HRESULT greenSlime::init(string name, int x, int y, tagTile * map)
 void greenSlime::update()
 {
 	animation();
-	if (BEAT->getCnt() % 58 == 0)
-	{
-		frontCheck();
-	}
+	frontCheck();
 
+	hpSet();
 	attack();
 }
 

@@ -11,10 +11,10 @@ public:
 	skeleton();
 	~skeleton();
 
-	virtual HRESULT init(string name, int x, int y, tagTile* map) override;
-	virtual void update() override;
+	virtual HRESULT init(string name, int x, int y, int coin, tagTile * map) override;
 	virtual void render(HDC hdc) override;
  
 	virtual void move() override;
+	void frontCheck() override;
 };
 

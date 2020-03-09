@@ -38,7 +38,7 @@ public:
 	virtual void update();
 	virtual void render(HDC hdc);
 
-	virtual int getInfo();
+	virtual int getValue();
 
 
 	void setItem(slotType type, string name, string description);
@@ -54,5 +54,7 @@ public:
 	image* getImg() { return _itemImg; }
 
 	slotType getType() { return _type; }
+
+	string getName() { return _name; }
 };
 

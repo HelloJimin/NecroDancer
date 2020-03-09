@@ -22,15 +22,16 @@ protected:
 	tagTile* _pCurrentMap;
 	DIRECTION _direction;
 	int _coin;
-
 	int _rhythm;
 	float _moveSpeed;
 	bool _isMove;
+
+
 public:
 	monster();
 	~monster();
 
-	virtual HRESULT init(string name, int x, int y, tagTile* map);
+	virtual HRESULT init(string name, int x, int y, int coin, tagTile * map);
 	virtual void release();
 	virtual void update();
 	virtual void render(HDC hdc);
@@ -43,5 +44,10 @@ public:
 	void setMap(tagTile tile[]) { _pCurrentMap = tile; }
 
 	virtual void move();
+	virtual bool die();
+	void addHp();
+	void hpSet();
+	void hpRender(HDC hdc);
+	void hit(float damage);
 };
 

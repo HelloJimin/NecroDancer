@@ -96,6 +96,12 @@
     <ClCompile Include="beat.cpp">
       <Filter>플레이어</Filter>
     </ClCompile>
+    <ClCompile Include="coin.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="blueSlime.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h" />
@@ -198,6 +204,12 @@
     </ClInclude>
     <ClInclude Include="beat.h">
       <Filter>플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="coin.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="blueSlime.h">
+      <Filter>몬스터</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

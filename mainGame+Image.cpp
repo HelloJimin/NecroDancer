@@ -77,6 +77,9 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addImage("사과", "images/item/사과.bmp",48, 48, true, RGB(255, 0, 255));
 
+	IMAGEMANAGER->addImage("작은코인", "images/item/smallCoin.bmp",52, 52, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("큰코인", "images/item/bigCoin.bmp",52, 52, true, RGB(255, 0, 255));
+
 
 
 	//몬스터

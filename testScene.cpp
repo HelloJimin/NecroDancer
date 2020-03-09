@@ -121,7 +121,7 @@ void testScene::frontTileRender()
 
 			if (_tiles[i].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
-			if(_tiles[i].item !=NULL && PLAYER->currentTile() >= i )_tiles[i].item->draw(getMemDC());
+			if(_tiles[i].item !=NULL && PLAYER->currentTile() >= i )_tiles[i].item->render(getMemDC());
 			//if (_tiles[i].obj == OBJ_WALL) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
 
 			if (_tiles[i].obj == OBJ_NONE) continue;
@@ -162,7 +162,7 @@ void testScene::backTileRender()
 	{
 		if (PLAYER->currentTile() < i)
 		{
-			if (_tiles[i].item != NULL)_tiles[i].item->draw(getMemDC());
+			if (_tiles[i].item != NULL)_tiles[i].item->render(getMemDC());
 			if (_tiles[i].obj == OBJ_NONE) continue;
 
 			IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top - 25, _tiles[i].objFrameX, _tiles[i].objFrameY);

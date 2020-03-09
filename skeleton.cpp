@@ -11,26 +11,13 @@ skeleton::~skeleton()
 {
 }
 
-HRESULT skeleton::init(string name, int x, int y, tagTile * map)
+HRESULT skeleton::init(string name, int x, int y, int coin, tagTile * map)
 {
-	monster::init(name, x, y, map);
+	monster::init(name, x, y, coin, map);
 	_direction = LEFT;
 	_aStar = new aStar;
 	_rc = _collisionRc;
 	return S_OK;
-}
-
-void skeleton::update()
-{
-	if (BEAT->getCnt() % 58 == 0)
-	{
-		frontCheck();
-		//_nextTileIndex = _aStar->aStarTile(_pCurrentMap,_rc,PLAYER->getCollisionRc());
-		temp = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc());
-	}
-
-	move();
-
 }
 
 void skeleton::render(HDC hdc)
@@ -56,4 +43,13 @@ void skeleton::move()
 	}
 
 
+}
+
+void skeleton::frontCheck()
+{
+	monster::frontCheck();
+	temp = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc());
+
+	//_nextTileIndex = _aStar->aStarTile(_pCurrentMap,_rc,PLAYER->getCollisionRc());
+	//temp = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc());
 }

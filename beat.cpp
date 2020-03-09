@@ -58,8 +58,8 @@ void beat::render(HDC hdc)
 	}
 	for (int i = 0; i < _vNote.size(); i++)
 	{
-		if (_vNote[i].rc[0].right <= _heartBox.right - 40) _vNote[i].img[0]->alphaRender(CAMERAMANAGER->getCameraDC(), _vNote[i].rc[0].left, _vNote[i].rc[0].top, _vNote[i].alpha);
-		if (_vNote[i].rc[1].left >= _heartBox.left + 40) _vNote[i].img[1]->alphaRender(CAMERAMANAGER->getCameraDC(), _vNote[i].rc[1].left, _vNote[i].rc[1].top, _vNote[i].alpha);
+		if (_vNote[i].rc[0].right <= _heartBox.right - 40) _vNote[i].img[0]->alphaRender(CAMERAMANAGER->getCameraDC(), _vNote[i].rc[0].left, _vNote[i].rc[0].top, 255);
+		if (_vNote[i].rc[1].left >= _heartBox.left + 40) _vNote[i].img[1]->alphaRender(CAMERAMANAGER->getCameraDC(), _vNote[i].rc[1].left, _vNote[i].rc[1].top, 255);
 	}
 	_heart->frameRender(CAMERAMANAGER->getCameraDC(), _heartBox.left, _heartBox.top, _anime, 0);
 
@@ -78,20 +78,20 @@ void beat::render(HDC hdc)
 
 void beat::checkBeat()
 {
-	//_speed = 290 * TIMEMANAGER->getElapsedTime();
-	_speed = _collisionHeart.left / 43;
+	_speed = 290 * TIMEMANAGER->getElapsedTime();
+	//_speed = _collisionHeart.left / 43;
 	_cnt++;
 
-	UINT a = SOUNDMANAGER->getLength("1-1");
-	int b = SOUNDMANAGER->getPosition("1-1");
-	if (_cnt+1 == 30)
-	a = SOUNDMANAGER->getPosition("1-1");
+	//UINT a = SOUNDMANAGER->getLength("1-1");
+	int b = SOUNDMANAGER->getPosition("1-1") % 521;
+	//if (_cnt+1 == 30)
+	//a = SOUNDMANAGER->getPosition("1-1");
 
-	//if (_cnt % 29 == 0)
-	if (b/100 % 5 == 0)
+	//if (b % 521 == 0)
+	if (_cnt % 29 == 0)
 	{
 		_turn++;
-		//_vNote.push_back(_note);
+		_vNote.push_back(_note);
 	}
 
 

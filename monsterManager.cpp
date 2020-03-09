@@ -27,6 +27,11 @@ void monsterManager::update()
 	{
 		_vMonster[i]->update();
 	}
+	for (int i = 0; i < _vMonster.size();)
+	{
+		if (_vMonster[i]->die()) _vMonster.erase(_vMonster.begin() + i);
+		else ++i;
+	}
 }
 
 void monsterManager::frontRender(HDC hdc)
@@ -54,12 +59,12 @@ void monsterManager::backRender(HDC hdc)
 void monsterManager::summonGreenSlime(string name, int x, int y)
 {
 	monster* mob = new greenSlime;
-	mob->init(name, x, y, _map);
+	mob->init(name, x, y, 100, _map);
 	_vMonster.push_back(mob);
 }
 void monsterManager::summonSkeleton(string name, int x, int y)
 {
 	monster* mob = new skeleton;
-	mob->init(name, x, y, _map);
+	mob->init(name, x, y, 25, _map);
 	_vMonster.push_back(mob);
 }

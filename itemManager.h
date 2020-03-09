@@ -4,6 +4,7 @@
 #include"body.h"
 #include"feet.h"
 #include"torch.h"
+#include"coin.h"
 #include "singletonBase.h"
 
 class itemManager :  public singletonBase<itemManager>
@@ -20,7 +21,7 @@ public:
 	void render(/*HDC hdc*/);
 
 	item* addItem(string name);
-
+	item* addCoin(int coinValue, int x, int y);
 
 };
 

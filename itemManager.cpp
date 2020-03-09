@@ -56,3 +56,8 @@ item * itemManager::addItem(string name)
 
 }
 
+item * itemManager::addCoin(int coinValue, int x, int y)
+{
+	return new coin(coinValue, x, y);
+}
+
