@@ -18,14 +18,14 @@ protected:
 	vector<hp> _vHp;
 
 	bool _silhouette;
-	bool _attack;
+	bool _isAttack;
 	tagTile* _pCurrentMap;
 	DIRECTION _direction;
 	int _coin;
 	int _rhythm;
 	float _moveSpeed;
 	bool _isMove;
-
+	bool _isDrop;
 
 public:
 	monster();
@@ -39,6 +39,7 @@ public:
 	void animation();
 	virtual void frontCheck();
 	virtual void attack();
+	virtual void choiceAction();
 
 	int currentTile() { return _currentTileIndex; }
 	void setMap(tagTile tile[]) { _pCurrentMap = tile; }
@@ -49,5 +50,8 @@ public:
 	void hpSet();
 	void hpRender(HDC hdc);
 	void hit(float damage);
+
+	bool wallCheck();
+	bool playerCheck();
 };
 

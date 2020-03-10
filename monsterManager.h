@@ -2,6 +2,8 @@
 #include"singletonBase.h"
 #include"skeleton.h"
 #include"greenSlime.h"
+#include"blueSlime.h"
+
 class monsterManager : public singletonBase<monsterManager>
 {
 private:
@@ -19,6 +21,7 @@ public:
 	void backRender(HDC hdc);
 
 	void summonGreenSlime(string name, int x, int y);
+	void summonBlueSlime(string name, int x, int y);
 	void summonSkeleton(string name, int x, int y);
 	void setMap(tagTile* map) { _map = map; }
 

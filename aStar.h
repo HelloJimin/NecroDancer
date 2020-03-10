@@ -14,6 +14,32 @@
 	위 과정을 반복한다.
 	F값이 동일하다면 속도상의 목적으로 오픈리스트에 더 늦게 추가 된것을 선택하는 것이 빠르다.
 */
+enum Select
+{
+	SELECT_START,
+	SELECT_END,
+	SELECT_BLOCK
+};
+enum Direction
+{
+	DIRECTION_LEFT,
+	DIRECTION_RIGHT,
+	DIRECTION_UP,
+	DIRECTION_DOWN,
+	DIRECTION_LEFTUP,
+	DIRECTION_RIGHTDOWN,
+	DIRECTION_LEFTDOWN,
+	DIRECTION_RIGHTUP
+};
+
+enum State
+{
+	STATE_NONE,
+	STATE_OPEN,
+	STATE_CLOSE,
+	STATE_PATH
+};
+
 enum ASTAR_STATE
 {
 	ASTAR_STATE_SEARCHING,	//검색중
@@ -25,26 +51,31 @@ enum ASTAR_STATE
 class aStar : public gameNode
 {
 private:
-	vector<tagTile*> _openList;
-	vector<tagTile*> _closeList;
 
-	ASTAR_STATE _astarState;
+	//tagTile tiles[TILESIZE];
+	tagTile* tiles;
 
-	int _startX, _startY;			//시작지점의 i,j인덱스
-	int _endX, _endY;			//도착지점의 i,j인덱스
-	int _lastIndex;				//나중에 추가된 클로즈 리스트의 인덱스
+	vector<int> openList;
+	vector<int>closeList;
+	vector<int>::iterator iter;
 
-	bool _startPointSet;			//시작지점이 배치 되었냐
-	bool _endPointSet;				//도착지점이 배치 되었냐
 
-	int _startPoint;
-	int _endPoint;
+	Select currentSelect;
 
-	int Ci;
-	int Cj;
-	int Cg;
+	int startTile;
+	int endTile;
+	int currentTile;
+	bool isFind;
+	bool noPath;
+	bool startAstar;
 
 	RECT rc[6];
+
+
+	HBRUSH brush;
+	HFONT font, oldFont;
+	char str[128];
+	int temp;
 
 public:
 	aStar();
@@ -53,9 +84,10 @@ public:
 	HRESULT init();
 	void release();
 	void update();
+	void render();
 
+	void Astar();
 
-
-	tagTile* aStarTile(tagTile tile[], RECT start, RECT end);
+	int aStarTile(tagTile tile[], RECT start, RECT end, int currentIndex, int endIndex);
 };
 

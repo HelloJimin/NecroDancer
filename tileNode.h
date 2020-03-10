@@ -45,10 +45,11 @@ struct tagTile
 
 	item* item;
 
+	int node;
 	bool listOn;
 	bool walkable;
 	tagTile* parent;
-	int F, G, H;
+	int f, g, h;
 };
 
 //셈플타일 구조체

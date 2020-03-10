@@ -2,7 +2,6 @@
 #include "aStar.h"
 aStar::aStar()
 {
-	_lastIndex = 0;
 }
 
 
@@ -12,8 +11,6 @@ aStar::~aStar()
 
 HRESULT aStar::init()
 {
-
-
 	return S_OK;
 }
 
@@ -25,18 +22,32 @@ void aStar::update()
 {
 }
 
-
-tagTile* aStar::aStarTile(tagTile tile[], RECT start, RECT end)
+void aStar::render()
 {
-	_openList.clear();
-	_closeList.clear();
+}
+
+void aStar::Astar()
+{
+}
+
+
+int aStar::aStarTile(tagTile * tile, RECT start, RECT end, int currentIndex, int endIndex)
+{
+	isFind = false;
+	noPath = false;
+	startAstar = false;
+	startTile = endTile = -1;
+	currentSelect = SELECT_START;
+	openList.clear();
+	closeList.clear();
+	tiles = tile;
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		tile[i].parent = NULL;
 		tile[i].walkable = true;
 		tile[i].listOn = false;
-		tile[i].F = BIGNUM;
-		tile[i].H = 0;			//계산전이므로 0
+		tile[i].f = BIGNUM;
+		tile[i].h = 0;			//계산전이므로 0
 		if (tile[i].obj == OBJ_NOMALWALL)
 		{
 			tile[i].strength = 1;
@@ -68,232 +79,146 @@ tagTile* aStar::aStarTile(tagTile tile[], RECT start, RECT end)
 			tile[i].walkable = false;
 		}
 	}
+	startTile = currentIndex;
+	endTile = endIndex;
+	int currentTile =  currentIndex;
+	int endX = endTile % TILEX;
+	int endY = endTile / TILEX;
 
-	int _tileX, _tileY;
-	_tileX = start.left / TILESIZE;
-	_tileY = start.top / TILESIZE;
-
-	_startPoint = _tileX + _tileY * TILEX;
-	_endPoint = end.left / TILESIZE + end.top / TILESIZE * TILEX;
-
-	tile[_startPoint].listOn = true;
-	_closeList.push_back(&tile[_startPoint]);
-
-	_astarState = ASTAR_STATE_SEARCHING;
-	_lastIndex = 0;
-
-	Cj = _closeList[_lastIndex]->x;
-	Ci = _closeList[_lastIndex]->y;
-	Cg = _closeList[_lastIndex]->G;
-
-	if (Ci != 0)//0번째 줄이 아니면 상단라인계산
+	while (!isFind)
 	{
-		if (tile[_tileX + (_tileY - 1) * TILEX].walkable)//상단 가운데 타일이 지나갈수 있다면
+
+		int currentX = currentTile % TILEX;
+		int currentY = currentTile / TILEX;
+	
+		// left, right, up, down
+		int dx[] = { -1, 1, 0, 0 };
+		int dy[] = { 0, 0, -1, 1 };
+		bool tempBlock[4];
+	
+		// 방향 찾는 반복문
+		for (int i = 0; i < 4; i++)
 		{
-			if (!tile[_tileX + (_tileY - 1) * TILEX].listOn)//오픈리스트에 포함이 안되어 있는 타일이라면
+			int x = currentX + dx[i];
+			int y = currentY + dy[i];
+			tempBlock[i] = false;
+	
+			// 해당 방향으로 움직인 타일이 유효한 타일인지 확인
+			if (0 <= x && x < TILEX && 0 <= y && y < TILEY)
 			{
-				tile[_tileX + (_tileY - 1) * TILEX].listOn = true;//오픈리스트에 포함되었다
-				tile[_tileX + (_tileY - 1) * TILEX].G = Cg + 10;	//타일의 G값을 클로즈 리트의 누적 G+10
-				tile[_tileX + (_tileY - 1) * TILEX].parent = _closeList[_lastIndex];//타일의 부모를 클로즈 리스트의 마지막으로 추가
-				_openList.push_back(&tile[_tileX + (_tileY - 1) * TILEX]);//오픈리스트에 추가
-			}
-			else//오픈리스트에 포함이 되어 있던 타일이라면
-			{
-				if (Cg + 10 < tile[_tileX + (_tileY - 1) * TILEX].G)//기존G값보다 새로 계산한 G값이 작다면
-				{
-					tile[_tileX + (_tileY - 1) * TILEX].G = Cg + 10;//G값 새롭게 계산
-					tile[_tileX + (_tileY - 1) * TILEX].parent = _closeList[_lastIndex];
-				}
-			}
-		}
-		if (Cj != 0)//좌상단 :0번째 열이 아니라면
-		{
-			//좌상단 타일의 왼쪽이나 아래에 벽이 없다면
-			if (tile[_tileX + (_tileY - 1) * TILEX - 1].walkable && tile[_tileX + (_tileY - 1) * TILEX].walkable && tile[_tileX + _tileY * TILEX - 1].walkable)
-			{
-				if (!tile[_tileX + (_tileY - 1) * TILEX - 1].walkable)
-				{
-					tile[_tileX + (_tileY - 1) * TILEX - 1].listOn = true;
-					tile[_tileX + (_tileY - 1) * TILEX - 1].G = Cg + 14;//대각선이므로
-					tile[_tileX + (_tileY - 1) * TILEX - 1].parent = _closeList[_lastIndex];
-					_openList.push_back(&tile[_tileX + (_tileY - 1) * TILEX - 1]);
-				}
-				else
-				{
-					if (Cg + 14 < tile[_tileX + (_tileY - 1) * TILEX - 1].G)
+				bool isOpen;
+				// 대각선 타일의 이동 문제로 (주변에 블락있으면 못감) 임시로 블락 상태 저장
+				if (!tile[y * TILEX + x].walkable) tempBlock[i] = true;
+				else {
+					// check closeList z
+					bool isClose = false;
+					for (int j = 0; j < closeList.size(); j++)
 					{
-						tile[_tileX + (_tileY - 1) * TILEX - 1].G = Cg + 14;
-						tile[_tileX + (_tileY - 1) * TILEX - 1].parent = _closeList[_lastIndex];
+						if (closeList[j] == y * TILEX + x)
+						{
+							isClose = true;
+							break;
+						}
 					}
-				}
-			}
-		}
-		if (Cj != TILESIZEX - 1)//우상단: 마지막열이 아니라면
-		{
-			//우상단 타일의 왼쪽이나 아래에 벽이 없다면
-			if (tile[_tileX + (_tileY - 1) * TILEX + 1].walkable && tile[_tileX + (_tileY - 1) * TILEX].walkable&& tile[_tileX + _tileY * TILEX + 1].walkable)
-			{
-				if (!tile[_tileX + (_tileY - 1) * TILEX + 1].listOn)
-				{
-					tile[_tileX + (_tileY - 1) * TILEX + 1].listOn = true;
-					tile[_tileX + (_tileY - 1) * TILEX + 1].G = Cg + 14;
-					tile[_tileX + (_tileY - 1) * TILEX + 1].parent = _closeList[_lastIndex];
-					_openList.push_back(&tile[_tileX + (_tileY - 1) * TILEX + 1]);
-				}
-				else
-				{
-					if (Cg + 14 < tile[_tileX + (_tileY - 1) * TILEX + 1].G)
+					if (isClose) continue;
+	
+					if (i < 4)
 					{
-						tile[_tileX + (_tileY - 1) * TILEX + 1].G = Cg + 14;
-						tile[_tileX + (_tileY - 1) * TILEX + 1].parent = _closeList[_lastIndex];
+						tile[y * TILEX + x].g = 10;
 					}
-				}
-			}
-		}
-	}
-	if (Cj != 0)//좌측 : 0번째 열이 아니라면
-	{
-		if (tile[_tileX + _tileY * TILEX - 1].walkable)//좌측타일이 이동가능하다면
-		{
-			if (!tile[_tileX + _tileY * TILEX - 1].listOn)
-			{
-				tile[_tileX + _tileY * TILEX - 1].listOn = true;
-				tile[_tileX + _tileY * TILEX - 1].G = Cg + 10;
-				tile[_tileX + _tileY * TILEX - 1].parent = _closeList[_lastIndex];
-				_openList.push_back(&tile[_tileX + _tileY * TILEX - 1]);
-			}
-			else
-			{
-				if (Cg + 10 < tile[_tileX + _tileY * TILEX - 1].G)
-				{
-					tile[_tileX + _tileY * TILEX - 1].G = Cg + 10;
-					tile[_tileX + _tileY * TILEX - 1].parent = _closeList[_lastIndex];
-				}
-			}
-		}
-	}
-	if (Cj != TILESIZEX - 1)//우측 :  마지막열이 아니라면
-	{
-
-		if (tile[_tileX + _tileY * TILEX + 1].walkable)//우측타일이 이동가능하다면
-		{
-			if (!tile[_tileX + _tileY * TILEX + 1].listOn)
-			{
-				tile[_tileX + _tileY * TILEX + 1].listOn = true;
-				tile[_tileX + _tileY * TILEX + 1].G = Cg + 10;
-				tile[_tileX + _tileY * TILEX + 1].parent = _closeList[_lastIndex];
-				_openList.push_back(&tile[_tileX + _tileY * TILEX + 1]);
-			}
-			else
-			{
-				if (Cg + 10 < tile[_tileX + _tileY * TILEX + 1].G)
-				{
-					tile[_tileX + _tileY * TILEX + 1].G = Cg + 10;
-					tile[_tileX + _tileY * TILEX + 1].parent = _closeList[_lastIndex];
-				}
-			}
-		}
-	}
-	if (Ci != TILESIZEY - 1)//마지막행이 아니라면 하단 라인 계산
-	{
-		if (tile[_tileX + (_tileY + 1) * TILEX].walkable)//하단 가운데 타일이 이동가능하다면
-		{
-			if (!tile[_tileX + (_tileY + 1) * TILEX].listOn)
-			{
-				tile[_tileX + (_tileY + 1) * TILEX].listOn = true;
-				tile[_tileX + (_tileY + 1) * TILEX].G = Cg + 10;
-				tile[_tileX + (_tileY + 1) * TILEX].parent = _closeList[_lastIndex];
-				_openList.push_back(&tile[_tileX + (_tileY + 1) * TILEX]);
-			}
-			else
-			{
-				if (Cg + 10 < tile[_tileX + (_tileY + 1) * TILEX].G)
-				{
-					tile[_tileX + (_tileY + 1) * TILEX].G = Cg + 10;
-					tile[_tileX + (_tileY + 1) * TILEX].parent = _closeList[_lastIndex];
-				}
-			}
-		}
-		if (Cj != 0)//좌하단 :  0번째 열이 아니라면
-		{
-			//좌하단 타일의 오른쪽이나 위에 벽이 없다면
-			if (tile[_tileX + (_tileY + 1) * TILEX - 1].walkable && tile[_tileX + (_tileY + 1) * TILEX].walkable && tile[_tileX + _tileY * TILEX - 1].walkable)
-			{
-				if (!tile[_tileX + (_tileY + 1) * TILEX - 1].listOn)
-				{
-					tile[_tileX + (_tileY + 1) * TILEX - 1].listOn = true;
-					tile[_tileX + (_tileY + 1) * TILEX - 1].G = Cg + 14;
-					tile[_tileX + (_tileY + 1) * TILEX - 1].parent = _closeList[_lastIndex];
-					_openList.push_back(&tile[_tileX + (_tileY + 1) * TILEX - 1]);
-				}
-				else
-				{
-					if (Cg + 14 < tile[_tileX + (_tileY + 1) * TILEX - 1].G)
+					else
 					{
-						tile[_tileX + (_tileY + 1) * TILEX - 1].G = Cg + 14;
-						tile[_tileX + (_tileY + 1) * TILEX - 1].parent = _closeList[_lastIndex];
+						// leftup인 경우 left나 up에 블락있으면 안됨
+						if (i == DIRECTION_LEFTUP &&
+							tempBlock[DIRECTION_LEFT] || tempBlock[DIRECTION_UP]) continue;
+						// rightdown인 경우 right나 down에 블락있으면 안됨
+						if (i == DIRECTION_RIGHTDOWN &&
+							tempBlock[DIRECTION_RIGHT] || tempBlock[DIRECTION_DOWN]) continue;
+						// rightup인 경우 right나 up에 블락있으면 안됨
+						if (i == DIRECTION_RIGHTUP &&
+							tempBlock[DIRECTION_RIGHT] || tempBlock[DIRECTION_UP]) continue;
+						// leftdown인 경우 left나 down에 블락있으면 안됨
+						if (i == DIRECTION_LEFTDOWN &&
+							tempBlock[DIRECTION_LEFT] || tempBlock[DIRECTION_DOWN]) continue;
+						tiles[y * TILEX + x].g = 14;
+
 					}
-				}
-			}
-		}
-		if (Cj != TILESIZEX - 1)//우하단 :  마지막 열이 아니라면
-		{
-			//우하단 타일의 오른쪽이나 위가 이동가능하다면
-			if (tile[_tileX + (_tileY + 1) * TILEX + 1].walkable && tile[_tileX + (_tileY + 1) * TILEX].walkable&& tile[_tileX + _tileY * TILEX + 1].walkable)
-			{
-				if (!tile[_tileX + (_tileY + 1) * TILEX + 1].listOn)
-				{
-					tile[_tileX + (_tileY + 1) * TILEX + 1].listOn = true;
-					tile[_tileX + (_tileY + 1) * TILEX + 1].G = Cg + 14;
-					tile[_tileX + (_tileY + 1) * TILEX + 1].parent = _closeList[_lastIndex];
-					_openList.push_back(&tile[_tileX + (_tileY + 1) * TILEX + 1]);
-				}
-				else
-				{
-					if (Cg + 14 < tile[_tileX + (_tileY + 1) * TILEX + 1].G)
+					//abs절대값
+	
+					tile[y * TILEX + x].h = (abs(endX - x) + abs(endY - y)) * 10;
+					tile[y * TILEX + x].f = tile[y * TILEX + x].g + tile[y * TILEX + x].h;
+	
+					// 오픈리스트에 있으면 g 비용 비교 후 처리
+					isOpen = false;
+					for (int i = 0; i < openList.size(); i++)
 					{
-						tile[_tileX + (_tileY + 1) * TILEX + 1].G = Cg + 14;
-						tile[_tileX + (_tileY + 1) * TILEX + 1].parent = _closeList[_lastIndex];
+						if (openList[i] == y * TILEX + x)
+						{
+							isOpen = true;
+							if (tile[openList[i]].g > tile[y * TILEX + x].g)
+							{
+								tile[openList[i]].h = tile[y * TILEX + x].h;
+								tile[openList[i]].g = tile[y * TILEX + x].g;
+								tile[openList[i]].f = tile[y * TILEX + x].f;
+								tile[openList[i]].node = currentTile;
+							}
+						}
 					}
+					// 없으면 그냥 넣고 부모 설정
+					if (!isOpen)
+					{
+						openList.push_back(y * TILEX + x);
+						tile[y * TILEX + x].node = currentTile;
+					}
+	
+					// find
+					if (y * TILEX + x == endTile) 
+						isFind = true;
+				}
+			}
+		}
+		
+		// 선택 지점 열린목록에서 빼기
+		for (iter = openList.begin(); iter != openList.end(); ++iter)
+		{
+			if ((*iter) == currentTile)
+			{
+				iter = openList.erase(iter);
+				break;
+			}
+		}
+	
+		// not Find
+		if (openList.size() == 0)
+		{
+			noPath = true;
+		}
+	
+		// 현재 타일 클로즈리스트에 넣기
+		closeList.push_back(currentTile);
+	
+		if (openList.size() != 0)
+		{
+			// find minimum f cost in openList
+			int min = tile[*openList.begin()].h;
+			currentTile = *openList.begin();
+			for (iter = openList.begin(); iter != openList.end(); ++iter)
+			{
+				if (min > tile[(*iter)].h)
+				{
+					min = tile[(*iter)].h;
+					currentTile = *iter;
 				}
 			}
 		}
 	}
-	for (int i = 0; i < _openList.size(); i++)
+	int tempTile = endTile;
+	while (tiles[tempTile].node != startTile && isFind)
 	{
-		int vertical = (tile[_endPoint].y - _openList[i]->y) * 10;//가로 H값
-		int horizontal = (tile[_endPoint].x - _openList[i]->x) * 10;//세로 H값
+		tempTile = tiles[tempTile].node;
 
-		if (vertical < 0)vertical *= -1;//방향이 반대이면 음수부여
-		if (horizontal < 0)horizontal *= -1;
-
-		_openList[i]->H = vertical + horizontal;//총 H값 : 가로+세로 H
 	}
-
-	for (int i = 0; i < _openList.size(); i++)
-	{
-		_openList[i]->F = _openList[i]->G + _openList[i]->H;//F값계산
-	}
-	if (_openList.size() == 0)//검색했는데도 openList의 사이즈가 0이면 더이상 찾을것이 없음
-	{
-		_astarState = ASTAR_STATE_NOWAY;//경로없다
-		//return;
-	}
-	int index = 0;			//오픈 리스트중 가장 F가 작은 타일의 인덱스
-	int lowest = BIGNUM;
-
-	for (int i = 0; i < _openList.size(); i++)
-	{
-		if (_openList[i]->F < lowest)
-		{
-			lowest = _openList[i]->F;
-			index = i;
-		}
-	}
-
-	_closeList.push_back(_openList[index]);
-	_openList.erase(_openList.begin() + index);//오픈 리스트에 추가된 타일은 오픈리스트에서 제외
-	_lastIndex++;//가장 나중에 추가된 클로즈의 인덱스
-	return _closeList[_lastIndex];
+	 return tempTile;
 }
 
+	

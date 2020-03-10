@@ -31,6 +31,7 @@ HRESULT testScene::init()
 
 	MONSTERMANAGER->summonGreenSlime("그린슬라임", _tiles[322].x, _tiles[322].y);
 	MONSTERMANAGER->summonSkeleton("그린슬라임", _tiles[327].x, _tiles[327].y);
+	MONSTERMANAGER->summonBlueSlime("블루슬라임", _tiles[323].x, _tiles[323].y);
 	return S_OK;
 }
 
@@ -57,21 +58,20 @@ void testScene::update()
 	//}
 
 	//반짝이느부분
-		for (int i = 0; i < TILEX * TILEY; i++)
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (_tiles[i].terrain == TERRAIN_GROUND)
 		{
-			if (_tiles[i].terrain == TERRAIN_GROUND)
-			{
-				if(BEAT->getCnt() %58==0) _tiles[i].terrainFrameX += 1;
-				if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
-			}
-			if (_tiles[i].item != NULL)
-			{
-				_tiles[i].item->setInven(false);
-				_tiles[i].item->setRect(PointMake(_tiles[i].x,_tiles[i].y));
-				_tiles[i].item->update();
-			}
+			if(BEAT->getCnt() %58==0) _tiles[i].terrainFrameX += 1;
+			if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
 		}
-	
+		if (_tiles[i].item != NULL)
+		{
+			_tiles[i].item->setInven(false);
+			_tiles[i].item->setRect(PointMake(_tiles[i].x,_tiles[i].y));
+			_tiles[i].item->update();
+		}
+	}
 }
 
 void testScene::render()
@@ -81,9 +81,13 @@ void testScene::render()
 
 	PLAYER->render(getMemDC());
 
-	backTileRender();
+
 	MONSTERMANAGER->backRender(getMemDC());
+
+	backTileRender();
+
 	BEAT->render(getMemDC());
+
 	PLAYER->UIrender(getMemDC());
 }
 

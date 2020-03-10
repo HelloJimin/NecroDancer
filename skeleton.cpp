@@ -27,29 +27,36 @@ void skeleton::render(HDC hdc)
 	//_aStar->render();
 }
 
-void skeleton::move()
-{
-
-	if (_isMove)
-	{
-		if (_rc.left != temp->rc.left || _rc.top!= temp->rc.top)
-		{
-			_rc = temp->rc;
-		}
-		else
-		{
-			_isMove = false;
-		}
-	}
-
-
-}
-
 void skeleton::frontCheck()
 {
 	monster::frontCheck();
-	temp = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc());
-
-	//_nextTileIndex = _aStar->aStarTile(_pCurrentMap,_rc,PLAYER->getCollisionRc());
 	//temp = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc());
+
+	if (BEAT->getCnt() % 58 == 0)
+	{
+		_nextTileIndex = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc(),_currentTileIndex ,PLAYER->currentTile());
+		_currentTileIndex = _nextTileIndex;
+	}
+	//temp = _aStar->aStarTile(_pCurrentMap, _rc, PLAYER->getCollisionRc());
+}
+
+void skeleton::move()
+{
+	if (!_isMove) return;
+
+	if (_rc.left != _pCurrentMap[_nextTileIndex].rc.left || _rc.top != _pCurrentMap[_nextTileIndex].rc.top)
+	{
+		_rc = _pCurrentMap[_nextTileIndex].rc;
+		_collisionRc = _pCurrentMap[_nextTileIndex].rc;
+	}
+	else
+	{
+		_isMove = false;
+	}
+
+}
+
+void skeleton::choiceAction()
+{
+	_isMove = true;
 }

@@ -265,8 +265,8 @@ void mapTool::mapInit()
 		_tiles[i].parent = NULL;
 		_tiles[i].walkable = true;
 		_tiles[i].listOn = false;
-		_tiles[i].F = BIGNUM;
-		_tiles[i].H = 0;			//계산전이므로 0
+		_tiles[i].f = BIGNUM;
+		_tiles[i].h = 0;			//계산전이므로 0
 	}
 }
 

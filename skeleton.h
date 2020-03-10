@@ -6,15 +6,16 @@ class skeleton : public monster
 private:
 	aStar* _aStar;
 
-	tagTile* temp;
+	int temp;
 public:
 	skeleton();
 	~skeleton();
 
 	virtual HRESULT init(string name, int x, int y, int coin, tagTile * map) override;
 	virtual void render(HDC hdc) override;
- 
-	virtual void move() override;
+
 	void frontCheck() override;
+	void move() override;
+	void choiceAction() override;
 };
 

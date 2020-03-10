@@ -59,7 +59,13 @@ void monsterManager::backRender(HDC hdc)
 void monsterManager::summonGreenSlime(string name, int x, int y)
 {
 	monster* mob = new greenSlime;
-	mob->init(name, x, y, 100, _map);
+	mob->init(name, x, y, 10, _map);
+	_vMonster.push_back(mob);
+}
+void monsterManager::summonBlueSlime(string name, int x, int y)
+{
+	monster* mob = new blueSlime;
+	mob->init(name, x, y, 15, _map);
 	_vMonster.push_back(mob);
 }
 void monsterManager::summonSkeleton(string name, int x, int y)

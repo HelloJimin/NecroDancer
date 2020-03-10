@@ -22,8 +22,8 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_frameY = 0;
 	_rhythm = 0;
 	_moveSpeed = 13.0f;
-	_attack = false;
-
+	_isAttack = false;
+	_isMove = false;
 
 	_rc = RectMakeCenter(_currentX, _currentY, _monsterImg->getFrameWidth(), _monsterImg->getFrameHeight());
 	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
@@ -33,7 +33,7 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_direction = DOWN;
 	_tileX = _rc.left / TILESIZE;
 	_tileY = _rc.top / TILESIZE;
-	_currentTileIndex = _tileX + _tileY * TILEX + TILEX;
+	_currentTileIndex = _tileX + _tileY * TILEX;
 	addHp();
 	return S_OK;
 }
@@ -48,6 +48,7 @@ void monster::update()
 	frontCheck();
 	animation();
 	attack();
+	move();
 }
 
 void monster::render(HDC hdc)
@@ -92,16 +93,104 @@ void monster::frontCheck()
 			_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
 			break;
 		}
-		_isMove = true;
+		choiceAction();
 	}
+
 }
 
 void monster::attack()
 {
+	if (!_isAttack) return;
+
+	PLAYER->hit(_atk);
+	int x = PLAYER->getCollisionRc().left + (PLAYER->getCollisionRc().right - PLAYER->getCollisionRc().left) / 2;
+	int y = PLAYER->getCollisionRc().top + (PLAYER->getCollisionRc().bottom - PLAYER->getCollisionRc().top) / 2;
+	EFFECTMANAGER->play("ÇÒÄû±â", x , y);
+	_isAttack = false;
 }
 
 void monster::move()
 {
+	if (!_isMove) return;
+
+	switch (_direction)
+	{
+	case LEFT:
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x + 26, _pCurrentMap[_nextTileIndex].y - 26) != 0)
+		{
+			_currentX -= _moveSpeed;
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentX -= _moveSpeed;
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	case RIGHT:
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x - 26, _pCurrentMap[_nextTileIndex].y - 26) != 0)
+		{
+			_currentX += _moveSpeed;
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentX += _moveSpeed;
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	case UP:
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 26) != 0)
+		{
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	case DOWN:
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 78) != 0)
+		{
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	}
+
+	_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
+	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
 }
 
 bool monster::die()
@@ -159,4 +248,43 @@ void monster::hit(float damage)
 		else break;
 	}
 	hpSet();
+}
+
+bool monster::wallCheck()
+{
+	if (_pCurrentMap[_nextTileIndex].obj == OBJ_NOMALWALL) return false;
+	if (_pCurrentMap[_nextTileIndex].obj == OBJ_WHITEWALL) return false;
+	if (_pCurrentMap[_nextTileIndex].obj == OBJ_SKULLWALL) return false;
+	if (_pCurrentMap[_nextTileIndex].obj == OBJ_IRONWALL) return false;
+	if (_pCurrentMap[_nextTileIndex].obj == OBJ_GOLDWALL) return false;
+	if (_pCurrentMap[_nextTileIndex].obj == OBJ_DOOR) return false;
+
+	return true;
+}
+
+bool monster::playerCheck()
+{
+	RECT temp;
+	if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_pCurrentMap[_nextTileIndex].rc)) return true;
+	else return false;
+}
+
+void monster::choiceAction()
+{
+	RECT temp;
+	if (playerCheck())
+	{
+		_isAttack = true;
+		return;
+	}
+	if (wallCheck())
+	{
+		_isMove = true;
+		_currentTileIndex = _nextTileIndex;
+	}
+	else
+	{
+		_isMove = false;
+		_nextTileIndex = _currentTileIndex;
+	}
 }
