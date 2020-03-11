@@ -9,85 +9,20 @@ aStar::~aStar()
 {
 }
 
-HRESULT aStar::init()
-{
-	return S_OK;
-}
 
-void aStar::release()
+int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 {
-}
+	reset(tile);
 
-void aStar::update()
-{
-}
-
-void aStar::render()
-{
-}
-
-void aStar::Astar()
-{
-}
-
-
-int aStar::aStarTile(tagTile * tile, RECT start, RECT end, int currentIndex, int endIndex)
-{
-	isFind = false;
-	noPath = false;
-	startAstar = false;
-	startTile = endTile = -1;
-	currentSelect = SELECT_START;
-	openList.clear();
-	closeList.clear();
-	tiles = tile;
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		tile[i].parent = NULL;
-		tile[i].walkable = true;
-		tile[i].listOn = false;
-		tile[i].f = BIGNUM;
-		tile[i].h = 0;			//계산전이므로 0
-		if (tile[i].obj == OBJ_NOMALWALL)
-		{
-			tile[i].strength = 1;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_SKULLWALL)
-		{
-			tile[i].strength = 2;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_WHITEWALL)
-		{
-			tile[i].strength = 3;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_IRONWALL)
-		{
-			tile[i].strength = 4;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_GOLDWALL)
-		{
-			tile[i].strength = 5;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_DOOR)
-		{
-			tile[i].strength = 0;
-			tile[i].walkable = false;
-		}
-	}
 	startTile = currentIndex;
+	currentTile =  currentIndex;
 	endTile = endIndex;
-	int currentTile =  currentIndex;
+
 	int endX = endTile % TILEX;
 	int endY = endTile / TILEX;
 
 	while (!isFind)
 	{
-
 		int currentX = currentTile % TILEX;
 		int currentY = currentTile / TILEX;
 	
@@ -126,23 +61,7 @@ int aStar::aStarTile(tagTile * tile, RECT start, RECT end, int currentIndex, int
 					{
 						tile[y * TILEX + x].g = 10;
 					}
-					else
-					{
-						// leftup인 경우 left나 up에 블락있으면 안됨
-						if (i == DIRECTION_LEFTUP &&
-							tempBlock[DIRECTION_LEFT] || tempBlock[DIRECTION_UP]) continue;
-						// rightdown인 경우 right나 down에 블락있으면 안됨
-						if (i == DIRECTION_RIGHTDOWN &&
-							tempBlock[DIRECTION_RIGHT] || tempBlock[DIRECTION_DOWN]) continue;
-						// rightup인 경우 right나 up에 블락있으면 안됨
-						if (i == DIRECTION_RIGHTUP &&
-							tempBlock[DIRECTION_RIGHT] || tempBlock[DIRECTION_UP]) continue;
-						// leftdown인 경우 left나 down에 블락있으면 안됨
-						if (i == DIRECTION_LEFTDOWN &&
-							tempBlock[DIRECTION_LEFT] || tempBlock[DIRECTION_DOWN]) continue;
-						tiles[y * TILEX + x].g = 14;
 
-					}
 					//abs절대값
 	
 					tile[y * TILEX + x].h = (abs(endX - x) + abs(endY - y)) * 10;
@@ -172,8 +91,7 @@ int aStar::aStarTile(tagTile * tile, RECT start, RECT end, int currentIndex, int
 					}
 	
 					// find
-					if (y * TILEX + x == endTile) 
-						isFind = true;
+					if (y * TILEX + x == endTile)  isFind = true;
 				}
 			}
 		}
@@ -189,11 +107,8 @@ int aStar::aStarTile(tagTile * tile, RECT start, RECT end, int currentIndex, int
 		}
 	
 		// not Find
-		if (openList.size() == 0)
-		{
-			noPath = true;
-		}
-	
+		if (openList.size() == 0) return currentIndex;
+		
 		// 현재 타일 클로즈리스트에 넣기
 		closeList.push_back(currentTile);
 	
@@ -212,13 +127,62 @@ int aStar::aStarTile(tagTile * tile, RECT start, RECT end, int currentIndex, int
 			}
 		}
 	}
-	int tempTile = endTile;
-	while (tiles[tempTile].node != startTile && isFind)
-	{
-		tempTile = tiles[tempTile].node;
 
+	int nextTile = endTile;
+	while (tile[nextTile].node != startTile && isFind)
+	{
+		nextTile = tile[nextTile].node;
 	}
-	 return tempTile;
+
+	return nextTile;
+}
+
+void aStar::reset(tagTile * tile)
+{
+	isFind = false;
+	//startAstar = false;
+	//startTile = endTile = -1;
+
+	openList.clear();
+	closeList.clear();
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		tile[i].parent = NULL;
+		tile[i].walkable = true;
+		//tile[i].f = BIGNUM;
+		tile[i].h = 0;			//계산전이므로 0
+		if (tile[i].obj == OBJ_NOMALWALL)
+		{
+			tile[i].strength = 1;
+			tile[i].walkable = false;
+		}
+		else if (tile[i].obj == OBJ_SKULLWALL)
+		{
+			tile[i].strength = 2;
+			tile[i].walkable = false;
+		}
+		else if (tile[i].obj == OBJ_WHITEWALL)
+		{
+			tile[i].strength = 3;
+			tile[i].walkable = false;
+		}
+		else if (tile[i].obj == OBJ_IRONWALL)
+		{
+			tile[i].strength = 4;
+			tile[i].walkable = false;
+		}
+		else if (tile[i].obj == OBJ_GOLDWALL)
+		{
+			tile[i].strength = 5;
+			tile[i].walkable = false;
+		}
+		else if (tile[i].obj == OBJ_DOOR)
+		{
+			tile[i].strength = 0;
+			tile[i].walkable = false;
+		}
+	}
 }
 
 	

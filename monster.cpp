@@ -14,26 +14,29 @@ monster::~monster()
 HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 {
 	_pCurrentMap = map;
+
 	_monsterImg = IMAGEMANAGER->findImage(name);
 	_currentX = x;
 	_currentY = y;
-	_silhouette = false;
+	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
+	_tileX = _collisionRc.left / TILESIZE;
+	_tileY = _collisionRc.top / TILESIZE;
+	_currentTileIndex = _tileX + _tileY * TILEX;
+
 	_frameX = 0;
 	_frameY = 0;
 	_rhythm = 0;
 	_moveSpeed = 13.0f;
-	_isAttack = false;
-	_isMove = false;
-
-	_rc = RectMakeCenter(_currentX, _currentY, _monsterImg->getFrameWidth(), _monsterImg->getFrameHeight());
-	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
 
 	_coin = coin;
 
 	_direction = DOWN;
-	_tileX = _rc.left / TILESIZE;
-	_tileY = _rc.top / TILESIZE;
-	_currentTileIndex = _tileX + _tileY * TILEX;
+	_directionAni = LEFT_BOT;
+
+	_isAttack = false;
+	_isMove = false;
+	_isHit = false;
+
 	addHp();
 	return S_OK;
 }
@@ -44,9 +47,8 @@ void monster::release()
 
 void monster::update()
 {
-	hpSet();
-	frontCheck();
 	animation();
+	frontCheck();
 	attack();
 	move();
 }
@@ -54,20 +56,17 @@ void monster::update()
 void monster::render(HDC hdc)
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
-	_monsterImg->frameRender(hdc, _collisionRc.left, _collisionRc.top, _frameX, _frameY);
+	_monsterImg->frameRender(hdc, _collisionRc.left - _monsterImg->getFrameWidth() / 8, _collisionRc.top- _monsterImg->getFrameHeight()/4, _frameX, _frameY);
 	hpRender(hdc);
 }
 
 void monster::animation()
 {
-
 	if (BEAT->getCnt() % 12 == 0)
 	{
 		_frameX++;
 		if (_frameX > _monsterImg->getMaxFrameX())_frameX = 0;
 	}
-	if (_silhouette) _frameY = 1;
-	else _frameY = 0;
 }
 
 void monster::frontCheck()
@@ -94,6 +93,7 @@ void monster::frontCheck()
 			break;
 		}
 		choiceAction();
+		aniCheck();
 	}
 
 }
@@ -188,8 +188,6 @@ void monster::move()
 		}
 		break;
 	}
-
-	_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
 	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
 }
 
@@ -221,12 +219,14 @@ void monster::hpSet()
 		if (_vHp[i].hp == 0.5f) _vHp[i].currentX = 1;
 		if (_vHp[i].hp == 1.0f) _vHp[i].currentX = 0;
 
-		_vHp[i].rc = RectMakeCenter(_rc.left+(i*_vHp[i].img->getFrameWidth())/2, _rc.top - _vHp[i].img->getFrameHeight()/2, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+		_vHp[i].rc = RectMakeCenter(_collisionRc.left+(i*_vHp[i].img->getFrameWidth())/2, _collisionRc.top - _vHp[i].img->getFrameHeight()/2, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
 	}
 }
 
 void monster::hpRender(HDC hdc)
 {
+	if (!_isHit) return;
+
 	for (int i = 0; i < _vHp.size(); ++i)
 	{
 		_vHp[i].img->frameRender(hdc, _vHp[i].rc.left, _vHp[i].rc.top, _vHp[i].currentX, 0);
@@ -235,6 +235,8 @@ void monster::hpRender(HDC hdc)
 
 void monster::hit(float damage)
 {
+	_isHit = true;
+
 	for (int i = 0; i < _vHp.size(); i++)
 	{
 		if (_vHp[i].hp <= 0) continue;
@@ -248,6 +250,35 @@ void monster::hit(float damage)
 		else break;
 	}
 	hpSet();
+}
+
+void monster::aniCheck()
+{
+	int monsterX = _pCurrentMap[_currentTileIndex].x;
+	int monsterY = _pCurrentMap[_currentTileIndex].y;
+	int playerX = _pCurrentMap[PLAYER->currentTile()].x;
+	int playerY = _pCurrentMap[PLAYER->currentTile()].y;
+
+	if (monsterX > playerX && monsterY > playerY)
+	{
+		_directionAni = LEFT_TOP;
+		return;
+	}
+	if (monsterX < playerX && monsterY > playerY)
+	{
+		_directionAni = RIGHT_TOP;
+		return;
+	}
+	if (monsterX > playerX && monsterY < playerY)
+	{
+		_directionAni = LEFT_BOT;
+		return;
+	}
+	if (monsterX < playerX && monsterY < playerY)
+	{
+		_directionAni = RIGHT_BOT;
+		return;
+	}
 }
 
 bool monster::wallCheck()

@@ -6,7 +6,6 @@ class skeleton : public monster
 private:
 	aStar* _aStar;
 
-	int temp;
 public:
 	skeleton();
 	~skeleton();
@@ -15,7 +14,8 @@ public:
 	virtual void render(HDC hdc) override;
 
 	void frontCheck() override;
-	void move() override;
-	void choiceAction() override;
+	void choiceAction() override; 
+	void animation() override;
+	
 };
 

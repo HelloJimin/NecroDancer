@@ -19,7 +19,7 @@ public:
 	void update();
 	void frontRender(HDC hdc);
 	void backRender(HDC hdc);
-
+	void render(HDC hdc);
 	void summonGreenSlime(string name, int x, int y);
 	void summonBlueSlime(string name, int x, int y);
 	void summonSkeleton(string name, int x, int y);

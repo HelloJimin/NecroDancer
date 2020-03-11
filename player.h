@@ -98,8 +98,7 @@ public:
 	void animation();
 	bool wallCheck();
 
-	float lerp(float p1, float p2, float d1) {
-		return (1 - d1)*p1 + d1 * p2;
-	}
+	int getX() { return _currentX; }
+	int getY() { return _currentY; }
 };
 

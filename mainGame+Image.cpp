@@ -85,6 +85,7 @@ void mainGame::imagesInit()
 	//몬스터
 	IMAGEMANAGER->addFrameImage("그린슬라임", "images/monster/greenSlime.bmp",92*3, 40*3,4,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("블루슬라임", "images/monster/blueSlime.bmp",92*3, 40*3,4,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("스켈레톤", "images/monster/해골.bmp",200*3, 120*3,8,4, true, RGB(255, 0, 255));
 
 
 

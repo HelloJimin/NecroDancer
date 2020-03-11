@@ -30,8 +30,9 @@ HRESULT testScene::init()
 	_tiles[317].item = ITEMMANAGER->addItem("¼è°©¿Ê");
 
 	MONSTERMANAGER->summonGreenSlime("±×¸°½½¶óÀÓ", _tiles[322].x, _tiles[322].y);
-	MONSTERMANAGER->summonSkeleton("±×¸°½½¶óÀÓ", _tiles[327].x, _tiles[327].y);
 	MONSTERMANAGER->summonBlueSlime("ºí·ç½½¶óÀÓ", _tiles[323].x, _tiles[323].y);
+	MONSTERMANAGER->summonSkeleton("½ºÄÌ·¹Åæ", _tiles[327].x, _tiles[327].y);
+
 	return S_OK;
 }
 
@@ -76,21 +77,65 @@ void testScene::update()
 
 void testScene::render()
 {
-	frontTileRender();
-	MONSTERMANAGER->frontRender(getMemDC());
-
-	PLAYER->render(getMemDC());
-
-
-	MONSTERMANAGER->backRender(getMemDC());
-
-	backTileRender();
+	allRender();
+	debugRender();
 
 	BEAT->render(getMemDC());
 
 	PLAYER->UIrender(getMemDC());
 }
 
+
+void testScene::allRender()
+{
+	int p = PLAYER->currentTile();
+	vector<int> monTile;
+	for (int i = 0; i < MONSTERMANAGER->getMonster().size(); i++)
+	{
+		monTile.push_back(MONSTERMANAGER->getMonster()[i]->currentTile());
+	}
+
+	for (int i = 0; i < TILEX; i++)
+	{
+		for (int k = 0; k < TILEY; k++)
+		{
+			if (CAMERAX - 100 < _tiles[(i*TILEX) + k].x && _tiles[(i*TILEX) + k].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[(i*TILEX) + k].y&& _tiles[(i*TILEX) + k].y < CAMERAY + WINSIZEY + 100)
+			{
+				if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY);
+
+				if (_tiles[(i*TILEX) + k].item != NULL)_tiles[(i*TILEX) + k].item->render(getMemDC());
+
+				if (_tiles[(i*TILEX) + k].obj != OBJ_NONE) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top - 25, _tiles[(i*TILEX) + k].objFrameX, _tiles[(i*TILEX) + k].objFrameY);
+			}
+		}
+
+		for (int k = 0; k < monTile.size(); k++)
+		{
+			if ((i*TILEX) < monTile[k] && monTile[k] < ((i + 1)*TILEX)) MONSTERMANAGER->getMonster()[k]->render(getMemDC());
+		}
+		if ((i*TILEX) < p  && p < ((i + 1)*TILEX))  PLAYER->render(getMemDC());
+	}
+}
+
+void testScene::debugRender()
+{
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+			{
+				SetBkMode(getMemDC(), TRANSPARENT);
+				//»ö»ó
+				SetTextColor(getMemDC(), RGB(255, 0, 0));
+
+				char str[128];
+				sprintf_s(str, "%d", i);
+				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+			}
+		}
+	}
+}
 
 void testScene::setUp()
 {
@@ -107,89 +152,6 @@ void testScene::setUp()
 	{
 		_tiles[i].x = _tiles[i].rc.left + (_tiles[i].rc.right - _tiles[i].rc.left) / 2;
 		_tiles[i].y = _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2;
-	}
-}
-
-void testScene::frontTileRender()
-{
-	//Å¸ÀÏ·»´õ
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-		{
-			if (_tiles[i].terrain == TERRAIN_NONE)
-			{
-				Rectangle(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].rc.right, _tiles[i].rc.bottom);
-			}
-			
-
-			if (_tiles[i].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
-
-			if(_tiles[i].item !=NULL && PLAYER->currentTile() >= i )_tiles[i].item->render(getMemDC());
-			//if (_tiles[i].obj == OBJ_WALL) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
-
-			if (_tiles[i].obj == OBJ_NONE) continue;
-
-			if (PLAYER->currentTile() >= i)
-			{
-				IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top - 25, _tiles[i].objFrameX, _tiles[i].objFrameY);
-			}
-
-		}
-	}
-
-	if (KEYMANAGER->isToggleKey(VK_TAB))
-	{
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-			{
-				if (PLAYER->currentTile() >= i)
-				{
-					SetBkMode(getMemDC(), TRANSPARENT);
-					//»ö»ó
-					SetTextColor(getMemDC(), RGB(255, 0, 0));
-
-					char str[128];
-					sprintf_s(str, "%d", i);
-					TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-
-				}
-			}
-		}
-	}
-}
-
-void testScene::backTileRender()
-{
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (PLAYER->currentTile() < i)
-		{
-			if (_tiles[i].item != NULL)_tiles[i].item->render(getMemDC());
-			if (_tiles[i].obj == OBJ_NONE) continue;
-
-			IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top - 25, _tiles[i].objFrameX, _tiles[i].objFrameY);
-		}
-	}
-	if (KEYMANAGER->isToggleKey(VK_TAB))
-	{
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-			{
-				if (PLAYER->currentTile() < i)
-				{
-					SetBkMode(getMemDC(), TRANSPARENT);
-					//»ö»ó
-					SetTextColor(getMemDC(), RGB(255, 0, 0));
-
-					char str[128];
-					sprintf_s(str, "%d", i);
-					TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-				}
-			}
-		}
 	}
 }
 

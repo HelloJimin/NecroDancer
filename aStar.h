@@ -14,80 +14,26 @@
 	위 과정을 반복한다.
 	F값이 동일하다면 속도상의 목적으로 오픈리스트에 더 늦게 추가 된것을 선택하는 것이 빠르다.
 */
-enum Select
-{
-	SELECT_START,
-	SELECT_END,
-	SELECT_BLOCK
-};
-enum Direction
-{
-	DIRECTION_LEFT,
-	DIRECTION_RIGHT,
-	DIRECTION_UP,
-	DIRECTION_DOWN,
-	DIRECTION_LEFTUP,
-	DIRECTION_RIGHTDOWN,
-	DIRECTION_LEFTDOWN,
-	DIRECTION_RIGHTUP
-};
-
-enum State
-{
-	STATE_NONE,
-	STATE_OPEN,
-	STATE_CLOSE,
-	STATE_PATH
-};
-
-enum ASTAR_STATE
-{
-	ASTAR_STATE_SEARCHING,	//검색중
-	ASTAR_STATE_FOUND,		//발견!
-	ASTAR_STATE_NOWAY,		//길없음
-	ASTAR_STATE_END
-};
 
 class aStar : public gameNode
 {
 private:
 
-	//tagTile tiles[TILESIZE];
-	tagTile* tiles;
-
 	vector<int> openList;
 	vector<int>closeList;
 	vector<int>::iterator iter;
-
-
-	Select currentSelect;
 
 	int startTile;
 	int endTile;
 	int currentTile;
 	bool isFind;
-	bool noPath;
-	bool startAstar;
-
-	RECT rc[6];
-
-
-	HBRUSH brush;
-	HFONT font, oldFont;
-	char str[128];
-	int temp;
+	//bool startAstar;
 
 public:
 	aStar();
 	~aStar();
 
-	HRESULT init();
-	void release();
-	void update();
-	void render();
-
-	void Astar();
-
-	int aStarTile(tagTile tile[], RECT start, RECT end, int currentIndex, int endIndex);
+	int aStarTile(tagTile * tile, int currentIndex, int endIndex);
+	void reset(tagTile * tile);
 };
 

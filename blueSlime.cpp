@@ -14,6 +14,7 @@ blueSlime::~blueSlime()
 HRESULT blueSlime::init(string name, int x, int y, int coin, tagTile * map)
 {
 	monster::init(name, x, y, coin, map);
+	addHp();
 	_atk = 0.5f;
 	return S_OK;
 }
@@ -31,7 +32,6 @@ void blueSlime::frontCheck()
 		}
 	}
 	monster::frontCheck();
-
 }
 
 void blueSlime::choiceAction()

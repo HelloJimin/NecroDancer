@@ -56,6 +56,14 @@ void monsterManager::backRender(HDC hdc)
 	}
 }
 
+void monsterManager::render(HDC hdc)
+{
+	for (int i = 0; i < _vMonster.size(); ++i)
+	{
+		_vMonster[i]->render(hdc);
+	}
+}
+
 void monsterManager::summonGreenSlime(string name, int x, int y)
 {
 	monster* mob = new greenSlime;
