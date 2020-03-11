@@ -463,14 +463,9 @@ void player::animation()
 
 bool player::wallCheck()
 {
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_NOMALWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_WHITEWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_SKULLWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_IRONWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_GOLDWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_DOOR) return false;
+	if (_pCurrentMap[_nextTileIndex].walkable) return true;
 
-	return true;
+	return false;
 }
 
 

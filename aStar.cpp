@@ -149,39 +149,7 @@ void aStar::reset(tagTile * tile)
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		tile[i].parent = NULL;
-		tile[i].walkable = true;
-		//tile[i].f = BIGNUM;
 		tile[i].h = 0;			//계산전이므로 0
-		if (tile[i].obj == OBJ_NOMALWALL)
-		{
-			tile[i].strength = 1;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_SKULLWALL)
-		{
-			tile[i].strength = 2;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_WHITEWALL)
-		{
-			tile[i].strength = 3;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_IRONWALL)
-		{
-			tile[i].strength = 4;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_GOLDWALL)
-		{
-			tile[i].strength = 5;
-			tile[i].walkable = false;
-		}
-		else if (tile[i].obj == OBJ_DOOR)
-		{
-			tile[i].strength = 0;
-			tile[i].walkable = false;
-		}
 	}
 }
 

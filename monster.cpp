@@ -22,7 +22,7 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_tileX = _collisionRc.left / TILESIZE;
 	_tileY = _collisionRc.top / TILESIZE;
 	_currentTileIndex = _tileX + _tileY * TILEX;
-
+	_pCurrentMap[_currentTileIndex].walkable = false;
 	_frameX = 0;
 	_frameY = 0;
 	_rhythm = 0;
@@ -49,6 +49,7 @@ void monster::update()
 {
 	animation();
 	frontCheck();
+	hpSet();
 	attack();
 	move();
 }
@@ -93,9 +94,7 @@ void monster::frontCheck()
 			break;
 		}
 		choiceAction();
-		aniCheck();
 	}
-
 }
 
 void monster::attack()
@@ -112,7 +111,6 @@ void monster::attack()
 void monster::move()
 {
 	if (!_isMove) return;
-
 	switch (_direction)
 	{
 	case LEFT:
@@ -197,6 +195,7 @@ bool monster::die()
 	{
 		if (_vHp[i].hp > 0.0f) return false;
 	}
+	_pCurrentMap[_currentTileIndex].walkable = true;
 	_pCurrentMap[_currentTileIndex].item = ITEMMANAGER->addCoin(_coin, _pCurrentMap[_currentTileIndex].x, _pCurrentMap[_currentTileIndex].y);
 	return true;
 }
@@ -249,7 +248,6 @@ void monster::hit(float damage)
 		}
 		else break;
 	}
-	hpSet();
 }
 
 void monster::aniCheck()
@@ -262,42 +260,50 @@ void monster::aniCheck()
 	if (monsterX > playerX && monsterY > playerY)
 	{
 		_directionAni = LEFT_TOP;
-		return;
 	}
-	if (monsterX < playerX && monsterY > playerY)
+	else if (monsterX < playerX && monsterY > playerY)
 	{
 		_directionAni = RIGHT_TOP;
-		return;
 	}
-	if (monsterX > playerX && monsterY < playerY)
+	else if (monsterX > playerX && monsterY < playerY)
 	{
 		_directionAni = LEFT_BOT;
-		return;
 	}
-	if (monsterX < playerX && monsterY < playerY)
+	else if (monsterX < playerX && monsterY < playerY)
 	{
 		_directionAni = RIGHT_BOT;
-		return;
 	}
+
+	switch (_directionAni)
+	{
+	case LEFT_TOP: _frameY = 1;
+		break;
+	case LEFT_BOT: _frameY = 0;
+		break;
+	case RIGHT_TOP: _frameY = 3;
+		break;
+	case RIGHT_BOT: _frameY = 2;
+		break;
+	}
+
+	if (_nextTileIndex == _currentTileIndex - 1) _direction = LEFT;
+	else if (_nextTileIndex == _currentTileIndex + 1) _direction = RIGHT;
+	else if (_nextTileIndex == _currentTileIndex + TILEX)_direction = DOWN;
+	else if (_nextTileIndex == _currentTileIndex - TILEX)_direction = UP;
 }
 
 bool monster::wallCheck()
 {
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_NOMALWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_WHITEWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_SKULLWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_IRONWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_GOLDWALL) return false;
-	if (_pCurrentMap[_nextTileIndex].obj == OBJ_DOOR) return false;
+	if (!_pCurrentMap[_nextTileIndex].walkable) return false;
 
 	return true;
 }
 
 bool monster::playerCheck()
 {
-	RECT temp;
-	if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_pCurrentMap[_nextTileIndex].rc)) return true;
-	else return false;
+	if (PLAYER->currentTile() == _nextTileIndex) return true;
+
+	return false;
 }
 
 void monster::choiceAction()
@@ -311,6 +317,9 @@ void monster::choiceAction()
 	if (wallCheck())
 	{
 		_isMove = true;
+		_pCurrentMap[_currentTileIndex].walkable = true;
+		_pCurrentMap[_nextTileIndex].walkable = false;
+		EFFECTMANAGER->play("점프먼지", _currentX, _currentY);
 		_currentTileIndex = _nextTileIndex;
 	}
 	else

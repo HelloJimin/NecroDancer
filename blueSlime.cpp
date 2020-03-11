@@ -36,7 +36,6 @@ void blueSlime::frontCheck()
 
 void blueSlime::choiceAction()
 {
-	RECT temp;
 	if (playerCheck())
 	{
 		_isAttack = true;
@@ -52,11 +51,15 @@ void blueSlime::choiceAction()
 	if (wallCheck())
 	{
 		_isMove = true;
+		_pCurrentMap[_currentTileIndex].walkable = true;
+		_pCurrentMap[_nextTileIndex].walkable = false;
+		EFFECTMANAGER->play("점프먼지", _currentX, _currentY);
 		_currentTileIndex = _nextTileIndex;
 	}
 	else
 	{
 		_isMove = false;
+
 		_nextTileIndex = _currentTileIndex;
 	}
 }

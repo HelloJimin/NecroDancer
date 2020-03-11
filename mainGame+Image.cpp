@@ -94,4 +94,5 @@ void mainGame::imagesInit()
 
 	//EFFECT
 	EFFECTMANAGER->addEffect("할퀴기", "images/effect/할퀴기.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.5f, 100);
+	EFFECTMANAGER->addEffect("점프먼지", "images/effect/jumpDust.bmp", 50*2, 10*2, 10*2, 10*2, 1, 0.5f, 100);
 }
