@@ -29,6 +29,10 @@ void item::render(HDC hdc)
 	draw(hdc);
 }
 
+void item::active()
+{
+}
+
 int item::getValue()
 {
 	return 0;
@@ -75,25 +79,25 @@ void item::setItem(slotType type, string name, string description)
 
 void item::animation()
 {
-	if (!_inInventory)
-	{
-		_waveCnt++;
+	if (_inInventory) return;
+	
+	_waveCnt++;
 
-		if (_upDown)
+	if (_upDown)
+	{
+		_y -= 0.5f;
+		if (_waveCnt > 15) _upDown = false;
+	}
+	else
+	{
+		_y += 0.5f;
+		if (_waveCnt > 30)
 		{
-			_y -= 0.5f;
-			if (_waveCnt > 15) _upDown = false;
-		}
-		else
-		{
-			_y += 0.5f;
-			if (_waveCnt > 30)
-			{
-				_upDown = true;
-				_waveCnt = 1;
-			}
+			_upDown = true;
+			_waveCnt = 1;
 		}
 	}
+	
 }
 
 void item::draw(HDC hdc)

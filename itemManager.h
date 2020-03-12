@@ -5,6 +5,7 @@
 #include"feet.h"
 #include"torch.h"
 #include"coin.h"
+#include"dagger.h"
 #include "singletonBase.h"
 
 class itemManager :  public singletonBase<itemManager>

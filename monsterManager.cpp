@@ -82,3 +82,10 @@ void monsterManager::summonSkeleton(string name, int x, int y)
 	mob->init(name, x, y, 25, _map);
 	_vMonster.push_back(mob);
 }
+
+void monsterManager::summonGhost(string name, int x, int y)
+{
+	monster* mob = new ghost;
+	mob->init(name, x, y, 15, _map);
+	_vMonster.push_back(mob);
+}

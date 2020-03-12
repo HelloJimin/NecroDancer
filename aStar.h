@@ -27,6 +27,7 @@ private:
 	int endTile;
 	int currentTile;
 	bool isFind;
+	bool noPath;
 	//bool startAstar;
 
 public:

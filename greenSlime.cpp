@@ -21,6 +21,7 @@ HRESULT greenSlime::init(string name, int x, int y, int coin, tagTile * map)
 
 void greenSlime::update()
 {
+	_pCurrentMap[_currentTileIndex].walkable = false;
 	animation();
 }
 

@@ -38,6 +38,8 @@ public:
 	virtual void update();
 	virtual void render(HDC hdc);
 
+	virtual void active();
+
 	virtual int getValue();
 
 

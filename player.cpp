@@ -111,6 +111,13 @@ void player::frontCheck()
 		break;
 	}
 
+	if (_inven->getWeapon())
+	{
+		for (int i = 0; i < _status.atkRenge.size(); ++i)
+		{
+
+		}
+	}
 	//앞타일 벽이 아니면 이동
 	if (wallCheck())
 	{
@@ -313,6 +320,7 @@ void player::mine()
 	{
 		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
 		_pCurrentMap[_nextTileIndex].strength = 0;
+		_pCurrentMap[_nextTileIndex].walkable = true;
 	}
 }
 
@@ -384,8 +392,8 @@ void player::keyControl()
 			if (BEAT->getCheck())
 			{
 				_direction = LEFT;
-				frontCheck();
 				BEAT->removeNote();
+				frontCheck();
 			}
 			else
 			{
@@ -398,8 +406,8 @@ void player::keyControl()
 			if (BEAT->getCheck())
 			{
 				_direction = RIGHT;
-				frontCheck();
 				BEAT->removeNote();
+				frontCheck();
 			}
 			else
 			{
@@ -412,8 +420,8 @@ void player::keyControl()
 			if (BEAT->getCheck())
 			{
 				_direction = UP;
-				frontCheck();
 				BEAT->removeNote();
+				frontCheck();
 			}
 			else
 			{
@@ -426,8 +434,8 @@ void player::keyControl()
 			if (BEAT->getCheck())
 			{
 				_direction = DOWN;
-				frontCheck();
 				BEAT->removeNote();
+				frontCheck();
 			}
 			else
 			{
@@ -466,6 +474,14 @@ bool player::wallCheck()
 	if (_pCurrentMap[_nextTileIndex].walkable) return true;
 
 	return false;
+}
+
+bool player::monsterCheck()
+{
+	if(!_inven->getWeapon()) return false;
+
+
+
 }
 
 

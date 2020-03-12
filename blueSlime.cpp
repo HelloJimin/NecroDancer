@@ -59,7 +59,13 @@ void blueSlime::choiceAction()
 	else
 	{
 		_isMove = false;
-
+		switch (_direction)
+		{
+		case UP: _direction = DOWN;
+			break;
+		case DOWN: _direction = UP;
+			break;
+		}
 		_nextTileIndex = _currentTileIndex;
 	}
 }

@@ -3,7 +3,7 @@
 #include"skeleton.h"
 #include"greenSlime.h"
 #include"blueSlime.h"
-
+#include"ghost.h"
 class monsterManager : public singletonBase<monsterManager>
 {
 private:
@@ -23,6 +23,7 @@ public:
 	void summonGreenSlime(string name, int x, int y);
 	void summonBlueSlime(string name, int x, int y);
 	void summonSkeleton(string name, int x, int y);
+	void summonGhost(string name, int x, int y);
 	void setMap(tagTile* map) { _map = map; }
 
 	vector<monster*> getMonster() { return _vMonster; }

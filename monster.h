@@ -27,13 +27,13 @@ protected:
 	vector<hp> _vHp;
 	float _atk;
 	int _coin;
-	int _rhythm;
 	float _moveSpeed;
 
 	bool _isMove;
 	bool _isDrop;
 	bool _isAttack;
 	bool _isHit;
+	bool _isLockOn;
 
 public:
 	monster();

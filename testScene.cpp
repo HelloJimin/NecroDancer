@@ -32,6 +32,16 @@ HRESULT testScene::init()
 	MONSTERMANAGER->summonGreenSlime("그린슬라임", _tiles[322].x, _tiles[322].y);
 	MONSTERMANAGER->summonBlueSlime("블루슬라임", _tiles[323].x, _tiles[323].y);
 	MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[327].x, _tiles[327].y);
+	MONSTERMANAGER->summonGhost("투명고스트L", _tiles[582].x, _tiles[582].y);
+
+	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[160].x, _tiles[160].y);
+	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[161].x, _tiles[161].y);
+	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[162].x, _tiles[162].y);
+	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[163].x, _tiles[163].y);
+	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[583].x, _tiles[583].y);
+	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[584].x, _tiles[584].y);
+	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[586].x, _tiles[586].y);
+	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[587].x, _tiles[587].y);
 
 	return S_OK;
 }

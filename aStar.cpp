@@ -21,7 +21,7 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 	int endX = endTile % TILEX;
 	int endY = endTile / TILEX;
 
-	while (!isFind)
+	while (!isFind && !noPath)
 	{
 		int currentX = currentTile % TILEX;
 		int currentY = currentTile / TILEX;
@@ -107,7 +107,11 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 		}
 	
 		// not Find
-		if (openList.size() == 0) return currentIndex;
+		if (openList.size() == 0)
+		{
+			noPath = true;
+			break;
+		}
 		
 		// 현재 타일 클로즈리스트에 넣기
 		closeList.push_back(currentTile);
@@ -127,13 +131,13 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 			}
 		}
 	}
+	if (noPath) return currentIndex;
 
 	int nextTile = endTile;
 	while (tile[nextTile].node != startTile && isFind)
 	{
 		nextTile = tile[nextTile].node;
 	}
-
 	return nextTile;
 }
 
@@ -142,7 +146,7 @@ void aStar::reset(tagTile * tile)
 	isFind = false;
 	//startAstar = false;
 	//startTile = endTile = -1;
-
+	noPath = false;
 	openList.clear();
 	closeList.clear();
 

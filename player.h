@@ -30,7 +30,10 @@ struct status
 	int atk;
 	int def;
 	int minePower;
+
+	vector<int> atkRenge;
 };
+
 class player : public singletonBase<player>
 {
 private:
@@ -48,6 +51,7 @@ private:
 	float _moveSpeed;
 	image* _bodyImg;
 	image* _headImg;
+
 	DIRECTION _direction;
 
 	tagTile* _pCurrentMap;	
@@ -63,9 +67,10 @@ private:
 
 	bool _isDrop;
 	bool _isMove;
+	bool _isAttack;
 	char _str[128];
 	RECT _temp;
-	float n;
+
 public:
 	player();
 	~player();
@@ -97,8 +102,12 @@ public:
 	void keyControl();
 	void animation();
 	bool wallCheck();
+	bool monsterCheck();
 
 	int getX() { return _currentX; }
 	int getY() { return _currentY; }
+
+	DIRECTION getPlayerDir() { return _direction; }
+
 };
 

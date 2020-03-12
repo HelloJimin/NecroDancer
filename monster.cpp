@@ -18,14 +18,15 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_monsterImg = IMAGEMANAGER->findImage(name);
 	_currentX = x;
 	_currentY = y;
+
 	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
 	_tileX = _collisionRc.left / TILESIZE;
 	_tileY = _collisionRc.top / TILESIZE;
 	_currentTileIndex = _tileX + _tileY * TILEX;
 	_pCurrentMap[_currentTileIndex].walkable = false;
+
 	_frameX = 0;
 	_frameY = 0;
-	_rhythm = 0;
 	_moveSpeed = 13.0f;
 
 	_coin = coin;
@@ -36,6 +37,7 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_isAttack = false;
 	_isMove = false;
 	_isHit = false;
+	_isLockOn = false;
 
 	addHp();
 	return S_OK;
@@ -47,6 +49,8 @@ void monster::release()
 
 void monster::update()
 {
+	_pCurrentMap[_currentTileIndex].walkable = false;
+
 	animation();
 	frontCheck();
 	hpSet();
@@ -276,13 +280,13 @@ void monster::aniCheck()
 
 	switch (_directionAni)
 	{
-	case LEFT_TOP: _frameY = 1;
+	case LEFT_TOP: _frameY = 0;
 		break;
 	case LEFT_BOT: _frameY = 0;
 		break;
-	case RIGHT_TOP: _frameY = 3;
+	case RIGHT_TOP: _frameY = 1;
 		break;
-	case RIGHT_BOT: _frameY = 2;
+	case RIGHT_BOT: _frameY = 1;
 		break;
 	}
 
