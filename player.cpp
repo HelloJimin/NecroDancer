@@ -115,7 +115,14 @@ void player::frontCheck()
 	{
 		for (int i = 0; i < _status.atkRenge.size(); ++i)
 		{
-
+			for (int k = 0; k < MONSTERMANAGER->getMonster().size(); ++k)
+			{
+				if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
+				{
+					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+					return;
+				}
+			}
 		}
 	}
 	//앞타일 벽이 아니면 이동
@@ -251,6 +258,11 @@ void player::UIrender(HDC hdc)
 			SelectObject(hdc, oldBrush);
 			DeleteObject(myBrush);
 		}
+
+			for (int i = 0; i < _status.atkRenge.size(); i++)
+			{
+				Rectangle(hdc, _pCurrentMap[_status.atkRenge[i]].rc.left, _pCurrentMap[_status.atkRenge[i]].rc.top, _pCurrentMap[_status.atkRenge[i]].rc.right, _pCurrentMap[_status.atkRenge[i]].rc.bottom);
+			}
 		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
 		HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
 		Rectangle(hdc, _pCurrentMap[_currentTileIndex].rc.left, _pCurrentMap[_currentTileIndex].rc.top, _pCurrentMap[_currentTileIndex].rc.right, _pCurrentMap[_currentTileIndex].rc.bottom);

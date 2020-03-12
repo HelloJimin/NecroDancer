@@ -45,16 +45,17 @@ void inventory::addItem(item * item)
 	}
 	else if (item->getType() == ATTACK)
 	{
-		item->init();
 		_weapon = true;
-		if (_vItem[0]->getType() == BODY)
-		{
-			_vItem.insert(_vItem.begin()+1, item);
-		}
-		else
-		{
-			_vItem.insert(_vItem.begin(), item);
-		}
+		item->init();
+		_vItem.insert(_vItem.begin(), item);
+		//if (_vItem[0]->getType() == BODY)
+		//{
+		//	_vItem.insert(_vItem.begin()+1, item);
+		//}
+		//else
+		//{
+		//	_vItem.insert(_vItem.begin(), item);
+		//}
 	}
 	else _vItem.push_back(item);
 
@@ -63,6 +64,7 @@ void inventory::addItem(item * item)
 		_vItem[i]->setInven(true);
 		_vItem[i]->setRect(PointMake(30+i * 66, 20));
 		_vItem[i]->rcSet();
+		if (_vItem[i]->getType() == ATTACK)_vItem[i]->init();
 	}
 
 }

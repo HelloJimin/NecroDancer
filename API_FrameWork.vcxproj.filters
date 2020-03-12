@@ -130,9 +130,6 @@
     <ClCompile Include="redWraiths.cpp">
       <Filter>몬스터</Filter>
     </ClCompile>
-    <ClCompile Include="dagger.cpp">
-      <Filter>아이템\무기</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -282,9 +279,6 @@
     <ClInclude Include="redWraiths.h">
       <Filter>몬스터</Filter>
     </ClInclude>
-    <ClInclude Include="dagger.h">
-      <Filter>아이템\무기</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="매니저">
@@ -307,9 +301,6 @@
     </Filter>
     <Filter Include="잡다한거">
       <UniqueIdentifier>{7b535f9d-aa94-47a8-96d0-e8577e7133ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="아이템\무기">
-      <UniqueIdentifier>{d5f0de16-8430-44cf-a323-2549492b06fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
