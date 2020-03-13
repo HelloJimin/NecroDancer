@@ -10,6 +10,7 @@ public:
 	shovel(slotType type, int power, string name, string description);
 
 	~shovel();
+	virtual HRESULT init() override;
 
 	void update() override;
 

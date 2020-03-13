@@ -43,6 +43,23 @@ item * itemManager::addItem(string name)
 	if (name == "티타늄단검")return new attack("티타늄단검",ATTACK, FORM_SHORT,2,"공격력 2의 기본단검이다");
 	if (name == "유리단검")return new attack("유리단검",ATTACK, FORM_SHORT,3,"공격력 3의 기본단검이다");
 
+	if (name == "기본대검")return new attack("기본대검", ATTACK, FORM_BIG, 1, "공격력 1의 기본단검이다");
+	if (name == "티타늄대검")return new attack("티타늄대검", ATTACK, FORM_BIG, 2, "공격력 2의 기본단검이다");
+	if (name == "유리대검")return new attack("유리대검", ATTACK, FORM_BIG, 3, "공격력 3의 기본단검이다");
+
+	if (name == "기본활")return new attack("기본활", ATTACK, FORM_BOW, 1, "공격력 1의 기본단검이다");
+	if (name == "티타늄활")return new attack("티타늄활", ATTACK, FORM_BOW, 2, "공격력 2의 기본단검이다");
+	if (name == "유리활")return new attack("유리활", ATTACK, FORM_BOW, 3, "공격력 3의 기본단검이다");
+
+	if (name == "기본창")return new attack("기본창", ATTACK, FORM_SPEAR , 1, "공격력 1의 기본단검이다");
+	if (name == "티타늄창")return new attack("티타늄창", ATTACK, FORM_SPEAR, 2, "공격력 2의 기본단검이다");
+	if (name == "유리창")return new attack("유리창", ATTACK, FORM_SPEAR, 3, "공격력 3의 기본단검이다");
+
+	if (name == "기본채찍")return new attack("기본채찍", ATTACK, FORM_WHIP, 1, "공격력 1의 기본단검이다");
+	if (name == "티타늄채찍")return new attack("티타늄채찍", ATTACK, FORM_WHIP, 2, "공격력 2의 기본단검이다");
+	if (name == "유리채찍")return new attack("유리채찍", ATTACK, FORM_WHIP, 3, "공격력 3의 기본단검이다");
+
+
 	if (name == "가죽갑옷")return new body("가죽갑옷",BODY,1,"방어력 1의 갑옷이다");
 	if (name == "쇠갑옷")return new body("쇠갑옷",BODY,2,"방어력 2의 갑옷이다");
 	if (name == "도복")return new body("도복",BODY,3,"공격력2배이다");

@@ -6,10 +6,8 @@ player::~player(){}
 
 HRESULT player::init()
 {
-	_inven = new inventory;
-	_inven->init();
 
-	_bodyImg = IMAGEMANAGER->findImage("기본몸R");
+	_bodyImg = IMAGEMANAGER->findImage("몸통R");
 	_headImg = IMAGEMANAGER->findImage("케이던스R");
 
 	//플레이어 시작위치
@@ -45,6 +43,9 @@ HRESULT player::init()
 
 	HPbarSet();
 
+	_inven = new inventory;
+	_inven->init();
+
 	return S_OK;
 }
 
@@ -78,19 +79,16 @@ void player::render(HDC hdc)
 	y = _collisionRc.top + (_collisionRc.bottom - _collisionRc.top) / 2;
 	CAMERAMANAGER->setCameraCenter(PointMake(x, y));
 
-	_bodyImg->frameRender(hdc, _rc.left, _rc.top - 28, _currentFrameX, 0);
-	_headImg->frameRender(hdc, _rc.left, _rc.top - 28, _currentFrameX, 0);
+	_bodyImg->frameRender(hdc, _rc.left, _rc.top - 28, _frameX, _frameY);
+	_headImg->frameRender(hdc, _rc.left, _rc.top - 33, _frameX, 0);
 
 }
 
 void player::frontCheck()
 {
 	_rhythm++;
-	//타일 앞의 몬스터가 공격인지 판별 후
 
-
-
-	//앞 타일이 비어있는지 판별
+	//앞타일을 맞춰줌
 	_tileX = _rc.left / TILESIZE;
 	_tileY = _rc.top / TILESIZE;
 	_currentTileIndex = _tileX + _tileY * TILEX;
@@ -111,8 +109,10 @@ void player::frontCheck()
 		break;
 	}
 
-	if (_inven->getWeapon())
+	//타일 앞의 몬스터 판별 있을시 공격
+	if (_equipWeapon)
 	{
+		_inven->getWeapon()->active();
 		for (int i = 0; i < _status.atkRenge.size(); ++i)
 		{
 			for (int k = 0; k < MONSTERMANAGER->getMonster().size(); ++k)
@@ -120,6 +120,22 @@ void player::frontCheck()
 				if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
 				{
 					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+
+					switch (_direction)
+					{
+					case LEFT:
+						EFFECTMANAGER->play("단검L", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
+						break;
+					case RIGHT:
+						EFFECTMANAGER->play("단검R", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
+						break;
+					case UP:
+						EFFECTMANAGER->play("단검Up", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
+						break;
+					case DOWN:
+						EFFECTMANAGER->play("단검Down", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
+						break;
+					}
 					return;
 				}
 			}
@@ -144,106 +160,103 @@ void player::frontCheck()
 
 void player::move()
 {
-	if (_isMove)//상하좌우이동
+	if (!_isMove)return;
+	
+	switch (_direction)
 	{
-		switch (_direction)
+	case LEFT:
+		if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y ) != 0)
 		{
-		case LEFT:
-			if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y ) != 0)
-			{
-				_collisionX -= _moveSpeed;
-			}
-			if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x + 26, _pCurrentMap[_nextTileIndex].y - 26) != 0)
-			{
-				_currentX -= _moveSpeed;
-				_currentY -= _moveSpeed;
-			}
-			else _isDrop = true;
-		
-			if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_currentX -= _moveSpeed;
-				_currentY += _moveSpeed;
-			}
-			else if(_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
-			{
-				_isDrop = false;
-				_isMove = false;
-			}
-			break;
-		case RIGHT:
-			if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_collisionX += _moveSpeed;
-			}
-			if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x - 26, _pCurrentMap[_nextTileIndex].y - 26) != 0)
-			{
-				_currentX += _moveSpeed;
-				_currentY -= _moveSpeed;
-			}
-			else _isDrop = true;
-
-			if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_currentX += _moveSpeed;
-				_currentY += _moveSpeed;
-			}
-			else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
-			{
-				_isDrop = false;
-				_isMove = false;
-			}
-			break;
-		case UP:
-			if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_collisionY -= _moveSpeed;
-			}
-
-			if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 26) != 0)
-			{
-				_currentY -= _moveSpeed;
-			}
-			else _isDrop = true;
-
-			if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_currentY += _moveSpeed;
-			}
-			else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
-			{
-				_isDrop = false;
-				_isMove = false;
-			}
-			break;
-		case DOWN:
-			if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_collisionY += _moveSpeed;
-			}
-
-			if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 78) != 0)
-			{
-				_currentY -= _moveSpeed;
-			}
-			else _isDrop = true;
-
-			if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
-			{
-				_currentY += _moveSpeed;
-			}
-			else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
-			{
-				_isDrop = false;
-				_isMove = false;
-			}
-			break;
+			_collisionX -= _moveSpeed;
 		}
-	}
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x + 26, _pCurrentMap[_nextTileIndex].y - 26) != 0)
+		{
+			_currentX -= _moveSpeed;
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+	
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentX -= _moveSpeed;
+			_currentY += _moveSpeed;
+		}
+		else if(_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	case RIGHT:
+		if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_collisionX += _moveSpeed;
+		}
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x - 26, _pCurrentMap[_nextTileIndex].y - 26) != 0)
+		{
+			_currentX += _moveSpeed;
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
 
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentX += _moveSpeed;
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	case UP:
+		if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_collisionY -= _moveSpeed;
+		}
+
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 26) != 0)
+		{
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	case DOWN:
+		if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_collisionY += _moveSpeed;
+		}
+
+		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 78) != 0)
+		{
+			_currentY -= _moveSpeed;
+		}
+		else _isDrop = true;
+
+		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
+		{
+			_currentY += _moveSpeed;
+		}
+		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
+		{
+			_isDrop = false;
+			_isMove = false;
+		}
+		break;
+	}
 	_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
 	_collisionRc = RectMakeCenter(_collisionX, _collisionY, 50, 50);
-
 }
 
 void player::UIrender(HDC hdc)
@@ -259,10 +272,10 @@ void player::UIrender(HDC hdc)
 			DeleteObject(myBrush);
 		}
 
-			for (int i = 0; i < _status.atkRenge.size(); i++)
-			{
-				Rectangle(hdc, _pCurrentMap[_status.atkRenge[i]].rc.left, _pCurrentMap[_status.atkRenge[i]].rc.top, _pCurrentMap[_status.atkRenge[i]].rc.right, _pCurrentMap[_status.atkRenge[i]].rc.bottom);
-			}
+		for (int i = 0; i < _status.atkRenge.size(); i++)
+		{
+			Rectangle(hdc, _pCurrentMap[_status.atkRenge[i]].rc.left, _pCurrentMap[_status.atkRenge[i]].rc.top, _pCurrentMap[_status.atkRenge[i]].rc.right, _pCurrentMap[_status.atkRenge[i]].rc.bottom);
+		}
 		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));
 		HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, myBrush);
 		Rectangle(hdc, _pCurrentMap[_currentTileIndex].rc.left, _pCurrentMap[_currentTileIndex].rc.top, _pCurrentMap[_currentTileIndex].rc.right, _pCurrentMap[_currentTileIndex].rc.bottom);
@@ -328,12 +341,16 @@ void player::HPbarSet()
 
 void player::mine()
 {
+	if(_pCurrentMap[_nextTileIndex].obj != OBJ_DOOR)
+		EFFECTMANAGER->play(_inven->getShovel()->getName(), _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 25);
+
 	if (_status.minePower >= _pCurrentMap[_nextTileIndex].strength)
 	{
 		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
 		_pCurrentMap[_nextTileIndex].strength = 0;
 		_pCurrentMap[_nextTileIndex].walkable = true;
 	}
+	else _rhythm = 0;
 }
 
 void player::getItem()
@@ -397,66 +414,64 @@ void player::hit(float damege)
 
 void player::keyControl()
 {
-	if (!_isMove)
+	if (_isMove) return;
+	
+	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		if (BEAT->getCheck())
 		{
-			if (BEAT->getCheck())
-			{
-				_direction = LEFT;
-				BEAT->removeNote();
-				frontCheck();
-			}
-			else
-			{
-				BEAT->addMiss();
-				_rhythm = 0;
-			}
+			_direction = LEFT;
+			BEAT->removeNote();
+			frontCheck();
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		else
 		{
-			if (BEAT->getCheck())
-			{
-				_direction = RIGHT;
-				BEAT->removeNote();
-				frontCheck();
-			}
-			else
-			{
-				BEAT->addMiss();
-				_rhythm = 0;
-			}
-		}
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
-		{
-			if (BEAT->getCheck())
-			{
-				_direction = UP;
-				BEAT->removeNote();
-				frontCheck();
-			}
-			else
-			{
-				BEAT->addMiss();
-				_rhythm = 0;
-			}
-		}
-		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
-		{
-			if (BEAT->getCheck())
-			{
-				_direction = DOWN;
-				BEAT->removeNote();
-				frontCheck();
-			}
-			else
-			{
-				BEAT->addMiss();
-				_rhythm = 0;
-			}
+			BEAT->addMiss();
+			_rhythm = 0;
 		}
 	}
-
+	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+	{
+		if (BEAT->getCheck())
+		{
+			_direction = RIGHT;
+			BEAT->removeNote();
+			frontCheck();
+		}
+		else
+		{
+			BEAT->addMiss();
+			_rhythm = 0;
+		}
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_UP))
+	{
+		if (BEAT->getCheck())
+		{
+			_direction = UP;
+			BEAT->removeNote();
+			frontCheck();
+		}
+		else
+		{
+			BEAT->addMiss();
+			_rhythm = 0;
+		}
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+	{
+		if (BEAT->getCheck())
+		{
+			_direction = DOWN;
+			BEAT->removeNote();
+			frontCheck();
+		}
+		else
+		{
+			BEAT->addMiss();
+			_rhythm = 0;
+		}
+	}
 }
 
 void player::animation()
@@ -464,11 +479,11 @@ void player::animation()
 	switch (_direction)
 	{
 	case LEFT:
-		_bodyImg = IMAGEMANAGER->findImage("기본몸L");
+		_bodyImg = IMAGEMANAGER->findImage("몸통L");
 		_headImg = IMAGEMANAGER->findImage("케이던스L");
 		break;
 	case RIGHT:
-		_bodyImg = IMAGEMANAGER->findImage("기본몸R");
+		_bodyImg = IMAGEMANAGER->findImage("몸통R");
 		_headImg = IMAGEMANAGER->findImage("케이던스R");
 		break;
 	}
@@ -476,8 +491,8 @@ void player::animation()
 	//애니메이션 움직임
 	if (BEAT->getCnt() % 12 == 0)
 	{
-		_currentFrameX++;
-		if (_currentFrameX > _bodyImg->getMaxFrameX())_currentFrameX = 0;
+		_frameX++;
+		if (_frameX > _bodyImg->getMaxFrameX())_frameX = 0;
 	}
 }
 

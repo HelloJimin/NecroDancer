@@ -9,9 +9,9 @@ public:
 	body();
 	body(string name, slotType type, int power, string description);
 	~body();
+	virtual HRESULT init() override;
 
 
 	void update() override;
-
 };
 

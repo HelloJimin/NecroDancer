@@ -18,6 +18,11 @@ bomb::~bomb()
 {
 }
 
+HRESULT bomb::init()
+{
+	return S_OK;
+}
+
 void bomb::update()
 {
 }

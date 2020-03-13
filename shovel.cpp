@@ -17,8 +17,13 @@ shovel::~shovel()
 {
 }
 
+HRESULT shovel::init()
+{
+	PLAYER->playerStatus().minePower = _power;
+	return S_OK;
+}
+
 void shovel::update()
 {
 	animation();
-	if (_inInventory) PLAYER->playerStatus().minePower = _power;
 }

@@ -17,6 +17,11 @@ torch::~torch()
 {
 }
 
+HRESULT torch::init()
+{
+	return S_OK;
+}
+
 void torch::update()
 {
 	animation();

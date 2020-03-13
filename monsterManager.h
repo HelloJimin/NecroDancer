@@ -3,6 +3,7 @@
 #include"skeleton.h"
 #include"greenSlime.h"
 #include"blueSlime.h"
+#include"redWraiths.h"
 #include"ghost.h"
 class monsterManager : public singletonBase<monsterManager>
 {
@@ -20,11 +21,13 @@ public:
 	void frontRender(HDC hdc);
 	void backRender(HDC hdc);
 	void render(HDC hdc);
+	void setMap(tagTile* map) { _map = map; }
+
 	void summonGreenSlime(string name, int x, int y);
 	void summonBlueSlime(string name, int x, int y);
 	void summonSkeleton(string name, int x, int y);
 	void summonGhost(string name, int x, int y);
-	void setMap(tagTile* map) { _map = map; }
+	void summonRedWraiths(string name, int x, int y);
 
 	vector<monster*> getMonster() { return _vMonster; }
 };

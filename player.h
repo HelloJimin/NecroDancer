@@ -42,7 +42,7 @@ private:
 	int _collisionX, _collisionY;
 	RECT _collisionRc;
 
-	int _currentFrameX;
+	int _frameX, _frameY;
 
 	int _tileX, _tileY;
 	int _currentTileIndex;
@@ -68,9 +68,10 @@ private:
 	bool _isDrop;
 	bool _isMove;
 	bool _isAttack;
+
 	char _str[128];
 	RECT _temp;
-
+	bool _equipWeapon;
 public:
 	player();
 	~player();
@@ -108,6 +109,7 @@ public:
 	int getY() { return _currentY; }
 
 	DIRECTION getPlayerDir() { return _direction; }
-
+	void setFrameY(int frameNum) { _frameY = frameNum; }
+	void setWeapom(bool weapon) { _equipWeapon = weapon; }
 };
 

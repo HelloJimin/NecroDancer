@@ -19,8 +19,7 @@ public:
 	attack(string name, slotType type, attackForm form, int power, string description);
 	~attack();
 	virtual HRESULT init() override;
-	void setRenge();
-
+	virtual void active() override;
 	void update() override;
 };
 

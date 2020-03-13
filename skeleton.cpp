@@ -47,3 +47,7 @@ void skeleton::choiceAction()
 		_currentTileIndex = _nextTileIndex;
 	}
 }
+
+void skeleton::animation()
+{
+}

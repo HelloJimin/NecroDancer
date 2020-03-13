@@ -62,5 +62,7 @@ public:
 
 	bool wallCheck();
 	bool playerCheck();
+	POINT getXY() { return PointMake(_currentX, _currentY); }
+	RECT getRc() { return _collisionRc; }
 };
 

@@ -17,11 +17,20 @@ body::~body()
 {
 }
 
-void body::update()
+HRESULT body::init()
 {
-	animation();
-	if (_inInventory && _name != "µµº¹")
+	if (_name != "µµº¹")
 	{
 		PLAYER->playerStatus().def = _power;
 	}
+
+	if (_name == "°¡Á×°©¿Ê") PLAYER->setFrameY(1);
+	else if (_name == "¼è°©¿Ê") PLAYER->setFrameY(2);
+	else if (_name == "µµº¹") PLAYER->setFrameY(3);
+	return S_OK;
+}
+
+void body::update()
+{
+	animation();
 }

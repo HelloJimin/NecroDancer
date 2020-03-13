@@ -8,6 +8,7 @@ public:
 	feet();
 	feet(string name, slotType type, string description);
 	~feet();
+	virtual HRESULT init() override;
 
 	void update() override;
 };

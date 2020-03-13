@@ -17,12 +17,17 @@ feet::~feet()
 {
 }
 
-void feet::update()
+HRESULT feet::init()
 {
-	animation();
 	if (_name == "ÈûÀÇÀåÈ­" && !check)
 	{
 		PLAYER->playerStatus().atk += 1;
 		check = true;
 	}
+	return S_OK;
+}
+
+void feet::update()
+{
+	animation();
 }

@@ -27,6 +27,8 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("±âº»¸öR", "images/player/nomalBodyR.bmp",80*3, 30*3, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("ÄÉÀÌ´ø½ºL", "images/player/cadensL.bmp",80*3, 30*3, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("ÄÉÀÌ´ø½ºR", "images/player/cadensR.bmp",80*3, 30*3, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("¸öÅëR", "images/player/BodyR.bmp",80*3, 120*3, 4, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("¸öÅëL", "images/player/BodyL.bmp",80*3, 120*3, 4, 4, true, RGB(255, 0, 255));
 
 
 
@@ -40,7 +42,9 @@ void mainGame::imagesInit()
 
 
 
-	//¾ÆÀÌÅÛ
+	// ==============¾ÆÀÌÅÛ =============
+
+	//½½·Ô
 	IMAGEMANAGER->addImage("»ð", "images/item/shovel.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("¹«±â", "images/item/attack.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("º¸µð", "images/item/body.bmp",60, 66, true, RGB(255, 0, 255));
@@ -51,23 +55,44 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("´øÁö±â", "images/item/THROW.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("´øÁö¼¼¿ä", "images/item/press.bmp",60, 66, true, RGB(255, 0, 255));
 
+	//¹«±â
+	IMAGEMANAGER->addImage("±âº»´Ü°Ë", "images/item/nomalShort.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½´Ü°Ë", "images/item/titaniumShort.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®´Ü°Ë", "images/item/glassShort.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®Á¶°¢", "images/item/glass.bmp", 48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("±âº»´ë°Ë", "images/item/nomalBig.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½´ë°Ë", "images/item/titaniumBig.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®´ë°Ë", "images/item/glassBig.bmp", 48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("±âº»Ã¢", "images/item/nomalSpear.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½Ã¢", "images/item/titaniumSpear.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®Ã¢", "images/item/glassSpear.bmp", 48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("±âº»È°", "images/item/nomalBow.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½È°", "images/item/titaniumBow.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®È°", "images/item/glassBow.bmp", 48, 48, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("±âº»Ã¤Âï", "images/item/nomalWhip.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Æ¼Å¸´½Ã¤Âï", "images/item/titaniumWhip.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("À¯¸®Ã¤Âï", "images/item/glassWhip.bmp", 48, 48, true, RGB(255, 0, 255));
+
+	//»ð
 	IMAGEMANAGER->addImage("±âº»»ð", "images/item/nomalShovel.bmp",48, 48 ,true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Æ¼Å¸´½»ð", "images/item/titaniumShovel.bmp",48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("À¯¸®»ð", "images/item/glassShovel.bmp",48, 48, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addImage("±âº»´Ü°Ë", "images/item/nomalShort.bmp",48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Æ¼Å¸´½´Ü°Ë", "images/item/titaniumShort.bmp",48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("À¯¸®´Ü°Ë", "images/item/glassShort.bmp",48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("À¯¸®Á¶°¢", "images/item/glass.bmp",48, 48, true, RGB(255, 0, 255));
-
+	//°©¿Ê
 	IMAGEMANAGER->addImage("°¡Á×°©¿Ê", "images/item/°¡Á×°©¿Ê.bmp",48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("¼è°©¿Ê", "images/item/¼è°©¿Ê.bmp",48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("µµº¹", "images/item/µµº¹.bmp",48, 48, true, RGB(255, 0, 255));
 
+	//½Å¹ß
 	IMAGEMANAGER->addImage("¹ß·¹½´Áî", "images/item/¹ß·¹½´Áî.bmp",48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("³¯°³ÀåÈ­", "images/item/³¯°³ÀåÈ­.bmp",48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ÈûÀÇÀåÈ­", "images/item/ÈûÀÇÀåÈ­.bmp",48, 48, true, RGB(255, 0, 255));
 
+	//È¶ºÒ
 	IMAGEMANAGER->addImage("±âº»È¶ºÒ", "images/item/±âº»È¶ºÒ.bmp",48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ºû³ª´ÂÈ¶ºÒ", "images/item/ºû³ª´Â È¶ºÒ.bmp",48, 48, true, RGB(255, 0, 255));
 
@@ -91,7 +116,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("Åõ¸í°í½ºÆ®R", "images/monster/ghostAlphaR.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("º¸ÀÌ´Â°í½ºÆ®", "images/monster/ghostREAL.bmp",36*3, 44*3,2,2, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addFrameImage("·¹µå·¹ÀÌ½º", "images/monster/redWraiths.bmp",39*3, 23*3,3,1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("·¹µå·¹ÀÌ½º", "images/monster/redWraiths.bmp",39*3, 46*3,3,2, true, RGB(255, 0, 255));
 
 
 
@@ -99,6 +124,16 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.mp3", true, true);
 
 	//EFFECT
-	EFFECTMANAGER->addEffect("ÇÒÄû±â", "images/effect/ÇÒÄû±â.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.5f, 100);
+	EFFECTMANAGER->addEffect("ÇÒÄû±â", "images/effect/ÇÒÄû±â.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.3f, 100);
 	EFFECTMANAGER->addEffect("Á¡ÇÁ¸ÕÁö", "images/effect/jumpDust.bmp", 50*2, 10*2, 10*2, 10*2, 1, 0.5f, 100);
+	EFFECTMANAGER->addEffect("´Ü°ËL", "images/effect/´Ü°ËL.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("´Ü°ËR", "images/effect/´Ü°ËR.bmp", 60 * 3, 20 * 3, 20 *3, 20 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("´Ü°ËUp", "images/effect/´Ü°ËUp.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("´Ü°ËDown", "images/effect/´Ü°ËDown.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 100);
+
+	EFFECTMANAGER->addEffect("±âº»»ð", "images/item/nomalShovel.bmp", 48,48,48,48, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("Æ¼Å¸´½»ð", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("À¯¸®»ð", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f, 100);
+
+
 }

@@ -2,9 +2,9 @@
 
 enum slotType
 {
-	SHOVEL,
-	ATTACK,
 	BODY,
+	ATTACK,
+	SHOVEL,
 	FEET,
 	TORCH,
 	ITEM,
@@ -28,7 +28,7 @@ protected:
 
 	int price;
 	int diamondPrice;
-
+	bool _isGlass;
 public:
 	item();
 	~item();

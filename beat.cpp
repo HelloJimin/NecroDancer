@@ -66,14 +66,14 @@ void beat::render(HDC hdc)
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(CAMERAMANAGER->getCameraDC(), _collisionHeart.left, _collisionHeart.top, _collisionHeart.right, _collisionHeart.bottom);
+		UINT a = SOUNDMANAGER->getLength("1-1");
+		UINT b = SOUNDMANAGER->getPosition("1-1");
+		char str[128];
+		wsprintf(str, "%d", a);
+		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2,str, strlen(str));
+		wsprintf(str, "%d", b);
+		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2+100, str,strlen(str));
 	}
-	UINT a = SOUNDMANAGER->getLength("1-1");
-	UINT b = SOUNDMANAGER->getPosition("1-1");
-	char str[128];
-	wsprintf(str, "%d", a);
-	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2,str, strlen(str));
-	wsprintf(str, "%d", b);
-	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2+100, str,strlen(str));
 }
 
 void beat::checkBeat()

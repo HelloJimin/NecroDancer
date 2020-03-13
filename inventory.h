@@ -1,9 +1,9 @@
 #pragma once
+
 class inventory
 {
 private:
 	vector<item*> _vItem;
-	bool _weapon;
 
 public:
 	inventory();
@@ -20,6 +20,8 @@ public:
 	vector<item*> getItemList() { return _vItem; }
 	vector<item*>* getItemList_Reference() { return &_vItem; }
 
-	bool getWeapon() { return _weapon; }
+	item* getWeapon();
+	item* getShovel();
+
 };
 

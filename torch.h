@@ -8,6 +8,7 @@ public:
 	torch();
 	torch(string name, slotType type, int power, string description);
 	~torch();
+	virtual HRESULT init() override;
 
 	void update() override;
 };

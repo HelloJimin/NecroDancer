@@ -24,15 +24,21 @@ HRESULT testScene::init()
 	//_vItem[0]->setRect(_tiles[315].rc);
 	//_vItem[1]->setRect(_tiles[316].rc);
 	//_vItem[2]->setRect(_tiles[319].rc);
-	_tiles[319].item = ITEMMANAGER->addItem("기본삽");
 	_tiles[320].item = ITEMMANAGER->addItem("유리삽");
-	_tiles[318].item = ITEMMANAGER->addItem("기본단검");
-	_tiles[317].item = ITEMMANAGER->addItem("쇠갑옷");
+	_tiles[318].item = ITEMMANAGER->addItem("티타늄단검");
+	_tiles[319].item = ITEMMANAGER->addItem("티타늄대검");
+	_tiles[265].item = ITEMMANAGER->addItem("기본활");
+	_tiles[267].item = ITEMMANAGER->addItem("기본창");
+	_tiles[268].item = ITEMMANAGER->addItem("기본채찍");
+	_tiles[269].item = ITEMMANAGER->addItem("쇠갑옷");
+
+
 
 	MONSTERMANAGER->summonGreenSlime("그린슬라임", _tiles[322].x, _tiles[322].y);
 	MONSTERMANAGER->summonBlueSlime("블루슬라임", _tiles[323].x, _tiles[323].y);
 	MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[327].x, _tiles[327].y);
 	MONSTERMANAGER->summonGhost("투명고스트L", _tiles[582].x, _tiles[582].y);
+	MONSTERMANAGER->summonRedWraiths("레드레이스", _tiles[586].x, _tiles[586].y);
 
 	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[160].x, _tiles[160].y);
 	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[161].x, _tiles[161].y);
