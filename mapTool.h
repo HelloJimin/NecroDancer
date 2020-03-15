@@ -5,9 +5,9 @@
 enum PAGE
 {
 	PAGE_TERRAIN,
-	PAGE_WALL,
 	PAGE_OBJ,
 	PAGE_MONSTER,
+	PAGE_ETC,
 	ERASER
 };
 
@@ -94,5 +94,7 @@ public:
 
 	TERRAIN terrainSelect(int frameX, int frameY);
 	OBJECT	objSelect(int frameX, int frameY);
+	string	monsterSelect(int frameX, int frameY);
+	string	etcSelect(int frameX, int frameY);
 };
 

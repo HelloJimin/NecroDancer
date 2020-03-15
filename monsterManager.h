@@ -21,7 +21,7 @@ public:
 	void frontRender(HDC hdc);
 	void backRender(HDC hdc);
 	void render(HDC hdc);
-	void setMap(tagTile* map) { _map = map; }
+	void setMap(tagTile* map);
 
 	void summonGreenSlime(string name, int x, int y);
 	void summonBlueSlime(string name, int x, int y);
@@ -29,6 +29,8 @@ public:
 	void summonGhost(string name, int x, int y);
 	void summonRedWraiths(string name, int x, int y);
 
+
+	void summonControl(string name, int x, int y);
 	vector<monster*> getMonster() { return _vMonster; }
 };
 

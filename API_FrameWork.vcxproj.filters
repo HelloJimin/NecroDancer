@@ -130,6 +130,9 @@
     <ClCompile Include="redWraiths.cpp">
       <Filter>몬스터</Filter>
     </ClCompile>
+    <ClCompile Include="lobbyScene.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -278,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="redWraiths.h">
       <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="lobbyScene.h">
+      <Filter>인게임</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

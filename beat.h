@@ -37,6 +37,9 @@ private:
 	RECT _temp;
 
 	float test;
+
+
+	bool _beatOn;
 public:
 	beat();
 	~beat();
@@ -52,7 +55,9 @@ public:
 	void addMiss();
 	void removeNote();
 
-	bool getCheck() { return _check; }
+	bool getCheck() { return _check;}
 	int getCnt() { return _cnt; }
+
+	void setBeatOn(bool beaton) { _beatOn = beaton; }
 };
 

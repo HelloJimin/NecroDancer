@@ -21,7 +21,9 @@ enum TERRAIN
 //오브젝트
 enum OBJECT
 {
-	OBJ_NONE, OBJ_NOMALWALL, OBJ_SKULLWALL, OBJ_WHITEWALL, OBJ_IRONWALL, OBJ_GOLDWALL, OBJ_DOOR
+	OBJ_NONE, OBJ_NOMALWALL, OBJ_SKULLWALL, OBJ_WHITEWALL, OBJ_IRONWALL,
+	OBJ_GOLDWALL, OBJ_NEVERWALL, OBJ_DOOR, OBJ_NEXT, OBJ_BLOCK, OBJ_LEFT, OBJ_RIGHT, OBJ_UP, OBJ_DOWN,
+	OBJ_TRAP
 };
 
 //포지션 정의
@@ -40,16 +42,17 @@ struct tagTile
 	int terrainFrameY;
 	int objFrameX;				//오브젝트 프레임번호
 	int objFrameY;
+
 	int x, y;					//타일 중점좌표
 	int strength;				//타일의 강도
 
 	item* item;
 
 	int node;
-	bool listOn;
 	bool walkable;
 	tagTile* parent;
 	int f, g, h;
+	string startPoint;
 };
 
 //셈플타일 구조체

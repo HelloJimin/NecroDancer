@@ -47,6 +47,10 @@ void beat::update()
 {
 	checkBeat();
 	miss();
+	if (!_beatOn)
+	{
+		_check = true;
+	}
 }
 
 void beat::render(HDC hdc)

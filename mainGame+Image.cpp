@@ -8,6 +8,8 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addFrameImage("맵툴지형", "images/maptool/맵툴_지형.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴벽", "images/maptool/맵툴_벽.bmp", 104*2, 156*2, 4, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("맵툴몬스터", "images/maptool/맵툴_몬스터.bmp", 216*2, 204*2, 4, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("맵툴기타", "images/maptool/맵툴_ETC.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("닫기", "images/maptool/닫기버튼.bmp", 64, 64, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("뒤로", "images/maptool/뒤로가기버튼.bmp", 64, 64, true, RGB(255, 0, 255));
@@ -114,7 +116,8 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addImage("투명고스트L", "images/monster/ghostAlphaL.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("투명고스트R", "images/monster/ghostAlphaR.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("보이는고스트", "images/monster/ghostREAL.bmp",36*3, 44*3,2,2, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("투명고스트L", "images/monster/ghostREAL.bmp",18*3, 22*3,1,1, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("레드레이스", "images/monster/redWraiths.bmp",39*3, 46*3,3,2, true, RGB(255, 0, 255));
 
@@ -122,6 +125,7 @@ void mainGame::imagesInit()
 
 	//SOUND
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.mp3", true, true);
+	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);
 
 	//EFFECT
 	EFFECTMANAGER->addEffect("할퀴기", "images/effect/할퀴기.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.3f, 100);

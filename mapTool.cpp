@@ -86,10 +86,20 @@ void mapTool::render()
 			if (_tiles[i].terrain == TERRAIN_NONE) Rectangle(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].rc.right, _tiles[i].rc.bottom);
 			
 			if (_tiles[i].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("맵툴지형", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].terrainFrameX, _tiles[i].terrainFrameY);
+			
 
-			if (_tiles[i].obj == OBJ_NONE) continue;
+			if (_tiles[i].obj != OBJ_NONE)IMAGEMANAGER->frameRender("맵툴벽", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top-25, _tiles[i].objFrameX, _tiles[i].objFrameY);
+		}
+	}
 
-			IMAGEMANAGER->frameRender("맵툴벽", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top-25, _tiles[i].objFrameX, _tiles[i].objFrameY);
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+		{
+			if (_tiles[i].startPoint == "")continue;
+			if (_tiles[i].startPoint != "플레이어") IMAGEMANAGER->frameRender("맵툴몬스터", getMemDC(), _tiles[i].rc.left - 20, _tiles[i].rc.top - 54, _tiles[i].g, _tiles[i].h);
+			if (_tiles[i].startPoint == "플레이어")	IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
+
 		}
 	}
 
@@ -264,9 +274,9 @@ void mapTool::mapInit()
 		_tiles[i].item = NULL;
 		_tiles[i].parent = NULL;
 		_tiles[i].walkable = true;
-		_tiles[i].listOn = false;
 		_tiles[i].f = BIGNUM;
 		_tiles[i].h = 0;			//계산전이므로 0
+		_tiles[i].startPoint = "";
 	}
 }
 
@@ -321,17 +331,17 @@ void mapTool::sampleWindowKey()
 	}
 	if (KEYMANAGER->isOnceKeyDown('2') || (PtInRect(&_button[1].rc, m_ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)))
 	{
-		_page = PAGE_WALL;
+		_page = PAGE_OBJ;
 		pageControl();
 	}
 	if (KEYMANAGER->isOnceKeyDown('3') || (PtInRect(&_button[2].rc, m_ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)))
 	{
-		_page = PAGE_OBJ;
+		_page = PAGE_MONSTER;
 		pageControl();
 	}
 	if (KEYMANAGER->isOnceKeyDown('4') || (PtInRect(&_button[3].rc, m_ptMouse) && KEYMANAGER->isOnceKeyDown(VK_LBUTTON)))
 	{
-		_page = PAGE_MONSTER;
+		_page = PAGE_ETC;
 		pageControl();
 	}
 }
@@ -392,9 +402,9 @@ void mapTool::sampleSetRc()
 		for (int j = 0; j < 16; j++)
 		{
 			_sampleImage[i].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 100, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
-			_sampleImage[i + 4].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 180, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
-			_sampleImage[i + 8].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 260, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
-			_sampleImage[i + 12].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 340, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i + 4].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 200, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i + 8].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 300, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
+			_sampleImage[i + 12].rc = RectMakeCenter((_sampleWindow.rc.left + 50) + i * 70, _sampleWindow.rc.top + 400, _sampleImage[j].image->getFrameWidth(), _sampleImage[j].image->getFrameHeight());
 		}
 	}
 }
@@ -438,31 +448,51 @@ void mapTool::setMap()
 				_tiles[i].terrainFrameX = _currnetTile.x;
 				_tiles[i].terrainFrameY = _currnetTile.y;
 
-				 _tiles[i].terrain = terrainSelect(_currnetTile.x, _currnetTile.y);
+				_tiles[i].terrain = terrainSelect(_currnetTile.x, _currnetTile.y);
 			}
-			if (_page == PAGE_WALL)
+			if (_page == PAGE_OBJ)
 			{
 				_tiles[i].objFrameX = _currnetTile.x;
 				_tiles[i].objFrameY = _currnetTile.y;
 
 				_tiles[i].obj = objSelect(_currnetTile.x, _currnetTile.y);
 			}
+			else if (_page == PAGE_MONSTER)
+			{
+				_tiles[i].g = _currnetTile.x;
+				_tiles[i].h = _currnetTile.y;
+
+				_tiles[i].startPoint = monsterSelect(_currnetTile.x, _currnetTile.y);
+			}
+			else if (_page == PAGE_ETC)
+			{
+				_tiles[i].g = _currnetTile.x;
+				_tiles[i].h = _currnetTile.y;
+
+				_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
+			}
 			if (_page == ERASER)
 			{
-				if (_tiles[i].obj != OBJ_NONE)
-				{
-					_tiles[i].objFrameX = NULL;
-					_tiles[i].objFrameY = NULL;
+				_tiles[i].terrain = TERRAIN_NONE;
 
-					_tiles[i].obj = OBJ_NONE;
-				}
-				else
-				{
-					_tiles[i].terrainFrameX = NULL;
-					_tiles[i].terrainFrameY = NULL;
+				_tiles[i].terrainFrameX = 0;
+				_tiles[i].terrainFrameY = 0;
 
-					_tiles[i].terrain = TERRAIN_NONE;
-				}
+				//오브젝트 초기 설정
+				_tiles[i].obj = OBJ_NONE;
+
+				_tiles[i].objFrameX = 0;
+				_tiles[i].objFrameY = 0;
+
+				//강도
+				_tiles[i].strength = 0;
+
+				_tiles[i].item = NULL;
+				_tiles[i].parent = NULL;
+				_tiles[i].walkable = true;
+				_tiles[i].f = BIGNUM;
+				_tiles[i].h = 0;			//계산전이므로 0
+				_tiles[i].startPoint = "";
 			}
 		}
 	}
@@ -519,29 +549,67 @@ void mapTool::drage()
 
 				_tiles[i].terrain = terrainSelect(_currnetTile.x, _currnetTile.y);
 			}
-			else if (_page == PAGE_WALL || _page==PAGE_OBJ)
+			else if (_page==PAGE_OBJ)
 			{
 				_tiles[i].objFrameX = _currnetTile.x;
 				_tiles[i].objFrameY = _currnetTile.y;
 
 				_tiles[i].obj = objSelect(_currnetTile.x, _currnetTile.y);
 			}
+			else if (_page == PAGE_MONSTER)
+			{
+				_tiles[i].g = _currnetTile.x;
+				_tiles[i].h = _currnetTile.y;
+
+				_tiles[i].startPoint = monsterSelect(_currnetTile.x, _currnetTile.y);
+			}
+			else if (_page == PAGE_ETC)
+			{
+				_tiles[i].g = _currnetTile.x;
+				_tiles[i].h = _currnetTile.y;
+
+				_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
+			}
 			else if (_page == ERASER)
 			{
-				if (_tiles[i].obj != OBJ_NONE)
-				{
-					_tiles[i].objFrameX = NULL;
-					_tiles[i].objFrameY = NULL;
+				_tiles[i].terrain = TERRAIN_NONE;
 
-					_tiles[i].obj = OBJ_NONE;
-				}
-				else
-				{
-					_tiles[i].terrainFrameX = NULL;
-					_tiles[i].terrainFrameY = NULL;
+				_tiles[i].terrainFrameX = 0;
+				_tiles[i].terrainFrameY = 0;
 
-					_tiles[i].terrain = TERRAIN_NONE;
-				}
+				//오브젝트 초기 설정
+				_tiles[i].obj = OBJ_NONE;
+
+				_tiles[i].objFrameX = 0;
+				_tiles[i].objFrameY = 0;
+
+				//강도
+				_tiles[i].strength = 0;
+
+				_tiles[i].item = NULL;
+				_tiles[i].parent = NULL;
+				_tiles[i].walkable = true;
+				_tiles[i].f = BIGNUM;
+				_tiles[i].h = 0;			//계산전이므로 0
+				_tiles[i].startPoint = "";
+				//if (_tiles[i].obj != OBJ_NONE)
+				//{
+				//	_tiles[i].objFrameX = NULL;
+				//	_tiles[i].objFrameY = NULL;
+
+				//	_tiles[i].obj = OBJ_NONE;
+				//}
+				//else if (_tiles[i].startPoint != "")
+				//{
+				//	_tiles[i].startPoint = "";
+				//}
+				//else
+				//{
+				//	_tiles[i].terrainFrameX = NULL;
+				//	_tiles[i].terrainFrameY = NULL;
+
+				//	_tiles[i].terrain = TERRAIN_NONE;
+				//}
 			}
 		}
 	}
@@ -563,20 +631,28 @@ void mapTool::pageControl()
 			_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2, 4, 4, true, RGB(255, 0, 255));
 		}
 		break;
-	case PAGE_WALL:
+	case PAGE_OBJ:
 		for (int i = 0; i < 16; i++)
 		{
 			_sampleImage[i].image = new image;
 			_sampleImage[i].image->init("images/maptool/맵툴_벽.bmp", 104 * 2, 156 * 2, 4, 4, true, RGB(255, 0, 255));
 		}
 		break;
-	case PAGE_OBJ:
-		break;
 	case PAGE_MONSTER:
+		for (int i = 0; i < 16; i++)
+		{
+			_sampleImage[i].image = new image;
+			_sampleImage[i].image->init("images/maptool/맵툴_몬스터.bmp", 216 * 2, 204 * 2, 4, 4, true, RGB(255, 0, 255));
+		}
+		break;
+	case PAGE_ETC:
+		for (int i = 0; i < 16; i++)
+		{
+			_sampleImage[i].image = new image;
+			_sampleImage[i].image->init("images/maptool/맵툴_ETC.bmp", 104 * 2, 104 * 2, 4, 4, true, RGB(255, 0, 255));
+		}
 		break;
 	case ERASER:
-		break;
-	default:
 		break;
 	}
 }
@@ -585,6 +661,19 @@ void mapTool::pageControl()
 //타일에 강도 넣기
 void mapTool::tileAttribute()
 {
+	for (int i = 0; i < TILEX; i++)
+	{
+		for (int k = 0; k < TILEY; k++)
+		{
+			if (_tiles[(i*TILEX) + k].terrain == TERRAIN_NONE) continue;
+			
+			if (i % 2 == 0) _tiles[(i*TILEX) + k].terrainFrameX = k % 2;
+			else
+			{
+				_tiles[(i*TILEX) + k].terrainFrameX = (k+1) % 2;
+			}
+		}
+	}
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (_tiles[i].obj == OBJ_NOMALWALL)
@@ -612,6 +701,11 @@ void mapTool::tileAttribute()
 			_tiles[i].strength = 5;
 			_tiles[i].walkable = false;
 		}
+		else if (_tiles[i].obj == OBJ_NEVERWALL)
+		{
+			_tiles[i].strength = 6;
+			_tiles[i].walkable = false;
+		}
 		else if (_tiles[i].obj == OBJ_DOOR)
 		{
 			_tiles[i].strength = 0;
@@ -633,31 +727,97 @@ TERRAIN mapTool::terrainSelect(int frameX, int frameY)
 	return TERRAIN_NONE;
 }
 
+
 OBJECT mapTool::objSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0) return OBJ_NOMALWALL;
-	if (frameX == 1 && frameY == 0) return OBJ_NOMALWALL;
+	if (frameX == 1 && frameY == 0) return OBJ_SKULLWALL;
 
-	if (frameX == 2 && frameY == 0) return OBJ_SKULLWALL;
-	if (frameX == 3 && frameY == 0) return OBJ_SKULLWALL;
+	if (frameX == 2 && frameY == 0) return OBJ_WHITEWALL;
+	if (frameX == 3 && frameY == 0) return OBJ_IRONWALL;
 
-	if (frameX == 0 && frameY == 1) return OBJ_WHITEWALL;
-	if (frameX == 1 && frameY == 1) return OBJ_WHITEWALL;
+	if (frameX == 0 && frameY == 1) return OBJ_GOLDWALL;
+	if (frameX == 1 && frameY == 1) return OBJ_NEVERWALL;
 
-	if (frameX == 2 && frameY == 1) return OBJ_IRONWALL;
-	if (frameX == 3 && frameY == 1) return OBJ_IRONWALL;
+	if (frameX == 2 && frameY == 1) return OBJ_DOOR;
+	if (frameX == 3 && frameY == 1) return OBJ_DOOR;
 
-	if (frameX == 0 && frameY == 2) return OBJ_GOLDWALL;
-	if (frameX == 1 && frameY == 2) return OBJ_GOLDWALL;
+	if (frameX == 0 && frameY == 2) return OBJ_UP;
+	if (frameX == 1 && frameY == 2) return OBJ_DOWN;
 
-	if (frameX == 2 && frameY == 2) return OBJ_GOLDWALL;
-	if (frameX == 3 && frameY == 2) return OBJ_GOLDWALL;
+	if (frameX == 2 && frameY == 2) return OBJ_LEFT;
+	if (frameX == 3 && frameY == 2) return OBJ_RIGHT;
 
-	if (frameX == 0 && frameY == 3) return OBJ_GOLDWALL;
-	if (frameX == 1 && frameY == 3) return OBJ_GOLDWALL;
+	if (frameX == 0 && frameY == 3) return OBJ_TRAP;
+	if (frameX == 1 && frameY == 3) return OBJ_TRAP;
 
-	if (frameX == 2 && frameY == 3) return OBJ_DOOR;
-	if (frameX == 3 && frameY == 3) return OBJ_DOOR;
+	if (frameX == 2 && frameY == 3) return OBJ_BLOCK;
+	if (frameX == 3 && frameY == 3) return OBJ_NEXT;
 	
 	return OBJ_NONE;
+}
+
+string mapTool::monsterSelect(int frameX, int frameY)
+{
+	if (frameX == 0 && frameY == 0) return "그린슬라임";
+	if (frameX == 1 && frameY == 0) return "블루슬라임";
+
+	if (frameX == 2 && frameY == 0) return "투명고스트L";
+	if (frameX == 3 && frameY == 0) return "레드레이스";
+
+	if (frameX == 0 && frameY == 1) return "스켈레톤";
+	if (frameX == 1 && frameY == 1) return "";
+
+	if (frameX == 2 && frameY == 1) return "";
+	if (frameX == 3 && frameY == 1) return "";
+
+	if (frameX == 0 && frameY == 2) return "";
+	if (frameX == 1 && frameY == 2) return "";
+
+	if (frameX == 2 && frameY == 2) return "";
+	if (frameX == 3 && frameY == 2) return "";
+
+	if (frameX == 0 && frameY == 3) return "";
+	if (frameX == 1 && frameY == 3) return "";
+
+	if (frameX == 2 && frameY == 3) return "";
+	if (frameX == 3 && frameY == 3) return "";
+
+	return "";
+}
+
+string mapTool::etcSelect(int frameX, int frameY)
+{
+	if (frameX == 0 && frameY == 0)
+	{
+		for (int k = 0; k < TILEX * TILEY; k++)
+		{
+			if (_tiles[k].startPoint == "플레이어") _tiles[k].startPoint = "";
+		}
+		return "플레이어";
+	}
+	if (frameX == 1 && frameY == 0) return "";
+
+	if (frameX == 2 && frameY == 0) return "";
+	if (frameX == 3 && frameY == 0) return "";
+
+	if (frameX == 0 && frameY == 1) return "";
+	if (frameX == 1 && frameY == 1) return "";
+
+	if (frameX == 2 && frameY == 1) return "";
+	if (frameX == 3 && frameY == 1) return "";
+
+	if (frameX == 0 && frameY == 2) return "";
+	if (frameX == 1 && frameY == 2) return "";
+
+	if (frameX == 2 && frameY == 2) return "";
+	if (frameX == 3 && frameY == 2) return "";
+
+	if (frameX == 0 && frameY == 3) return "";
+	if (frameX == 1 && frameY == 3) return "";
+
+	if (frameX == 2 && frameY == 3) return "";
+	if (frameX == 3 && frameY == 3) return "";
+
+	return "";
 }

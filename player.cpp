@@ -56,11 +56,6 @@ void player::release()
 
 void player::update()
 {
-	if (KEYMANAGER->isOnceKeyDown('B'))
-	{
-		MONSTERMANAGER->getMonster()[0]->hit(0.5);
-	}
-
 	_inven->update();
 	keyControl();
 	move();
@@ -308,6 +303,25 @@ void player::UIrender(HDC hdc)
 
 }
 
+void player::setMap(tagTile tile[])
+{
+	_pCurrentMap = NULL;
+	_pCurrentMap = tile;
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (tile[i].startPoint == "플레이어")
+		{
+			_currentTileIndex = i;
+			_nextTileIndex = i + 1;
+			_collisionX = _currentX = tile[i].x;
+			_collisionY = _currentY = tile[i].y;
+			_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
+			_collisionRc = RectMakeCenter(_collisionX, _collisionY, 50, 50);
+			break;
+		}
+	}
+}
+
 void player::HPbarSet()
 {
 	for (int i = 0; i < _status.vHp.size(); i++)
@@ -341,7 +355,12 @@ void player::HPbarSet()
 
 void player::mine()
 {
-	if(_pCurrentMap[_nextTileIndex].obj != OBJ_DOOR)
+	if(_pCurrentMap[_nextTileIndex].obj == OBJ_NOMALWALL||
+		_pCurrentMap[_nextTileIndex].obj == OBJ_SKULLWALL ||
+		_pCurrentMap[_nextTileIndex].obj == OBJ_WHITEWALL ||
+		_pCurrentMap[_nextTileIndex].obj == OBJ_IRONWALL ||
+		_pCurrentMap[_nextTileIndex].obj == OBJ_GOLDWALL ||
+		_pCurrentMap[_nextTileIndex].obj == OBJ_NEVERWALL)
 		EFFECTMANAGER->play(_inven->getShovel()->getName(), _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 25);
 
 	if (_status.minePower >= _pCurrentMap[_nextTileIndex].strength)

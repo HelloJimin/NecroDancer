@@ -10,13 +10,6 @@ enum DIRECTION
 	UP,
 	DOWN
 };
-enum FRONT
-{
-	NONE,
-	MONSTER,
-	WALL
-};
-
 struct hp
 {
 	image* img;
@@ -82,7 +75,7 @@ public:
 	void render(HDC hdc);
 	void UIrender(HDC hdc);
 
-	void setCurrentTile(tagTile tile[]) { _pCurrentMap = tile; }	// 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
+	void setMap(tagTile tile[]);	// 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
 
 	void frontCheck();
 	void move();

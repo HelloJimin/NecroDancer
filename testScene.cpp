@@ -16,7 +16,8 @@ HRESULT testScene::init()
 	SOUNDMANAGER->play("1-1");
 	setUp();
 	load();
-	PLAYER->setCurrentTile(_tiles);
+	BEAT->setBeatOn(true);
+	PLAYER->setMap(_tiles);
 	MONSTERMANAGER->setMap(_tiles);
 	//_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
 	//_vItem.push_back(ITEMMANAGER->addItem("유리삽"));
@@ -34,11 +35,11 @@ HRESULT testScene::init()
 
 
 
-	MONSTERMANAGER->summonGreenSlime("그린슬라임", _tiles[322].x, _tiles[322].y);
-	MONSTERMANAGER->summonBlueSlime("블루슬라임", _tiles[323].x, _tiles[323].y);
-	MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[327].x, _tiles[327].y);
-	MONSTERMANAGER->summonGhost("투명고스트L", _tiles[582].x, _tiles[582].y);
-	MONSTERMANAGER->summonRedWraiths("레드레이스", _tiles[586].x, _tiles[586].y);
+	//MONSTERMANAGER->summonGreenSlime("그린슬라임", _tiles[322].x, _tiles[322].y);
+	//MONSTERMANAGER->summonBlueSlime("블루슬라임", _tiles[323].x, _tiles[323].y);
+	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[327].x, _tiles[327].y);
+	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[582].x, _tiles[582].y);
+	//MONSTERMANAGER->summonRedWraiths("레드레이스", _tiles[586].x, _tiles[586].y);
 
 	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[160].x, _tiles[160].y);
 	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[161].x, _tiles[161].y);

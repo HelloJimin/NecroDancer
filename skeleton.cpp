@@ -50,4 +50,9 @@ void skeleton::choiceAction()
 
 void skeleton::animation()
 {
+	if (BEAT->getCnt() % 12 == 0)
+	{
+		_frameX++;
+		if (_frameX > _monsterImg->getMaxFrameX())_frameX = 0;
+	}
 }
