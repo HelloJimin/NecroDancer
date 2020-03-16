@@ -30,35 +30,42 @@ void ghost::render(HDC hdc)
 void ghost::frontCheck()
 {
 	alphaCheck();
-	int tempNext;
+	aniCheck();
 
-	if (BEAT->getCnt() % 29 == 0)
+	_nextTileIndex = _aStar->aStarTile(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
+
+	if (atkCnt==1)
 	{
-		tempNext = _nextTileIndex = _aStar->aStarTile(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
-		aniCheck();
-		choiceAction();
-	}
-	if (BEAT->getCnt() % 58 == 0)
-	{
-		if (PLAYER->currentTile() == tempNext)
-		{
-			_isAttack = true;
-		}
+		if (PLAYER->currentTile() == _nextTileIndex) _isAttack = true;
 	}
 }
 
 void ghost::choiceAction()
 {
-	if (playerCheck())
+	if (BEAT->getCnt() % 29 == 0)
 	{
-		_nextTileIndex = _currentTileIndex;
-	}
-	else
-	{
-		_isMove = true;
-		_pCurrentMap[_currentTileIndex].walkable = true;
-		_pCurrentMap[_nextTileIndex].walkable = false;
-		_currentTileIndex = _nextTileIndex;
+		atkCnt++;
+		atkCnt %= 2;
+		frontCheck();
+
+		if (playerCheck())
+		{
+			_nextTileIndex = _currentTileIndex;
+			return;
+		}
+
+		if (walkableCheck())
+		{
+			_isMove = true;
+			_pCurrentMap[_currentTileIndex].walkable = true;
+			_pCurrentMap[_nextTileIndex].walkable = false;
+			_currentTileIndex = _nextTileIndex;
+		}
+		else
+		{
+			_isMove = false;
+			_nextTileIndex = _currentTileIndex;
+		}
 	}
 }
 
@@ -72,11 +79,11 @@ void ghost::move()
 	}
 	if (_currentX > _pCurrentMap[_nextTileIndex].x)
 	{
-		_currentX-=_moveSpeed;
+		_currentX -= _moveSpeed;
 	}
 	if (_currentY < _pCurrentMap[_nextTileIndex].y)
 	{
-		_currentY + _moveSpeed;
+		_currentY += _moveSpeed;
 	}
 	if (_currentY > _pCurrentMap[_nextTileIndex].y)
 	{

@@ -111,6 +111,13 @@ void monsterManager::summonRedWraiths(string name, int x, int y)
 	_vMonster.push_back(mob);
 }
 
+void monsterManager::summonBat(string name, int x, int y)
+{
+	monster* mob = new bat;
+	mob->init(name, x, y, 15, _map);
+	_vMonster.push_back(mob);
+}
+
 void monsterManager::summonControl(string name, int x, int y)
 {
 	if (name == "그린슬라임")
@@ -132,5 +139,9 @@ void monsterManager::summonControl(string name, int x, int y)
 	else if (name == "레드레이스")
 	{
 		summonRedWraiths(name, x, y);
+	}
+	else if (name == "박쥐")
+	{
+		summonBat(name, x, y);
 	}
 }

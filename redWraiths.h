@@ -8,6 +8,7 @@ private:
 
 
 	int _teleportCnt;
+	bool _isTeleport;
 public:
 	redWraiths();
 	~redWraiths();
@@ -16,7 +17,7 @@ public:
 	void frontCheck() override;
 	void choiceAction() override;
 	void move() override;
-	void update() override;
+	void animation() override;
 	void teleport();
 };
 

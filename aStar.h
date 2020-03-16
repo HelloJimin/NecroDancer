@@ -23,6 +23,8 @@ private:
 	vector<int>closeList;
 	vector<int>::iterator iter;
 
+	const tagTile * tiles;
+
 	int startTile;
 	int endTile;
 	int currentTile;
@@ -34,7 +36,9 @@ public:
 	aStar();
 	~aStar();
 
-	int aStarTile(tagTile * tile, int currentIndex, int endIndex);
-	void reset(tagTile * tile);
+	int aStarTile(tagTile tile[], int currentIndex, int endIndex);
+	void reset(tagTile tile[]);
+
+	bool noPathCheck(tagTile tile[],int endIndex);
 };
 

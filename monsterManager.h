@@ -5,6 +5,7 @@
 #include"blueSlime.h"
 #include"redWraiths.h"
 #include"ghost.h"
+#include"bat.h"
 class monsterManager : public singletonBase<monsterManager>
 {
 private:
@@ -28,6 +29,7 @@ public:
 	void summonSkeleton(string name, int x, int y);
 	void summonGhost(string name, int x, int y);
 	void summonRedWraiths(string name, int x, int y);
+	void summonBat(string name, int x, int y);
 
 
 	void summonControl(string name, int x, int y);

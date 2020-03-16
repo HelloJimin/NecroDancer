@@ -51,11 +51,14 @@ void monster::update()
 {
 	_pCurrentMap[_currentTileIndex].walkable = false;
 
-	animation();
-	frontCheck();
-	hpSet();
+
+	choiceAction();
+	
 	attack();
 	move();
+
+	animation();
+	hpSet();
 }
 
 void monster::render(HDC hdc)
@@ -76,28 +79,24 @@ void monster::animation()
 
 void monster::frontCheck()
 {
-	if (BEAT->getCnt() % 58 == 0)
-	{
-		_tileX = _collisionRc.left / TILESIZE;
-		_tileY = _collisionRc.top / TILESIZE;
-		_currentTileIndex = _tileX + _tileY * TILEX;
+	_tileX = _collisionRc.left / TILESIZE;
+	_tileY = _collisionRc.top / TILESIZE;
+	_currentTileIndex = _tileX + _tileY * TILEX;
 
-		switch (_direction)
-		{
-		case LEFT:
-			_nextTileIndex = _tileX + _tileY * TILEX - 1;
-			break;
-		case RIGHT:
-			_nextTileIndex = _tileX + _tileY * TILEX + 1;
-			break;
-		case UP:
-			_nextTileIndex = _tileX + (_tileY - 1) * TILEX;
-			break;
-		case DOWN:
-			_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
-			break;
-		}
-		choiceAction();
+	switch (_direction)
+	{
+	case LEFT:
+		_nextTileIndex = _tileX + _tileY * TILEX - 1;
+		break;
+	case RIGHT:
+		_nextTileIndex = _tileX + _tileY * TILEX + 1;
+		break;
+	case UP:
+		_nextTileIndex = _tileX + (_tileY - 1) * TILEX;
+		break;
+	case DOWN:
+		_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
+		break;
 	}
 }
 
@@ -256,51 +255,25 @@ void monster::hit(float damage)
 
 void monster::aniCheck()
 {
-	int monsterX = _pCurrentMap[_currentTileIndex].x;
-	int monsterY = _pCurrentMap[_currentTileIndex].y;
-	int playerX = _pCurrentMap[PLAYER->currentTile()].x;
-	int playerY = _pCurrentMap[PLAYER->currentTile()].y;
-
-	if (monsterX > playerX && monsterY > playerY)
-	{
-		_directionAni = LEFT_TOP;
-	}
-	else if (monsterX < playerX && monsterY > playerY)
-	{
-		_directionAni = RIGHT_TOP;
-	}
-	else if (monsterX > playerX && monsterY < playerY)
-	{
-		_directionAni = LEFT_BOT;
-	}
-	else if (monsterX < playerX && monsterY < playerY)
-	{
-		_directionAni = RIGHT_BOT;
-	}
-
-	switch (_directionAni)
-	{
-	case LEFT_TOP: _frameY = 0;
-		break;
-	case LEFT_BOT: _frameY = 0;
-		break;
-	case RIGHT_TOP: _frameY = 1;
-		break;
-	case RIGHT_BOT: _frameY = 1;
-		break;
-	}
-
 	if (_nextTileIndex == _currentTileIndex - 1) _direction = LEFT;
 	else if (_nextTileIndex == _currentTileIndex + 1) _direction = RIGHT;
 	else if (_nextTileIndex == _currentTileIndex + TILEX)_direction = DOWN;
 	else if (_nextTileIndex == _currentTileIndex - TILEX)_direction = UP;
+
+	switch (_direction)
+	{
+	case LEFT:_frameY = 0;
+		break;
+	case RIGHT:_frameY = 1;
+		break;
+	}
 }
 
-bool monster::wallCheck()
+bool monster::walkableCheck()
 {
-	if (!_pCurrentMap[_nextTileIndex].walkable) return false;
+	if (_pCurrentMap[_nextTileIndex].walkable) return true;
 
-	return true;
+	return false;
 }
 
 bool monster::playerCheck()
@@ -312,23 +285,28 @@ bool monster::playerCheck()
 
 void monster::choiceAction()
 {
-	RECT temp;
-	if (playerCheck())
+	if (BEAT->getCnt() % 58 == 0)
 	{
-		_isAttack = true;
-		return;
-	}
-	if (wallCheck())
-	{
-		_isMove = true;
-		_pCurrentMap[_currentTileIndex].walkable = true;
-		_pCurrentMap[_nextTileIndex].walkable = false;
-		EFFECTMANAGER->play("점프먼지", _currentX, _currentY);
-		_currentTileIndex = _nextTileIndex;
-	}
-	else
-	{
-		_isMove = false;
-		_nextTileIndex = _currentTileIndex;
-	}
+		if (playerCheck())
+		{
+			_isAttack = true;
+			return;
+		}
+
+		frontCheck();
+
+		if (walkableCheck())
+		{
+			_isMove = true;
+			_pCurrentMap[_currentTileIndex].walkable = true;
+			_pCurrentMap[_nextTileIndex].walkable = false;
+			EFFECTMANAGER->play("점프먼지", _currentX, _currentY);
+			_currentTileIndex = _nextTileIndex;
+		}
+		else
+		{
+			_isMove = false;
+			_nextTileIndex = _currentTileIndex;
+		}
+	} 
 }

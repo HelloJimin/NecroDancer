@@ -766,7 +766,7 @@ string mapTool::monsterSelect(int frameX, int frameY)
 	if (frameX == 3 && frameY == 0) return "·¹µå·¹ÀÌ½º";
 
 	if (frameX == 0 && frameY == 1) return "½ºÄÌ·¹Åæ";
-	if (frameX == 1 && frameY == 1) return "";
+	if (frameX == 1 && frameY == 1) return "¹ÚÁã";
 
 	if (frameX == 2 && frameY == 1) return "";
 	if (frameX == 3 && frameY == 1) return "";

@@ -8,6 +8,7 @@ private:
 	int _alpha;
 	aStar* _aStar;
 
+	int atkCnt;
 public:
 	ghost();
 	~ghost();

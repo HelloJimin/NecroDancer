@@ -10,10 +10,10 @@ aStar::~aStar()
 }
 
 
-int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
+int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 {
 	reset(tile);
-
+	
 	startTile = currentIndex;
 	currentTile =  currentIndex;
 	endTile = endIndex;
@@ -91,11 +91,17 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 					}
 	
 					// find
-					if (y * TILEX + x == endTile)  isFind = true;
+					if (y * TILEX + x == endTile)
+					{
+						isFind = true;
+						break;
+					}
+
 				}
 			}
 		}
 		
+
 		// 선택 지점 열린목록에서 빼기
 		for (iter = openList.begin(); iter != openList.end(); ++iter)
 		{
@@ -105,14 +111,14 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 				break;
 			}
 		}
-	
+		if (isFind) continue;
 		// not Find
-		if (openList.size() == 0)
+		if (openList.size() == 0 || noPathCheck(tile, endIndex) || closeList.size() > 50)
 		{
 			noPath = true;
-			break;
+			continue;
 		}
-		
+
 		// 현재 타일 클로즈리스트에 넣기
 		closeList.push_back(currentTile);
 	
@@ -131,6 +137,7 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 			}
 		}
 	}
+
 	if (noPath) return currentIndex;
 
 	int nextTile = endTile;
@@ -141,11 +148,9 @@ int aStar::aStarTile(tagTile * tile, int currentIndex, int endIndex)
 	return nextTile;
 }
 
-void aStar::reset(tagTile * tile)
+void aStar::reset(tagTile tile[])
 {
 	isFind = false;
-	//startAstar = false;
-	//startTile = endTile = -1;
 	noPath = false;
 	openList.clear();
 	closeList.clear();
@@ -155,6 +160,16 @@ void aStar::reset(tagTile * tile)
 		tile[i].parent = NULL;
 		tile[i].h = 0;			//계산전이므로 0
 	}
+}
+
+bool aStar::noPathCheck(tagTile tile[], int endIndex)
+{
+	if (!tile[endIndex - 1].walkable &&
+		!tile[endIndex + 1].walkable &&
+		!tile[endIndex + TILEX].walkable &&
+		!tile[endIndex - TILEX].walkable) return true;
+	
+	return false;
 }
 
 	

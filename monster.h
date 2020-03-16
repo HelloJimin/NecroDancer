@@ -60,7 +60,7 @@ public:
 	void hit(float damage);
 	void aniCheck();
 
-	bool wallCheck();
+	bool walkableCheck();
 	bool playerCheck();
 	POINT getXY() { return PointMake(_currentX, _currentY); }
 	RECT getRc() { return _collisionRc; }

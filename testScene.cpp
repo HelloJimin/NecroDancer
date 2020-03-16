@@ -25,13 +25,13 @@ HRESULT testScene::init()
 	//_vItem[0]->setRect(_tiles[315].rc);
 	//_vItem[1]->setRect(_tiles[316].rc);
 	//_vItem[2]->setRect(_tiles[319].rc);
-	_tiles[320].item = ITEMMANAGER->addItem("À¯¸®»ð");
-	_tiles[318].item = ITEMMANAGER->addItem("Æ¼Å¸´½´Ü°Ë");
-	_tiles[319].item = ITEMMANAGER->addItem("Æ¼Å¸´½´ë°Ë");
-	_tiles[265].item = ITEMMANAGER->addItem("±âº»È°");
-	_tiles[267].item = ITEMMANAGER->addItem("±âº»Ã¢");
-	_tiles[268].item = ITEMMANAGER->addItem("±âº»Ã¤Âï");
-	_tiles[269].item = ITEMMANAGER->addItem("¼è°©¿Ê");
+	_tiles[267].item = ITEMMANAGER->addItem("À¯¸®»ð");
+	_tiles[268].item = ITEMMANAGER->addItem("Æ¼Å¸´½´Ü°Ë");
+	_tiles[269].item = ITEMMANAGER->addItem("Æ¼Å¸´½´ë°Ë");
+	_tiles[270].item = ITEMMANAGER->addItem("±âº»È°");
+	_tiles[319].item = ITEMMANAGER->addItem("±âº»Ã¢");
+	_tiles[320].item = ITEMMANAGER->addItem("±âº»Ã¤Âï");
+	_tiles[321].item = ITEMMANAGER->addItem("¼è°©¿Ê");
 
 
 
@@ -120,9 +120,9 @@ void testScene::allRender()
 			{
 				if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY);
 
-				if (_tiles[(i*TILEX) + k].item != NULL)_tiles[(i*TILEX) + k].item->render(getMemDC());
-
 				if (_tiles[(i*TILEX) + k].obj != OBJ_NONE) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top - 25, _tiles[(i*TILEX) + k].objFrameX, _tiles[(i*TILEX) + k].objFrameY);
+
+				if (_tiles[(i*TILEX) + k].item != NULL)_tiles[(i*TILEX) + k].item->render(getMemDC());
 			}
 		}
 
@@ -138,19 +138,19 @@ void testScene::debugRender()
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-			{
-				SetBkMode(getMemDC(), TRANSPARENT);
-				//»ö»ó
-				SetTextColor(getMemDC(), RGB(255, 0, 0));
+		//for (int i = 0; i < TILEX * TILEY; i++)
+		//{
+		//	if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+		//	{
+		//		SetBkMode(getMemDC(), TRANSPARENT);
+		//		//»ö»ó
+		//		SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-				char str[128];
-				sprintf_s(str, "%d", i);
-				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-			}
-		}
+		//		char str[128];
+		//		sprintf_s(str, "%d", i);
+		//		TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+		//	}
+		//}
 	}
 }
 
