@@ -8,7 +8,6 @@ private:
 
 	int _breathRenge;
 	int _minePower;
-	int _breathCnt;
 	bool _isBreath;
 
 public:

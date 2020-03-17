@@ -18,7 +18,6 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 	_aStar = new aStar;
 	_atk = 2.0f;
 	_breathRenge = 0;
-	_breathCnt = 0;
 	_minePower = 3;
 	addHp();
 	addHp();
@@ -30,7 +29,9 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 
 void redDragon::frontCheck()
 {
-	if(!_isBreath)_nextTileIndex = _aStar->aStarBoss(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
+	if (_isBreath)return;
+
+	_nextTileIndex = _aStar->aStarBoss(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
 	aniCheck();
 	breathCheck();
 }
@@ -41,18 +42,13 @@ void redDragon::choiceAction()
 	{
 		if (_isBreath)
 		{
-			_breathCnt++;
-			return;
+			_isAttack = true;
 		}
 	}
 	if (BEAT->getCnt() % 58 == 0)
 	{
 		frontCheck();
-
-		if (_isBreath)
-		{
-			return;
-		}
+		if (_isBreath) return;
 
 		if (playerCheck())
 		{
@@ -97,7 +93,8 @@ void redDragon::animation()
 			_frameX++;
 			if (_frameX > _monsterImg->getMaxFrameX())
 			{
-				_frameX = _monsterImg->getMaxFrameX();
+				_isBreath = false;
+				_frameX =0;
 			}
 		}
 	}
@@ -194,10 +191,8 @@ void redDragon::move()
 
 void redDragon::attack()
 {
-	if (_isBreath && _breathCnt==1)
+	if (_isBreath && _isAttack)
 	{
-		_breathCnt = 0;
-		_isBreath = false;
 		_breathRenge = 0;
 		int temp = _nextTileIndex;
 
@@ -229,14 +224,17 @@ void redDragon::attack()
 			switch (_direction)
 			{
 			case LEFT:	EFFECTMANAGER->play(breath, _pCurrentMap[_nextTileIndex].x - ((i+1)*48), _pCurrentMap[_nextTileIndex].y);
+				if (_nextTileIndex - i == PLAYER->currentTile()) PLAYER->hit(_atk);
+				_isAttack = false;
 				break;
 			case RIGHT:EFFECTMANAGER->play(breath, _pCurrentMap[_nextTileIndex].x + ((i+1)*48), _pCurrentMap[_nextTileIndex].y);
+				if (_nextTileIndex + i == PLAYER->currentTile()) PLAYER->hit(_atk);
+				_isAttack = false;
 				break;
 			}
 		}
 		return;
 	}
-
 	monster::attack();
 }
 
@@ -252,8 +250,6 @@ void redDragon::mine()
 
 void redDragon::breathCheck()
 {
-	if (_isBreath) return;
-
 	int playerTile = PLAYER->currentTile();
 	int checkTile = 5;
 	switch (_direction)
