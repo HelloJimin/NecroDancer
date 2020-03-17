@@ -37,7 +37,6 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_isAttack = false;
 	_isMove = false;
 	_isHit = false;
-	_isLockOn = false;
 
 	addHp();
 	return S_OK;

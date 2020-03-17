@@ -138,19 +138,19 @@ void testScene::debugRender()
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		//for (int i = 0; i < TILEX * TILEY; i++)
-		//{
-		//	if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-		//	{
-		//		SetBkMode(getMemDC(), TRANSPARENT);
-		//		//색상
-		//		SetTextColor(getMemDC(), RGB(255, 0, 0));
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+			{
+				SetBkMode(getMemDC(), TRANSPARENT);
+				//색상
+				SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-		//		char str[128];
-		//		sprintf_s(str, "%d", i);
-		//		TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-		//	}
-		//}
+				char str[128];
+				sprintf_s(str, "%d", i);
+				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+			}
+		}
 	}
 }
 

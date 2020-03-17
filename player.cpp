@@ -56,6 +56,14 @@ void player::release()
 
 void player::update()
 {
+	//if (KEYMANAGER->isOnceKeyDown('C'))
+	//{
+	//	EFFECTMANAGER->play("드래곤브레스1", _pCurrentMap[_currentTileIndex + 1].x, _pCurrentMap[_currentTileIndex + 1].y);
+	//	EFFECTMANAGER->play("드래곤브레스2", _pCurrentMap[_currentTileIndex + 1].x+48, _pCurrentMap[_currentTileIndex + 2].y);
+	//	EFFECTMANAGER->play("드래곤브레스3", _pCurrentMap[_currentTileIndex + 1].x+48*2, _pCurrentMap[_currentTileIndex + 3].y);
+	//	EFFECTMANAGER->play("드래곤브레스4", _pCurrentMap[_currentTileIndex + 1].x+48*3, _pCurrentMap[_currentTileIndex + 4].y);
+	//	EFFECTMANAGER->play("드래곤브레스5", _pCurrentMap[_currentTileIndex + 1].x+48*4, _pCurrentMap[_currentTileIndex + 5].y);
+	//}
 	_inven->update();
 	keyControl();
 	move();

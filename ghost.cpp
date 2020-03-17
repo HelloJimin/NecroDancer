@@ -33,7 +33,6 @@ void ghost::frontCheck()
 	aniCheck();
 
 	_nextTileIndex = _aStar->aStarTile(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
-
 	if (atkCnt==1)
 	{
 		if (PLAYER->currentTile() == _nextTileIndex) _isAttack = true;

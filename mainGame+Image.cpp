@@ -121,6 +121,8 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("투명고스트L", "images/monster/ghostREAL.bmp",18*3, 22*3,1,1, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("레드레이스", "images/monster/redWraiths.bmp",39*3, 46*3,3,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("미노타우로스", "images/monster/Minotaurs.bmp",450*3, 100*3,9,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",549*3, 106*3,9,2, true, RGB(255, 0, 255));
 
 
 
@@ -139,6 +141,15 @@ void mainGame::imagesInit()
 	EFFECTMANAGER->addEffect("기본삽", "images/item/nomalShovel.bmp", 48,48,48,48, 1, 0.1f, 100);
 	EFFECTMANAGER->addEffect("티타늄삽", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f, 100);
 	EFFECTMANAGER->addEffect("유리삽", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f, 100);
+
+
+	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+
 
 
 }

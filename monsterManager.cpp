@@ -118,6 +118,20 @@ void monsterManager::summonBat(string name, int x, int y)
 	_vMonster.push_back(mob);
 }
 
+void monsterManager::summonMinotaurs(string name, int x, int y)
+{
+	monster* mob = new minotaurs;
+	mob->init(name, x, y, 50, _map);
+	_vMonster.push_back(mob);
+}
+
+void monsterManager::summonRedDragon(string name, int x, int y)
+{
+	monster* mob = new redDragon;
+	mob->init(name, x, y, 50, _map);
+	_vMonster.push_back(mob);
+}
+
 void monsterManager::summonControl(string name, int x, int y)
 {
 	if (name == "그린슬라임")
@@ -143,5 +157,13 @@ void monsterManager::summonControl(string name, int x, int y)
 	else if (name == "박쥐")
 	{
 		summonBat(name, x, y);
+	}
+	else if (name == "미노타우로스")
+	{
+		summonMinotaurs(name, x, y);
+	}
+	else if (name == "레드드래곤")
+	{
+		summonRedDragon(name, x, y);
 	}
 }

@@ -14,8 +14,6 @@ bat::~bat()
 HRESULT bat::init(string name, int x, int y, int coin, tagTile * map)
 {
 	monster::init(name, x, y, coin, map);
-	addHp();
-	addHp();
 	_atk = 0.5f;
 	return S_OK;
 }
@@ -66,6 +64,14 @@ void bat::frontCheck()
 	case 3:
 		_nextTileIndex = _currentTileIndex + TILEX;
 		_direction = DOWN;
+		break;
+	}
+
+	switch (_direction)
+	{
+	case LEFT:_frameY = 0;
+		break;
+	case RIGHT:_frameY = 1;
 		break;
 	}
 }

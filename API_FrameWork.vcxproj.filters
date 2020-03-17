@@ -136,6 +136,12 @@
     <ClCompile Include="bat.cpp">
       <Filter>몬스터</Filter>
     </ClCompile>
+    <ClCompile Include="minotaurs.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="redDragon.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -289,6 +295,12 @@
       <Filter>인게임</Filter>
     </ClInclude>
     <ClInclude Include="bat.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="minotaurs.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="redDragon.h">
       <Filter>몬스터</Filter>
     </ClInclude>
   </ItemGroup>

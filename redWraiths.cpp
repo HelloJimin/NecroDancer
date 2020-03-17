@@ -22,7 +22,7 @@ HRESULT redWraiths::init(string name, int x, int y, int coin, tagTile * map)
 
 void redWraiths::frontCheck()
 {
-	_nextTileIndex = _aStar->aStarTile(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
+	_nextTileIndex = _aStar->aStarStraight(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
 	aniCheck();
 
 	_teleportCnt++;
@@ -105,7 +105,6 @@ void redWraiths::teleport()
 	{
 		_teleportCnt++;
 		_isTeleport = false;
-		_isLockOn = true;
 		_isMove = false;
 		int playerTile = PLAYER->currentTile();
 

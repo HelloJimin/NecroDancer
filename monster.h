@@ -33,7 +33,6 @@ protected:
 	bool _isDrop;
 	bool _isAttack;
 	bool _isHit;
-	bool _isLockOn;
 
 public:
 	monster();
@@ -64,5 +63,7 @@ public:
 	bool playerCheck();
 	POINT getXY() { return PointMake(_currentX, _currentY); }
 	RECT getRc() { return _collisionRc; }
+
+
 };
 

@@ -176,11 +176,13 @@
     <ClInclude Include="lobbyScene.h" />
     <ClInclude Include="mainGame.h" />
     <ClInclude Include="mapTool.h" />
+    <ClInclude Include="minotaurs.h" />
     <ClInclude Include="monster.h" />
     <ClInclude Include="monsterManager.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
+    <ClInclude Include="redDragon.h" />
     <ClInclude Include="redWraiths.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resource1.h" />
@@ -228,10 +230,12 @@
     <ClCompile Include="mainGame+Image.cpp" />
     <ClCompile Include="mainGame.cpp" />
     <ClCompile Include="mapTool.cpp" />
+    <ClCompile Include="minotaurs.cpp" />
     <ClCompile Include="monster.cpp" />
     <ClCompile Include="monsterManager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="progressBar.cpp" />
+    <ClCompile Include="redDragon.cpp" />
     <ClCompile Include="redWraiths.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="shovel.cpp" />

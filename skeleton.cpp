@@ -23,6 +23,7 @@ HRESULT skeleton::init(string name, int x, int y, int coin, tagTile * map)
 void skeleton::frontCheck()
 {
 	_nextTileIndex = _aStar->aStarTile(_pCurrentMap,_currentTileIndex ,PLAYER->currentTile());
+	
 	aniCheck();
 }
 
