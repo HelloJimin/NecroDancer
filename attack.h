@@ -6,13 +6,23 @@ enum attackForm
 	FORM_BIG,
 	FORM_SPEAR,
 	FORM_BOW,
-	FORM_WHIP
+	FORM_WHIP,
+	FORM_NONE
+};
+struct isThrow
+{
+	image* slot;
+	image* item;
+	bool fire;
+	RECT rc;
 };
 class attack : public item
 {
 private:
 	attackForm _form;
 	float _power;
+
+	isThrow _throw;
 
 public:
 	attack();
@@ -21,5 +31,8 @@ public:
 	virtual HRESULT init() override;
 	virtual void active() override;
 	void update() override;
+
+	void render(HDC hdc) override;
+	bool getBool() { return _throw.fire; }
 };
 

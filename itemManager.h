@@ -7,7 +7,7 @@
 #include"coin.h"
 #include"dagger.h"
 #include "singletonBase.h"
-
+#include"bomb.h"
 class itemManager :  public singletonBase<itemManager>
 {
 private:

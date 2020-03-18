@@ -59,14 +59,10 @@ void inventory::addItem(item * item)
 		//	_vItem.insert(_vItem.begin(), item);
 		//}
 	}
+
 	else _vItem.push_back(item);
 
-	for (int i = 0; i < _vItem.size(); ++i)
-	{
-		_vItem[i]->setInven(true);
-		_vItem[i]->setRect(PointMake(30+i * 66, 20));
-		_vItem[i]->rcSet();
-	}
+	itemPosionSet();
 }
 
 void inventory::swapItem(int arrNum, item*& item)
@@ -75,13 +71,7 @@ void inventory::swapItem(int arrNum, item*& item)
 	_vItem[arrNum]->setInven(false);
 	swap(_vItem[arrNum], item);
 
-	//이부분함수화할수있으면 함수화 해보자. 폭탄 위치 조정해야됨
-	for (int i = 0; i < _vItem.size(); ++i)
-	{
-		_vItem[i]->setInven(true);
-		_vItem[i]->setRect(PointMake(30 + i * 66, 20));
-		_vItem[i]->rcSet();
-	}
+	itemPosionSet();
 }
 
 item * inventory::getWeapon()
@@ -90,6 +80,7 @@ item * inventory::getWeapon()
 	{
 		if (_vItem[i]->getType() == ATTACK) return _vItem[i];
 	}
+	return NULL;
 }
 
 item * inventory::getShovel()
@@ -97,5 +88,46 @@ item * inventory::getShovel()
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
 		if (_vItem[i]->getType() == SHOVEL) return _vItem[i];
+	}
+	return NULL;
+}
+
+item * inventory::getBomb()
+{
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		if (_vItem[i]->getType() == BOMB) return _vItem[i];
+	}
+	return NULL;
+}
+
+void inventory::throwItem()
+{
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		if (_vItem[i]->getType() == ATTACK)
+		{
+			_vItem.erase(_vItem.begin() + i);
+			break;
+		}
+	}
+}
+
+void inventory::itemPosionSet()
+{
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		_vItem[i]->setInven(true);
+		if (_vItem[i]->getType() != BOMB) _vItem[i]->setRect(PointMake(30 + i * 66, 20));
+
+		if (_vItem[i]->getType() == BOMB && getWeapon() == NULL)
+		{
+			_vItem[i]->setRect(PointMake(30, 20 + 66));
+		}
+		else if (_vItem[i]->getType() == BOMB && getWeapon() != NULL)
+		{
+			_vItem[i]->setRect(PointMake(30, 20 + 66+66));
+		}
+		_vItem[i]->rcSet();
 	}
 }

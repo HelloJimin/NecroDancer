@@ -50,7 +50,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("삽", "images/item/shovel.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("무기", "images/item/attack.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("보디", "images/item/body.bmp",60, 66, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("폭탄", "images/item/bomb.bmp",60, 66, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("폭탄슬롯", "images/item/bomb.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("아이템", "images/item/item.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("횃불", "images/item/torch.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("신발", "images/item/feet.bmp",60, 66, true, RGB(255, 0, 255));
@@ -138,6 +138,18 @@ void mainGame::imagesInit()
 	EFFECTMANAGER->addEffect("단검Up", "images/effect/단검Up.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 100);
 	EFFECTMANAGER->addEffect("단검Down", "images/effect/단검Down.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 100);
 
+	EFFECTMANAGER->addEffect("대검L", "images/effect/대검L.bmp",  69 * 3, 69 * 3, 23 * 3, 69 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("대검R", "images/effect/대검R.bmp",  69 * 3, 69 * 3, 23 * 3, 69 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("대검Up", "images/effect/대검Up.bmp", 69 * 3, 69 * 3, 69 * 3, 23 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("대검Down", "images/effect/대검Down.bmp", 69 * 3, 69 * 3, 69 * 3, 23 * 3, 1, 0.3f, 100);
+
+	EFFECTMANAGER->addEffect("화살끝L", "images/effect/화살끝L.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("화살끝R", "images/effect/화살끝R.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("화살끝Up", "images/effect/화살끝Up.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("화살끝Down", "images/effect/화살끝Down.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("화살라인가로", "images/effect/화살라인가로.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f, 100);
+	EFFECTMANAGER->addEffect("화살라인세로", "images/effect/화살라인세로.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f, 100);
+
 	EFFECTMANAGER->addEffect("기본삽", "images/item/nomalShovel.bmp", 48,48,48,48, 1, 0.1f, 100);
 	EFFECTMANAGER->addEffect("티타늄삽", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f, 100);
 	EFFECTMANAGER->addEffect("유리삽", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f, 100);
@@ -149,6 +161,8 @@ void mainGame::imagesInit()
 	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
 	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
 	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 100);
+
+	EFFECTMANAGER->addEffect("폭탄애니", "images/effect/폭탄애니.bmp",89*2,24*2,24*2,24*2, 10, 0.1f, 100);
 
 
 

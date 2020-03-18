@@ -38,6 +38,13 @@ int item::getValue()
 	return 0;
 }
 
+bool item::getBool()
+{
+	return false;
+}
+
+
+
 void item::setItem(slotType type, string name, string description)
 {
 	_name = name;
@@ -66,7 +73,7 @@ void item::setItem(slotType type, string name, string description)
 		_slotImg = IMAGEMANAGER->findImage("¾ÆÀÌÅÛ");
 		break;
 	case BOMB:
-		_slotImg = IMAGEMANAGER->findImage("ÆøÅº");
+		_slotImg = IMAGEMANAGER->findImage("ÆøÅº½½·Ô");
 		break;
 	}
 

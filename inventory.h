@@ -22,6 +22,10 @@ public:
 
 	item* getWeapon();
 	item* getShovel();
+	item* getBomb();
 
+	void throwItem();
+
+	void itemPosionSet();
 };
 

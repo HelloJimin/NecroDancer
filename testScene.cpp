@@ -32,6 +32,7 @@ HRESULT testScene::init()
 	_tiles[319].item = ITEMMANAGER->addItem("±âº»Ã¢");
 	_tiles[320].item = ITEMMANAGER->addItem("±âº»Ã¤Âï");
 	_tiles[321].item = ITEMMANAGER->addItem("¼è°©¿Ê");
+	_tiles[322].item = ITEMMANAGER->addItem("ÆøÅº");
 
 
 

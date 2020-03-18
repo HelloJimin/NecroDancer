@@ -33,29 +33,6 @@ void monsterManager::update()
 		else ++i;
 	}
 }
-
-void monsterManager::frontRender(HDC hdc)
-{
-	for (int i = 0; i < _vMonster.size(); ++i)
-	{
-		if (PLAYER->currentTile() >= _vMonster[i]->currentTile())
-		{
-			_vMonster[i]->render(hdc);
-		}
-	}
-}
-
-void monsterManager::backRender(HDC hdc)
-{
-	for (int i = 0; i < _vMonster.size(); ++i)
-	{
-		if (PLAYER->currentTile() < _vMonster[i]->currentTile())
-		{
-			_vMonster[i]->render(hdc);
-		}
-	}
-}
-
 void monsterManager::render(HDC hdc)
 {
 	for (int i = 0; i < _vMonster.size(); ++i)
@@ -75,7 +52,6 @@ void monsterManager::setMap(tagTile * map)
 			summonControl(map[i].startPoint, map[i].x, map[i].y);
 		}
 	}
-
 }
 
 void monsterManager::summonGreenSlime(string name, int x, int y)

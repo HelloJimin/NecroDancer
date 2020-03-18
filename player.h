@@ -64,7 +64,8 @@ private:
 
 	char _str[128];
 	RECT _temp;
-	bool _equipWeapon;
+
+	attackForm _equipWeaponType;
 public:
 	player();
 	~player();
@@ -76,8 +77,9 @@ public:
 	void UIrender(HDC hdc);
 
 	void setMap(tagTile tile[]);	// 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
-
+	tagTile* getMap() { return _pCurrentMap; }
 	void frontCheck();
+	void attack();
 	void move();
 	int currentTile() { return _currentTileIndex; }
 	int nextTile() { return _nextTileIndex; }
@@ -103,6 +105,13 @@ public:
 
 	DIRECTION getPlayerDir() { return _direction; }
 	void setFrameY(int frameNum) { _frameY = frameNum; }
-	void setWeapom(bool weapon) { _equipWeapon = weapon; }
+	void setWeapom(attackForm form) { _equipWeaponType = form; }
+
+	void effectControl(attackForm form, int monArrNum);
+	bool rengeCheck(int monArrNum, int tile);
+	bool throwRengeCheck(int nextTile);
+
+	void arrowEffect(attackForm form, int monArrNum);
+	void throwEffect(int endTile, int throwRenge);
 };
 

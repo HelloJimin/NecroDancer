@@ -56,16 +56,10 @@ void player::release()
 
 void player::update()
 {
-	//if (KEYMANAGER->isOnceKeyDown('C'))
-	//{
-	//	EFFECTMANAGER->play("드래곤브레스1", _pCurrentMap[_currentTileIndex + 1].x, _pCurrentMap[_currentTileIndex + 1].y);
-	//	EFFECTMANAGER->play("드래곤브레스2", _pCurrentMap[_currentTileIndex + 1].x+48, _pCurrentMap[_currentTileIndex + 2].y);
-	//	EFFECTMANAGER->play("드래곤브레스3", _pCurrentMap[_currentTileIndex + 1].x+48*2, _pCurrentMap[_currentTileIndex + 3].y);
-	//	EFFECTMANAGER->play("드래곤브레스4", _pCurrentMap[_currentTileIndex + 1].x+48*3, _pCurrentMap[_currentTileIndex + 4].y);
-	//	EFFECTMANAGER->play("드래곤브레스5", _pCurrentMap[_currentTileIndex + 1].x+48*4, _pCurrentMap[_currentTileIndex + 5].y);
-	//}
 	_inven->update();
+	if(_inven->getBomb() !=NULL)_inven->getBomb()->active();
 	keyControl();
+	attack();
 	move();
 	animation();
 }
@@ -113,32 +107,26 @@ void player::frontCheck()
 	}
 
 	//타일 앞의 몬스터 판별 있을시 공격
-	if (_equipWeapon)
+	if (_inven->getWeapon() != NULL)
 	{
+		//던지기
+		if (_inven->getWeapon()->getBool())
+		{
+			_isAttack = true;
+			return;
+		}
+
+		//평타
 		_inven->getWeapon()->active();
+		int monsterSize = MONSTERMANAGER->getMonster().size();
+
 		for (int i = 0; i < _status.atkRenge.size(); ++i)
 		{
-			for (int k = 0; k < MONSTERMANAGER->getMonster().size(); ++k)
+			for (int k = 0; k < monsterSize; ++k)
 			{
 				if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
 				{
-					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
-
-					switch (_direction)
-					{
-					case LEFT:
-						EFFECTMANAGER->play("단검L", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
-						break;
-					case RIGHT:
-						EFFECTMANAGER->play("단검R", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
-						break;
-					case UP:
-						EFFECTMANAGER->play("단검Up", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
-						break;
-					case DOWN:
-						EFFECTMANAGER->play("단검Down", MONSTERMANAGER->getMonster()[k]->getXY().x, MONSTERMANAGER->getMonster()[k]->getXY().y);
-						break;
-					}
+					_isAttack = true;
 					return;
 				}
 			}
@@ -159,6 +147,121 @@ void player::frontCheck()
 		mine();
 		_nextTileIndex = _currentTileIndex;
 	}
+}
+
+void player::attack()
+{
+	if (!_isAttack) return;
+
+	if (_inven->getWeapon()->getBool())
+	{
+		int arrowRenge = 0;
+		int temp = _nextTileIndex;
+
+		switch (_direction)
+		{
+		case LEFT:
+			while (throwRengeCheck(temp))
+			{
+				arrowRenge++;
+				temp--;
+			}
+			break;
+		case RIGHT:
+			while (throwRengeCheck(temp))
+			{
+				arrowRenge++;
+				temp++;
+			}
+			break;
+		case UP:
+			while (throwRengeCheck(temp))
+			{
+				arrowRenge++;
+				temp -= TILEY;
+			}
+			break;
+		case DOWN:
+			while (throwRengeCheck(temp))
+			{
+				arrowRenge++;
+				temp += TILEY;
+			}
+			break;
+		}
+		throwEffect(temp,arrowRenge);
+
+		int monsterSize = MONSTERMANAGER->getMonster().size();
+		for (int i = 0; i < arrowRenge; ++i)
+		{
+			for (int k = 0; k < monsterSize; ++k)
+			{
+				int pRenge;
+				switch (_direction)
+				{
+				case LEFT:
+					pRenge = _nextTileIndex - i;
+					break;
+				case RIGHT:
+					pRenge = _nextTileIndex + i;
+					break;
+				case UP:
+					pRenge = _nextTileIndex - (i*TILEX);
+					break;
+				case DOWN:
+					pRenge = _nextTileIndex + (i*TILEX);
+					break;
+				}
+				int mTile = MONSTERMANAGER->getMonster()[k]->currentTile();
+
+				if (pRenge == mTile)
+				{
+					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+				}
+			}
+		}
+		switch (_direction)
+		{
+		case LEFT:
+			_pCurrentMap[temp + 1].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
+			break;
+		case RIGHT:
+			_pCurrentMap[temp - 1].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
+			break;
+		case UP:
+			_pCurrentMap[temp + TILEX].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
+			break;
+		case DOWN:
+			_pCurrentMap[temp - TILEX].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
+			break;
+		}
+		_inven->throwItem();
+		_inven->itemPosionSet();
+		_isAttack = false;
+		
+		return;
+	}
+
+	int monsterSize = MONSTERMANAGER->getMonster().size();
+	for (int i = 0; i < _status.atkRenge.size(); ++i)
+	{
+		for (int k = 0; k < monsterSize; ++k)
+		{
+			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
+			{
+				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+
+				effectControl(_equipWeaponType, k);
+
+				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
+				{
+					_isAttack = false;
+					return;
+				}
+			}
+		}
+	}
+	_isAttack = false;
 }
 
 void player::move()
@@ -536,6 +639,172 @@ bool player::monsterCheck()
 
 
 
+}
+
+void player::effectControl(attackForm form , int monArrNum)
+{
+	switch (form)
+	{
+	case FORM_SHORT: //단검
+		switch (_direction)
+		{
+		case LEFT:
+			EFFECTMANAGER->play("단검L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;
+		case RIGHT:
+			EFFECTMANAGER->play("단검R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;
+		case UP:
+			EFFECTMANAGER->play("단검Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;
+		case DOWN:
+			EFFECTMANAGER->play("단검Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;
+		}
+		break;
+	case FORM_BIG: //대검
+		switch (_direction)
+		{
+		case LEFT:
+			EFFECTMANAGER->play("대검L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;				 
+		case RIGHT:				 
+			EFFECTMANAGER->play("대검R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;				 
+		case UP:				 
+			EFFECTMANAGER->play("대검Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;				 
+		case DOWN:				 
+			EFFECTMANAGER->play("대검Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			break;
+		}
+		break;
+	case FORM_SPEAR: //창
+		arrowEffect(form,monArrNum);
+		break;
+	case FORM_BOW: //활
+		arrowEffect(form, monArrNum);
+		break;
+	case FORM_WHIP: //채찍
+		break;
+	}
+}
+
+bool player::rengeCheck(int monArrNum, int tile)
+{
+	if (MONSTERMANAGER->getMonster()[monArrNum]->currentTile() == tile) return false;
+	else return true;
+}
+
+bool player::throwRengeCheck(int nextTile)
+{
+	if (_pCurrentMap[nextTile].obj == OBJ_NOMALWALL)return false;
+	if (_pCurrentMap[nextTile].obj == OBJ_SKULLWALL)return false;
+	if (_pCurrentMap[nextTile].obj == OBJ_WHITEWALL)return false;
+	if (_pCurrentMap[nextTile].obj == OBJ_GOLDWALL)return false;
+	if (_pCurrentMap[nextTile].obj == OBJ_IRONWALL)return false;
+	if (_pCurrentMap[nextTile].obj == OBJ_NEVERWALL)return false;
+
+	else return true;
+}
+
+void player::arrowEffect(attackForm form, int monArrNum)
+{
+	int arrowRenge = 0;
+	int temp = _nextTileIndex;
+
+	switch (_direction)
+	{
+	case LEFT:
+		EFFECTMANAGER->play("화살끝L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		while (rengeCheck(monArrNum, temp))
+		{
+			arrowRenge++;
+			temp--;
+		}
+		break;
+	case RIGHT:
+		EFFECTMANAGER->play("화살끝R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		while (rengeCheck(monArrNum, temp))
+		{
+			arrowRenge++;
+			temp++;
+		}
+		break;
+	case UP:
+		EFFECTMANAGER->play("화살끝Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		while (rengeCheck(monArrNum, temp))
+		{
+			arrowRenge++;
+			temp -= TILEY;
+		}
+		break;
+	case DOWN:
+		EFFECTMANAGER->play("화살끝Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		while (rengeCheck(monArrNum, temp))
+		{
+			arrowRenge++;
+			temp += TILEY;
+		}
+		break;
+	}
+
+	for (int i = 0; i < arrowRenge; i++)
+	{
+		switch (_direction)
+		{
+		case LEFT:
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x - ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			break;
+		case RIGHT:
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x + ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			break;
+		case UP:
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - (i * TILEX));
+			break;
+		case DOWN:
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y + (i * TILEX));
+			break;
+		}
+	}
+}
+
+void player::throwEffect(int endTile, int throwRenge)
+{
+	switch (_direction)
+	{
+	case LEFT:
+		EFFECTMANAGER->play("화살끝L", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		break;
+	case RIGHT:
+		EFFECTMANAGER->play("화살끝R", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		break;
+	case UP:
+		EFFECTMANAGER->play("화살끝Up", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		break;
+	case DOWN:
+		EFFECTMANAGER->play("화살끝Down", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		break;
+	}
+
+	for (int i = 0; i < throwRenge; i++)
+	{
+		switch (_direction)
+		{
+		case LEFT:
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x - ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			break;
+		case RIGHT:
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x + ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			break;
+		case UP:
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - (i * TILEX));
+			break;
+		case DOWN:
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x , _pCurrentMap[_nextTileIndex].y + (i * TILEX));
+			break;
+		}
+	}
 }
 
 

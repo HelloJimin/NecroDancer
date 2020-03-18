@@ -11,6 +11,14 @@ attack::attack(string name, slotType type, attackForm form, int power, string de
 	setItem(type, name, description);
 	_power = power;
 	_form = form;
+
+	if (form == FORM_SHORT)
+	{
+		_throw.slot = IMAGEMANAGER->findImage("던지기");
+		_throw.item = IMAGEMANAGER->findImage(name);
+		_throw.fire = false;
+		_throw.rc = RectMakeCenter(40,30+66,_throw.slot->getWidth(),_throw.slot->getHeight());
+	}
 }
 
 
@@ -20,7 +28,7 @@ attack::~attack()
 
 HRESULT attack::init()
 {
-	PLAYER->setWeapom(true);
+	PLAYER->setWeapom(_form);
 	PLAYER->playerStatus().atk = _power;
 	PLAYER->playerStatus().atkRenge.clear();
 
@@ -191,5 +199,25 @@ void attack::active()
 void attack::update()
 {
 	animation();
+	if (_form == FORM_SHORT)
+	{
+		if (KEYMANAGER->isOnceKeyDown('Z'))
+		{
+			_throw.fire = true;
+			_throw.slot = IMAGEMANAGER->findImage("던지세요");
+		}
+	}
 }
+
+void attack::render(HDC hdc)
+{
+	item::render(hdc);
+
+	if (_inInventory && _form == FORM_SHORT)
+	{
+		_throw.slot->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left, _throw.rc.top);
+		_throw.item->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left + 8, _throw.rc.top + 11);
+	}
+}
+
 

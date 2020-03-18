@@ -71,6 +71,8 @@ item * itemManager::addItem(string name)
 	if (name == "±âº»È¶ºÒ")return new torch("±âº»È¶ºÒ",TORCH,1,"½Ã¾ß1Áõ°¡");
 	if (name == "ºû³ª´ÂÈ¶ºÒ")return new torch("ºû³ª´ÂÈ¶ºÒ",TORCH,3,"½Ã¾ß3Áõ°¡");
 
+	if (name == "ÆøÅº")return new bomb("ÆøÅº",BOMB,3,"ÆÄ±«");
+
 }
 
 item * itemManager::addCoin(int coinValue, int x, int y)

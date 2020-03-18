@@ -41,6 +41,8 @@ public:
 	virtual void active();
 
 	virtual int getValue();
+	virtual bool getBool();
+
 
 
 	void setItem(slotType type, string name, string description);

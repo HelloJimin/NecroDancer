@@ -21,8 +21,6 @@ public:
 	HRESULT init();
 	void release();
 	void update();
-	void frontRender(HDC hdc);
-	void backRender(HDC hdc);
 	void render(HDC hdc);
 	void setMap(tagTile* map);
 
