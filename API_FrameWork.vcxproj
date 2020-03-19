@@ -182,6 +182,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="randomFunction.h" />
+    <ClInclude Include="raycast.h" />
     <ClInclude Include="redDragon.h" />
     <ClInclude Include="redWraiths.h" />
     <ClInclude Include="Resource.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="monsterManager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="progressBar.cpp" />
+    <ClCompile Include="raycast.cpp" />
     <ClCompile Include="redDragon.cpp" />
     <ClCompile Include="redWraiths.cpp" />
     <ClCompile Include="sceneManager.cpp" />

@@ -52,6 +52,7 @@ struct tagTile
 	int f, g, h;
 	string startPoint;
 	string itemPoint;
+	int ray;
 };
 
 //셈플타일 구조체

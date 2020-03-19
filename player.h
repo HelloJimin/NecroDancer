@@ -2,7 +2,7 @@
 #include "singletonBase.h"
 #include "tileNode.h"
 #include "inventory.h"
-
+#include"raycast.h"
 enum DIRECTION
 {
 	LEFT,
@@ -57,6 +57,7 @@ private:
 	int _coin;
 	int _diamond;
 	inventory* _inven;
+	raycast* _ray;
 
 	bool _isDrop;
 	bool _isMove;

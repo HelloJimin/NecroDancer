@@ -21,7 +21,7 @@ HRESULT player::init()
 	_nextTileIndex = 374;
 
 	_direction = DOWN;
-
+	
 	_isMove = false;
 	_moveSpeed = 13;
 	_coin = _diamond = 0;
@@ -46,6 +46,7 @@ HRESULT player::init()
 	_inven = new inventory;
 	_inven->init();
 
+	_ray = new raycast;
 	return S_OK;
 }
 
@@ -62,6 +63,7 @@ void player::update()
 	attack();
 	move();
 	animation();
+	_ray->update();
 }
 
 void player::render(HDC hdc)
@@ -78,6 +80,7 @@ void player::render(HDC hdc)
 
 	_bodyImg->frameRender(hdc, _rc.left, _rc.top - 28, _frameX, _frameY);
 	_headImg->frameRender(hdc, _rc.left, _rc.top - 33, _frameX, 0);
+	_ray->render(hdc);
 }
 
 void player::frontCheck()
