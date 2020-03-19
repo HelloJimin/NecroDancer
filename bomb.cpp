@@ -78,6 +78,9 @@ void bomb::active()
 
 	if (_frameX > _ani->getMaxFrameX())
 	{
+
+		EFFECTMANAGER->play("ÆøÅºÆø¹ß", bombX, bombY);
+
 		tagTile* tempMap = PLAYER->getMap();
 
 		_frameX = 0;

@@ -251,7 +251,9 @@ void player::attack()
 			{
 				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
 
+
 				effectControl(_equipWeaponType, k);
+
 
 				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
 				{
