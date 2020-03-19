@@ -96,13 +96,19 @@ void mapTool::render()
 	{
 		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 		{
-			if (_tiles[i].startPoint == "")continue;
-			if (_tiles[i].startPoint != "플레이어") IMAGEMANAGER->frameRender("맵툴몬스터", getMemDC(), _tiles[i].rc.left - 20, _tiles[i].rc.top - 54, _tiles[i].g, _tiles[i].h);
-			if (_tiles[i].startPoint == "플레이어")	IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
-
+			if (_tiles[i].startPoint == "" || _tiles[i].startPoint == "플레이어")continue;
+			 IMAGEMANAGER->frameRender("맵툴몬스터", getMemDC(), _tiles[i].rc.left - 20, _tiles[i].rc.top - 54, _tiles[i].g, _tiles[i].h);
 		}
 	}
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+		{
+			if (_tiles[i].startPoint == "플레이어")	IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
 
+			if (_tiles[i].itemPoint != "")IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
+		}
+	}
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		for (int i = 0; i < TILEX * TILEY; i++)
@@ -271,7 +277,6 @@ void mapTool::mapInit()
 		//강도
 		_tiles[i].strength = 0;
 
-		_tiles[i].item = NULL;
 		_tiles[i].parent = NULL;
 		_tiles[i].walkable = true;
 		_tiles[i].f = BIGNUM;
@@ -469,7 +474,8 @@ void mapTool::setMap()
 				_tiles[i].g = _currnetTile.x;
 				_tiles[i].h = _currnetTile.y;
 
-				_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
+				if(etcSelect(_currnetTile.x, _currnetTile.y)=="플레이어")_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
+				else _tiles[i].itemPoint = etcSelect(_currnetTile.x, _currnetTile.y);
 			}
 			if (_page == ERASER)
 			{
@@ -487,7 +493,7 @@ void mapTool::setMap()
 				//강도
 				_tiles[i].strength = 0;
 
-				_tiles[i].item = NULL;
+		
 				_tiles[i].parent = NULL;
 				_tiles[i].walkable = true;
 				_tiles[i].f = BIGNUM;
@@ -568,7 +574,8 @@ void mapTool::drage()
 				_tiles[i].g = _currnetTile.x;
 				_tiles[i].h = _currnetTile.y;
 
-				_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
+				if (etcSelect(_currnetTile.x, _currnetTile.y) == "플레이어")_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
+				else _tiles[i].itemPoint = etcSelect(_currnetTile.x, _currnetTile.y);
 			}
 			else if (_page == ERASER)
 			{
@@ -586,7 +593,6 @@ void mapTool::drage()
 				//강도
 				_tiles[i].strength = 0;
 
-				_tiles[i].item = NULL;
 				_tiles[i].parent = NULL;
 				_tiles[i].walkable = true;
 				_tiles[i].f = BIGNUM;
@@ -801,23 +807,23 @@ string mapTool::etcSelect(int frameX, int frameY)
 	if (frameX == 2 && frameY == 0) return "";
 	if (frameX == 3 && frameY == 0) return "";
 
-	if (frameX == 0 && frameY == 1) return "";
-	if (frameX == 1 && frameY == 1) return "";
+	if (frameX == 0 && frameY == 1) return "티타늄단검";
+	if (frameX == 1 && frameY == 1) return "티타늄대검";
 
-	if (frameX == 2 && frameY == 1) return "";
-	if (frameX == 3 && frameY == 1) return "";
+	if (frameX == 2 && frameY == 1) return "티타늄활";
+	if (frameX == 3 && frameY == 1) return "티타늄창";
 
-	if (frameX == 0 && frameY == 2) return "";
-	if (frameX == 1 && frameY == 2) return "";
+	if (frameX == 0 && frameY == 2) return "티타늄채찍";
+	if (frameX == 1 && frameY == 2) return "티타늄삽";
 
-	if (frameX == 2 && frameY == 2) return "";
-	if (frameX == 3 && frameY == 2) return "";
+	if (frameX == 2 && frameY == 2) return "쇠갑옷";
+	if (frameX == 3 && frameY == 2) return "도복";
 
-	if (frameX == 0 && frameY == 3) return "";
-	if (frameX == 1 && frameY == 3) return "";
+	if (frameX == 0 && frameY == 3) return "힘의장화";
+	if (frameX == 1 && frameY == 3) return "발레슈즈";
 
-	if (frameX == 2 && frameY == 3) return "";
-	if (frameX == 3 && frameY == 3) return "";
+	if (frameX == 2 && frameY == 3) return "폭탄";
+	if (frameX == 3 && frameY == 3) return "사과";
 
 	return "";
 }

@@ -70,9 +70,6 @@
     <ClCompile Include="feet.cpp">
       <Filter>아이템</Filter>
     </ClCompile>
-    <ClCompile Include="torch.cpp">
-      <Filter>아이템</Filter>
-    </ClCompile>
     <ClCompile Include="bomb.cpp">
       <Filter>아이템</Filter>
     </ClCompile>
@@ -211,9 +208,6 @@
       <Filter>아이템</Filter>
     </ClInclude>
     <ClInclude Include="feet.h">
-      <Filter>아이템</Filter>
-    </ClInclude>
-    <ClInclude Include="torch.h">
       <Filter>아이템</Filter>
     </ClInclude>
     <ClInclude Include="bomb.h">

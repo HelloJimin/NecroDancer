@@ -6,9 +6,9 @@ bomb::bomb()
 {
 }
 
-bomb::bomb(string name, slotType type, int num, string description)
+bomb::bomb(string name, slotType type, int num, string description, int x, int y)
 {
-	setItem(type, name, description);
+	setItem(type, name, description,  x,  y);
 	_num = num;
 	_ani = IMAGEMANAGER->findImage("气藕局聪");
 	_isFire = false;
@@ -32,7 +32,7 @@ void bomb::update()
 
 	if (!_inInventory)return;
 
-	if (KEYMANAGER->isOnceKeyDown('X') && _num>0)
+	if (KEYMANAGER->isOnceKeyDown('X') && _num>0 && !_isFire)
 	{
 		tagTile* tempMap = PLAYER->getMap();
 		bombTile = PLAYER->currentTile();
@@ -42,33 +42,29 @@ void bomb::update()
 
 		bombX = tempMap[bombTile].x;
 		bombY = tempMap[bombTile].y;
-
-		//EFFECTMANAGER->play("气藕局聪", x, y);
 	}
 	if (_isFire && BEAT->getCnt() % 29 == 0)
 	{
 		_frameX++;
 	}
-
 }
 
 void bomb::render(HDC hdc)
 {
-	if (_inInventory)
+	if (_inInventory && _num > 0)
 	{
 		_itemImg = IMAGEMANAGER->findImage("气藕");
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
 		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left + 8, _rc.top + 11);
 	}
-	else
+	else if(!_inInventory)
 	{
-		//Rectangle(hdc, _rc.left, _rc.top, _rc.right, _rc.bottom);
 		_itemImg->render(hdc, _x - 20, _y - 40);
 	}
 	
 	if (_isFire)
 	{
-		_ani->frameRender(hdc, bombX, bombY, _frameX, 0);
+		_ani->frameRender(EFFECTMANAGER->getDC() , bombX-25, bombY-25, _frameX, 0);
 	}
 }
 
@@ -78,12 +74,13 @@ void bomb::active()
 
 	if (_frameX > _ani->getMaxFrameX())
 	{
+		EFFECTMANAGER->play("气藕气惯", bombX, bombY);
 		tagTile* tempMap = PLAYER->getMap();
 
 		_frameX = 0;
 		_isFire = false;
 
-		int dx[] = { 0, -1, 1, TILEX, TILEY, TILEX-1, TILEX+1, TILEY-1, TILEY+1 };
+		int dx[] = { 0, -1, 1, TILEX, TILEX-1, TILEX+1, -TILEY, -(TILEY-1), -(TILEY+1) };
 
 		for (int i = 0; i < 9; i++)
 		{
@@ -102,7 +99,7 @@ void bomb::active()
 				tempMap[check].obj == OBJ_GOLDWALL ||
 				tempMap[check].obj == OBJ_IRONWALL)
 			{
-				tempMap[check].obj == OBJ_NONE;
+				tempMap[check].obj = OBJ_NONE;
 				tempMap[check].strength = 0;
 				tempMap[check].walkable = true;
 			}
@@ -112,4 +109,14 @@ void bomb::active()
 			}
 		}
 	}
+}
+
+void bomb::setValue(int num)
+{
+	_num += num;
+}
+
+int bomb::getValue()
+{
+	return _num;
 }

@@ -26,6 +26,10 @@ coin::~coin()
 
 void coin::update()
 {
+	_rc = RectMakeCenter(_x, _y, 52, 52);
+	float _tileX = _rc.left / TILESIZE;
+	float _tileY = _rc.top / TILESIZE;
+	_currentTileIndex = _tileX + _tileY * TILEX;
 }
 
 void coin::render(HDC hdc)

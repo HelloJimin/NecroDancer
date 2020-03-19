@@ -21,4 +21,6 @@ public:
 	void debugRender();
 	void setUp();
 	void load();
+
+	void groundPattern();
 };

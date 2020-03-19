@@ -26,5 +26,7 @@ public:
 	void stopEffect();
 	//이펙트 재생중인지 상태값 가져오기
 	bool getIsRunning() { return _isRunning; }
+
+	HDC getDC() { return getMemDC(); }
 };
 

@@ -26,7 +26,7 @@ private:
 
 public:
 	attack();
-	attack(string name, slotType type, attackForm form, int power, string description);
+	attack(string name, slotType type, attackForm form, int power, string description, int x, int y);
 	~attack();
 	virtual HRESULT init() override;
 	virtual void active() override;

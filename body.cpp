@@ -6,9 +6,9 @@ body::body()
 {
 }
 
-body::body(string name, slotType type, int power, string description)
+body::body(string name, slotType type, int power, string description, int x, int y)
 {
-	setItem(type, name, description);
+	setItem(type, name, description,  x,  y);
 	_power = power;
 }
 

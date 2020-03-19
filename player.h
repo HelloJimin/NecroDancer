@@ -92,13 +92,13 @@ public:
 
 	void HPbarSet();
 	void mine();
-	void getItem();
+	void getItem(int itemTile);
 	void hit(float damege);
 
 	void keyControl();
 	void animation();
-	bool wallCheck();
-	bool monsterCheck();
+	bool walkableCheck();
+	bool wallCheck(int tile);
 
 	int getX() { return _currentX; }
 	int getY() { return _currentY; }
@@ -107,11 +107,13 @@ public:
 	void setFrameY(int frameNum) { _frameY = frameNum; }
 	void setWeapom(attackForm form) { _equipWeaponType = form; }
 
-	void effectControl(attackForm form, int monArrNum);
+	void effectControl(attackForm form, int rengeArrNum, int monArrNum);
 	bool rengeCheck(int monArrNum, int tile);
 	bool throwRengeCheck(int nextTile);
 
 	void arrowEffect(attackForm form, int monArrNum);
 	void throwEffect(int endTile, int throwRenge);
+
+	void moveCheck();
 };
 

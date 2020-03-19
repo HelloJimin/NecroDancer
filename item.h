@@ -29,6 +29,8 @@ protected:
 	int price;
 	int diamondPrice;
 	bool _isGlass;
+
+	int _currentTileIndex;
 public:
 	item();
 	~item();
@@ -42,10 +44,10 @@ public:
 
 	virtual int getValue();
 	virtual bool getBool();
+	virtual void setValue(int num);
 
 
-
-	void setItem(slotType type, string name, string description);
+	void setItem(slotType type, string name, string description, int x, int y);
 	void animation();
 	void draw(HDC hdc);
 
@@ -60,5 +62,10 @@ public:
 	slotType getType() { return _type; }
 
 	string getName() { return _name; }
+
+	int getCurrentTile() { return _currentTileIndex; }
+
+	float getX() { return _x; }
+	float getY() { return _y; }
 };
 

@@ -50,7 +50,6 @@ void monster::update()
 {
 	_pCurrentMap[_currentTileIndex].walkable = false;
 
-
 	choiceAction();
 	
 	attack();
@@ -198,7 +197,8 @@ bool monster::die()
 		if (_vHp[i].hp > 0.0f) return false;
 	}
 	_pCurrentMap[_currentTileIndex].walkable = true;
-	_pCurrentMap[_currentTileIndex].item = ITEMMANAGER->addCoin(_coin, _pCurrentMap[_currentTileIndex].x, _pCurrentMap[_currentTileIndex].y);
+	ITEMMANAGER->addCoin(_coin, _pCurrentMap[_currentTileIndex].x, _pCurrentMap[_currentTileIndex].y);
+
 	return true;
 }
 

@@ -13,9 +13,9 @@ inventory::~inventory()
 
 HRESULT inventory::init()
 {
-	addItem(ITEMMANAGER->addItem("기본삽"));
-	addItem(ITEMMANAGER->addItem("기본단검"));
-	///_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
+	addItem(ITEMMANAGER->addItem("기본삽",1,1));
+	addItem(ITEMMANAGER->addItem("기본단검",1,1));
+
 	return S_OK;
 }
 
@@ -65,12 +65,20 @@ void inventory::addItem(item * item)
 	itemPosionSet();
 }
 
-void inventory::swapItem(int arrNum, item*& item)
+void inventory::swapItem(int arrNum, item*& _item, int itemNum)
 {
-	item->init();
+	if (_item->getType() == BOMB)
+	{
+		_vItem[arrNum]->setValue(_item->getValue());
+		ITEMMANAGER->removeItem(itemNum);
+		return;
+	}
+	_item->init();
 	_vItem[arrNum]->setInven(false);
-	swap(_vItem[arrNum], item);
+	_vItem[arrNum]->setRect(PointMake(_item->getX(), _item->getY()));
 
+	swap(_vItem[arrNum], _item);
+	
 	itemPosionSet();
 }
 
