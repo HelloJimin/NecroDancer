@@ -130,17 +130,6 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.mp3", true, true);
 	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);
 
-	//효과음
-	SOUNDMANAGER->addSound("hit", "sound/hit.mp3", false, false);
-	SOUNDMANAGER->addSound("mineOK", "sound/mineOK.mp3", false, false);
-	SOUNDMANAGER->addSound("mineFAIL", "sound/mineFAIL.mp3", false, false);
-	SOUNDMANAGER->addSound("openDoor", "sound/openDoor.mp3", false, false);
-	SOUNDMANAGER->addSound("bomb", "sound/bomb.mp3", false, false);
-	SOUNDMANAGER->addSound("eat", "sound/eat.mp3", false, false);
-	SOUNDMANAGER->addSound("dig", "sound/dig.mp3", false, false);
-	SOUNDMANAGER->addSound("atk", "sound/atk.mp3", false, false);
-	SOUNDMANAGER->addSound("armor", "sound/armor.mp3", false, false);
-
 	//EFFECT
 	EFFECTMANAGER->addEffect("할퀴기", "images/effect/할퀴기.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.3f, 5);
 	EFFECTMANAGER->addEffect("점프먼지", "images/effect/jumpDust.bmp", 50*2, 10*2, 10*2, 10*2, 1, 0.5f, 5);

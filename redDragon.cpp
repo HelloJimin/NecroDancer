@@ -18,7 +18,7 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 	_aStar = new aStar;
 	_atk = 2.0f;
 	_breathRenge = 0;
-	_minePower = 2;
+	_minePower = 3;
 	addHp();
 	addHp();
 	addHp();
