@@ -38,6 +38,7 @@ void blueSlime::choiceAction()
 {
 	if (BEAT->getCnt() % 58 == 0)
 	{
+		frontCheck();
 		if (playerCheck())
 		{
 			_isAttack = true;
@@ -51,7 +52,6 @@ void blueSlime::choiceAction()
 			return;
 		}
 
-		frontCheck();
 
 		if (walkableCheck())
 		{
@@ -60,6 +60,7 @@ void blueSlime::choiceAction()
 			_pCurrentMap[_nextTileIndex].walkable = false;
 			EFFECTMANAGER->play("점프먼지", _currentX, _currentY);
 			_currentTileIndex = _nextTileIndex;
+
 		}
 		else
 		{

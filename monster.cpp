@@ -106,6 +106,7 @@ void monster::attack()
 	int x = PLAYER->getCollisionRc().left + (PLAYER->getCollisionRc().right - PLAYER->getCollisionRc().left) / 2;
 	int y = PLAYER->getCollisionRc().top + (PLAYER->getCollisionRc().bottom - PLAYER->getCollisionRc().top) / 2;
 	EFFECTMANAGER->play("ÇÒÄû±â", x , y);
+	SOUNDMANAGER->play("hit");
 	_isAttack = false;
 }
 

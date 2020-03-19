@@ -72,8 +72,10 @@ void bomb::active()
 {
 	if (!_isFire) return;
 
+	
 	if (_frameX > _ani->getMaxFrameX())
 	{
+		SOUNDMANAGER->play("bomb");
 		EFFECTMANAGER->play("ÆøÅºÆø¹ß", bombX, bombY);
 		tagTile* tempMap = PLAYER->getMap();
 
@@ -106,6 +108,7 @@ void bomb::active()
 			if (check == PLAYER->currentTile())
 			{
 				PLAYER->hit(_power);
+
 			}
 		}
 	}

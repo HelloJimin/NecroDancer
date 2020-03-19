@@ -248,7 +248,7 @@ void player::attack()
 			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
 			{
 				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
-
+				SOUNDMANAGER->play("atk");
 				effectControl(_equipWeaponType, i, k);
 
 				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
@@ -477,8 +477,15 @@ void player::mine()
 		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
 		_pCurrentMap[_nextTileIndex].strength = 0;
 		_pCurrentMap[_nextTileIndex].walkable = true;
+		if (_pCurrentMap[_nextTileIndex].obj == OBJ_DOOR) 		SOUNDMANAGER->play("openDoor");
+		else 		SOUNDMANAGER->play("mineOK");
+		//SOUNDMANAGER->play("dig");
 	}
-	else _rhythm = 0;
+	else
+	{
+		_rhythm = 0;
+		SOUNDMANAGER->play("mineFAIL");
+	}
 }
 
 void player::getItem(int itemTile)
