@@ -20,7 +20,7 @@ void effectManager::release()
 {
 	viTotalEffect vIter;		//모든 이펙트 관리할 벡터
 	miEffect mIter;				//이펙트클래스 담겨있는 녀석
-	
+
 	for (vIter = m_vTotalEffect.begin(); vIter != m_vTotalEffect.end(); ++vIter)
 	{
 		//이펙트가 담겨 있는 맵
@@ -87,11 +87,11 @@ void effectManager::render()
 
 void effectManager::addEffect(string effectKey, char * imageName, int imageW, int imageH, int frameW, int frameH, int fps, float elapsedTime, int buffer)
 {
-	
+
 	image* img;
 	vEffect vEffectBuffer; //이펙트 버퍼
 	mEffect mArrEffect;		//맵으로 만든 이펙트
-	
+
 							//이미지가ㅏ 이미지매니저에 등록이 되어 있다면
 	if (IMAGEMANAGER->findImage(imageName))
 	{
@@ -138,25 +138,6 @@ void effectManager::play(string effectKey, int x, int y)
 				if ((*vArrIter)->getIsRunning())continue;
 				(*vArrIter)->startEffect(x, y);
 				return;
-			}
-		}
-	}
-}
-
-HDC effectManager::getDC()
-{
-	viTotalEffect vIter;
-	miEffect mIter;
-
-	for (vIter = m_vTotalEffect.begin(); vIter != m_vTotalEffect.end(); ++vIter)
-	{
-		for (mIter = vIter->begin(); mIter != vIter->end(); ++mIter)
-		{
-			viEffect vArrIter;
-
-			for (vArrIter = mIter->second.begin(); vArrIter != mIter->second.end(); ++vArrIter)
-			{
-				return (*vArrIter)->getMemDC();
 			}
 		}
 	}

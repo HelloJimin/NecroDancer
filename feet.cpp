@@ -6,9 +6,9 @@ feet::feet()
 {
 }
 
-feet::feet(string name, slotType type, string description, int x, int y)
+feet::feet(string name, slotType type, string description)
 {
-	setItem(type, name, description,  x,  y);
+	setItem(type, name, description);
 	
 }
 

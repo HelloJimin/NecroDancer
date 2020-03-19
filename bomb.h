@@ -11,14 +11,12 @@ private:
 	int bombX, bombY , bombTile;
 public:
 	bomb();
-	bomb(string name, slotType type, int num, string description, int x, int y);
+	bomb(string name, slotType type, int num, string description);
 	~bomb();
 	virtual HRESULT init() override;
 
 	void update() override;
 	void render(HDC hdc) override;
 	void active() override;
-	void setValue(int num) override;
-	int getValue() override;
 };
 

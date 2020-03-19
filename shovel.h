@@ -7,7 +7,7 @@ private:
 
 public:
 	shovel();
-	shovel(slotType type, int power, string name, string description, int x, int y);
+	shovel(slotType type, int power, string name, string description);
 
 	~shovel();
 	virtual HRESULT init() override;

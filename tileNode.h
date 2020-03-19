@@ -46,12 +46,13 @@ struct tagTile
 	int x, y;					//타일 중점좌표
 	int strength;				//타일의 강도
 
+	item* item;
+
 	int node;
 	bool walkable;
 	tagTile* parent;
 	int f, g, h;
 	string startPoint;
-	string itemPoint;
 };
 
 //셈플타일 구조체

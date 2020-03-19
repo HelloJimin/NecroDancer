@@ -10,21 +10,17 @@ HRESULT mainGame::init()
 {
 	gameNode::init(true);
 	imagesInit();
-
-	BEAT->init();
-	PLAYER->init();
-
 	ITEMMANAGER->init();
 	MONSTERMANAGER->init();
-
+	ANIMATIONMANAGER->init();
+	BEAT->init();
+	PLAYER->init();
 	SetTextAlign(CAMERAMANAGER->getCameraDC(), TA_RIGHT);
 	
 	SCENEMANAGER->addScene("맵툴신", new mapTool);
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->addScene("로비신", new lobbyScene);
-
 	SCENEMANAGER->changeScene("테스트신");
-
 	return S_OK;
 }
 
@@ -33,16 +29,14 @@ void mainGame::release()
 	gameNode::release();
 	PLAYER->release();
 	ITEMMANAGER->release();
-	MONSTERMANAGER->release();
 }
 
 void mainGame::update()
 {
 	gameNode::update();
-	SCENEMANAGER->update();
+	ANIMATIONMANAGER->update();
 	EFFECTMANAGER->update();
-
-	//ANIMATIONMANAGER->update();
+	SCENEMANAGER->update();
 }
 
 void mainGame::render(/*HDC hdc*/)
@@ -58,10 +52,10 @@ void mainGame::render(/*HDC hdc*/)
 	DeleteObject(myBrush);
 	//============================================================================이 위로 건드리면 뒤짐=======================================================================================
 	
+	ANIMATIONMANAGER->render();
 	SCENEMANAGER->render();
 	EFFECTMANAGER->render();
 	TIMEMANAGER->render(CAMERAMANAGER->getCameraDC());
-	//ANIMATIONMANAGER->render();
 
 	//============================================================================이 밑으로 건드리면 뒤짐=======================================================================================
 	//백버퍼의 내용을 HDC에 그린다.(지우지마!!)

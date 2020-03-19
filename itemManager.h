@@ -3,17 +3,15 @@
 #include "attack.h"
 #include"body.h"
 #include"feet.h"
+#include"torch.h"
 #include"coin.h"
 #include"dagger.h"
 #include "singletonBase.h"
 #include"bomb.h"
-#include"tileNode.h"
 class itemManager :  public singletonBase<itemManager>
 {
 private:
-	tagTile* _map;
 
-	vector<item*> _vItem;
 public:
 	itemManager();
 	~itemManager();
@@ -23,15 +21,8 @@ public:
 	void update();
 	void render(/*HDC hdc*/);
 
-	item* addItem(string name, int x, int y);
-	void addCoin(int coinValue, int x, int y);
+	item* addItem(string name);
+	item* addCoin(int coinValue, int x, int y);
 
-	void setMap();
-	vector<item*> getItemList() { return _vItem; }
-	vector<item*>& getItemList_ref() { return _vItem; }
-
-	void removeItem(int arrNum);
-
-	void addItemList(string name,int x, int y);
 };
 

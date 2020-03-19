@@ -43,11 +43,9 @@ bool item::getBool()
 	return false;
 }
 
-void item::setValue(int num)
-{
-}
 
-void item::setItem(slotType type, string name, string description,int x, int y)
+
+void item::setItem(slotType type, string name, string description)
 {
 	_name = name;
 	_itemImg = IMAGEMANAGER->findImage(name);
@@ -81,13 +79,8 @@ void item::setItem(slotType type, string name, string description,int x, int y)
 
 	_waveCnt = 0;
 	_inInventory = false;
-	_x = x;
-	_y = y;
-	_rc = RectMakeCenter(_x, _y, 52, 52);
-
-	int _tileX = _rc.left / TILESIZE;
-	int _tileY = _rc.top / TILESIZE;
-	_currentTileIndex = _tileX + _tileY * TILEX;
+	_x = 0;
+	_y = 0;
 
 }
 
@@ -95,11 +88,6 @@ void item::animation()
 {
 	if (_inInventory) return;
 	
-	_rc = RectMakeCenter(_x, _y, 52, 52);
-	float _tileX = _rc.left / TILESIZE;
-	float _tileY = _rc.top / TILESIZE;
-	_currentTileIndex = _tileX + _tileY * TILEX;
-
 	_waveCnt++;
 
 	if (_upDown)
@@ -128,7 +116,8 @@ void item::draw(HDC hdc)
 	}
 	else
 	{
-		_itemImg->render(hdc, _x-26, _y-52);
+		//Rectangle(hdc, _rc.left, _rc.top, _rc.right, _rc.bottom);
+		_itemImg->render(hdc, _x-20, _y-40);
 	}
 }
 

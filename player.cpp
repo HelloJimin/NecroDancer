@@ -78,6 +78,7 @@ void player::render(HDC hdc)
 
 	_bodyImg->frameRender(hdc, _rc.left, _rc.top - 28, _frameX, _frameY);
 	_headImg->frameRender(hdc, _rc.left, _rc.top - 33, _frameX, 0);
+
 }
 
 void player::frontCheck()
@@ -117,7 +118,6 @@ void player::frontCheck()
 
 		//평타
 		_inven->getWeapon()->active();
-
 		int monsterSize = MONSTERMANAGER->getMonster().size();
 
 		for (int i = 0; i < _status.atkRenge.size(); ++i)
@@ -133,14 +133,26 @@ void player::frontCheck()
 		}
 	}
 	//앞타일 벽이 아니면 이동
-	moveCheck();
+	if (wallCheck())
+	{
+		if (_pCurrentMap[_nextTileIndex].item != NULL)
+		{
+			getItem();
+		}
+		_isMove = true;
+		_currentTileIndex = _nextTileIndex;
+	}
+	else
+	{
+		mine();
+		_nextTileIndex = _currentTileIndex;
+	}
 }
 
 void player::attack()
 {
 	if (!_isAttack) return;
 
-	//던지기 공격이면
 	if (_inven->getWeapon()->getBool())
 	{
 		int arrowRenge = 0;
@@ -180,7 +192,6 @@ void player::attack()
 		throwEffect(temp,arrowRenge);
 
 		int monsterSize = MONSTERMANAGER->getMonster().size();
-
 		for (int i = 0; i < arrowRenge; ++i)
 		{
 			for (int k = 0; k < monsterSize; ++k)
@@ -212,16 +223,16 @@ void player::attack()
 		switch (_direction)
 		{
 		case LEFT:
-		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp + 1].x, _pCurrentMap[temp + 1].y);
+			_pCurrentMap[temp + 1].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
 			break;
 		case RIGHT:
-		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp - 1].x, _pCurrentMap[temp - 1].y);
+			_pCurrentMap[temp - 1].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
 			break;
 		case UP:
-		 ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp + TILEX].x, _pCurrentMap[temp + TILEX].y);
+			_pCurrentMap[temp + TILEX].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
 			break;
 		case DOWN:
-		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp - TILEX].x, _pCurrentMap[temp - TILEX].y);
+			_pCurrentMap[temp - TILEX].item = ITEMMANAGER->addItem(_inven->getWeapon()->getName());
 			break;
 		}
 		_inven->throwItem();
@@ -229,27 +240,18 @@ void player::attack()
 		_isAttack = false;
 		
 		return;
-	} //던지기 끝 
+	}
 
-	//평타
 	int monsterSize = MONSTERMANAGER->getMonster().size();
 	for (int i = 0; i < _status.atkRenge.size(); ++i)
 	{
 		for (int k = 0; k < monsterSize; ++k)
 		{
-			//공격범위에 벽이 있으면 이동체크
-			if (wallCheck(_status.atkRenge[i]))
-			{
-				moveCheck();
-				_isAttack = false;
-				return;
-			}
-			//공격범위에 벽이 없고 몬스터가 있으면 공격 실행
 			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
 			{
 				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
 
-				effectControl(_equipWeaponType, i, k);
+				effectControl(_equipWeaponType, k);
 
 				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
 				{
@@ -481,40 +483,40 @@ void player::mine()
 	else _rhythm = 0;
 }
 
-void player::getItem(int itemTile)
+void player::getItem()
 {
-	//코인을 먹었으면 코인먹고 끝
-	if (ITEMMANAGER->getItemList()[itemTile]->getName() == "코인")
+	if (_pCurrentMap[_nextTileIndex].item->getName() == "코인")
 	{
-		_coin+= ITEMMANAGER->getItemList()[itemTile]->getValue();
-		ITEMMANAGER->removeItem(itemTile);
+		_coin += _pCurrentMap[_nextTileIndex].item->getValue();
+		_pCurrentMap[_nextTileIndex].item = NULL;
 		return;
 	}
 
+
 	if (_inven->getItemList().empty())
 	{
-		_inven->addItem(ITEMMANAGER->addItem(ITEMMANAGER->getItemList()[itemTile]->getName(), 1, 1));
-		ITEMMANAGER->removeItem(itemTile);
+		_inven->addItem(_pCurrentMap[_nextTileIndex].item);
+		_pCurrentMap[_nextTileIndex].item = NULL;
 	}
 	else
 	{
 		int check = 0;
 		for (int i = 0; i < _inven->getItemList().size(); ++i)
 		{
-			if (_inven->getItemList()[i]->getType() != ITEMMANAGER->getItemList()[itemTile]->getType())
+			if (_inven->getItemList()[i]->getType() != _pCurrentMap[_nextTileIndex].item->getType())
 			{
 				check++;
 			}
-			if (_inven->getItemList()[i]->getType() == ITEMMANAGER->getItemList()[itemTile]->getType())
+			if (_inven->getItemList()[i]->getType() == _pCurrentMap[_nextTileIndex].item->getType())
 			{
-				_inven->swapItem(i, ITEMMANAGER->getItemList_ref()[itemTile] , itemTile);
+				_inven->swapItem(i, _pCurrentMap[_nextTileIndex].item);
 				break;
 			}
 
 			if (check == _inven->getItemList().size())
 			{
-				_inven->addItem(ITEMMANAGER->addItem(ITEMMANAGER->getItemList()[itemTile]->getName(), 1, 1));
-				ITEMMANAGER->removeItem(itemTile);
+				_inven->addItem(_pCurrentMap[_nextTileIndex].item);
+				_pCurrentMap[_nextTileIndex].item = NULL;
 				break;
 			}
 		}
@@ -624,25 +626,22 @@ void player::animation()
 	}
 }
 
-bool player::walkableCheck()
+bool player::wallCheck()
 {
 	if (_pCurrentMap[_nextTileIndex].walkable) return true;
 
 	return false;
 }
 
-bool player::wallCheck(int tile)
+bool player::monsterCheck()
 {
-	if (_pCurrentMap[tile].obj == OBJ_NOMALWALL) return true;
-	if (_pCurrentMap[tile].obj == OBJ_SKULLWALL) return true;
-	if (_pCurrentMap[tile].obj == OBJ_WHITEWALL) return true;
-	if (_pCurrentMap[tile].obj == OBJ_GOLDWALL) return true;
-	if (_pCurrentMap[tile].obj == OBJ_IRONWALL) return true;
-	if (_pCurrentMap[tile].obj == OBJ_NEVERWALL) return true;
-	return false;
+	if(!_inven->getWeapon()) return false;
+
+
+
 }
 
-void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
+void player::effectControl(attackForm form , int monArrNum)
 {
 	switch (form)
 	{
@@ -687,38 +686,6 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 		arrowEffect(form, monArrNum);
 		break;
 	case FORM_WHIP: //채찍
-		switch (_direction)
-		{
-		case LEFT:
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("채찍L0", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("채찍L1", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("채찍L2", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("채찍L3", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("채찍L4", _collisionX-30,_collisionY);
-			break;													
-		case RIGHT:													
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("채찍R0", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("채찍R1", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("채찍R2", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("채찍R3", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("채찍R4", _collisionX+30,_collisionY);
-			break;													
-		case UP:													
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("채찍U0", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("채찍U1", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("채찍U2", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("채찍U3", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("채찍U4", _collisionX,_collisionY-30);
-			break;													
-		case DOWN:													
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("채찍D0", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("채찍D1", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("채찍D2", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("채찍D3", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("채찍D4", _collisionX,_collisionY+30);
-			break;
-		}
-		
 		break;
 	}
 }
@@ -837,28 +804,6 @@ void player::throwEffect(int endTile, int throwRenge)
 			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x , _pCurrentMap[_nextTileIndex].y + (i * TILEX));
 			break;
 		}
-	}
-}
-
-void player::moveCheck()
-{
-	if (walkableCheck())
-	{
-		for (int i = 0; i < ITEMMANAGER->getItemList().size(); ++i)
-		{
-			if (_nextTileIndex == ITEMMANAGER->getItemList()[i]->getCurrentTile())
-			{
-				getItem(i);
-			}
-		}
-
-		_isMove = true;
-		_currentTileIndex = _nextTileIndex;
-	}
-	else
-	{
-		mine();
-		_nextTileIndex = _currentTileIndex;
 	}
 }
 

@@ -6,9 +6,9 @@ shovel::shovel()
 
 }
 
-shovel::shovel(slotType type, int power, string name, string description, int x, int y)
+shovel::shovel(slotType type, int power, string name, string description)
 {
-	setItem(type, name, description,  x,  y);
+	setItem(type, name, description);
 	_power = power;
 }
 

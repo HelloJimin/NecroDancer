@@ -33,6 +33,5 @@ public:
 
 	void play(string effectKey, int x, int y);
 
-	HDC getDC();
 };
 

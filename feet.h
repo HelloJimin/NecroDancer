@@ -6,7 +6,7 @@ private:
 	bool check = false;
 public:
 	feet();
-	feet(string name, slotType type, string description, int x, int y);
+	feet(string name, slotType type, string description);
 	~feet();
 	virtual HRESULT init() override;
 
