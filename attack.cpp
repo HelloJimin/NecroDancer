@@ -6,9 +6,9 @@ attack::attack()
 {
 }
 
-attack::attack(string name, slotType type, attackForm form, int power, string description)
+attack::attack(string name, slotType type, attackForm form, int power, string description, int x, int y)
 {
-	setItem(type, name, description);
+	setItem(type, name, description,  x,  y);
 	_power = power;
 	_form = form;
 
@@ -28,6 +28,7 @@ attack::~attack()
 
 HRESULT attack::init()
 {
+	_inInventory = true;
 	PLAYER->setWeapom(_form);
 	PLAYER->playerStatus().atk = _power;
 	PLAYER->playerStatus().atkRenge.clear();
@@ -91,11 +92,11 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - 5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - 1;
-			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() - 1 + TILEX;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - 1 - TILEX;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - 1 + TILEX * 2;
-			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - 1 - TILEX * 2;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - 1 - TILEX * 2;
+			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() - 1 - TILEX;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - 1;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - 1 + TILEX;
+			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - 1 + TILEX * 2;
 			break;
 		}
 		break;
@@ -122,11 +123,11 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + 5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + 1;
-			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() + 1 + TILEX;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + 1 - TILEX;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + 1 + TILEX*2;
-			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + 1 - TILEX*2;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + 1 - TILEX*2;
+			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() + 1 - TILEX;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + 1;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + 1 + TILEX;
+			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + 1 + TILEX*2;
 			break;
 		}
 		break;
@@ -153,10 +154,10 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - TILEX*5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - TILEX;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - TILEX - 2;
 			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() - TILEX -1;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - TILEX + 1;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - TILEX - 2;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - TILEX;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - TILEX + 1;
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - TILEX + 2;
 			break;
 		}
@@ -184,10 +185,10 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + TILEX * 5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + TILEX;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + TILEX - 2;
 			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() + TILEX - 1;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + TILEX + 1;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + TILEX - 2;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + TILEX;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + TILEX + 1;
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + TILEX + 2;
 			break;
 		}

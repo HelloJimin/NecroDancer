@@ -7,7 +7,7 @@ private:
 
 public:
 	body();
-	body(string name, slotType type, int power, string description);
+	body(string name, slotType type, int power, string description, int x, int y);
 	~body();
 	virtual HRESULT init() override;
 

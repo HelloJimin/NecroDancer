@@ -13,43 +13,15 @@ testScene::~testScene()
 
 HRESULT testScene::init()
 {
-	SOUNDMANAGER->play("1-1");
 	setUp();
 	load();
+
+	SOUNDMANAGER->play("1-1");
 	BEAT->setBeatOn(true);
+	
 	PLAYER->setMap(_tiles);
 	MONSTERMANAGER->setMap(_tiles);
-	//_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
-	//_vItem.push_back(ITEMMANAGER->addItem("유리삽"));
-	//_vItem.push_back(ITEMMANAGER->addItem("기본삽"));
-	//_vItem[0]->setRect(_tiles[315].rc);
-	//_vItem[1]->setRect(_tiles[316].rc);
-	//_vItem[2]->setRect(_tiles[319].rc);
-	_tiles[267].item = ITEMMANAGER->addItem("유리삽");
-	_tiles[268].item = ITEMMANAGER->addItem("티타늄단검");
-	_tiles[269].item = ITEMMANAGER->addItem("티타늄대검");
-	_tiles[270].item = ITEMMANAGER->addItem("기본활");
-	_tiles[319].item = ITEMMANAGER->addItem("기본창");
-	_tiles[320].item = ITEMMANAGER->addItem("기본채찍");
-	_tiles[321].item = ITEMMANAGER->addItem("쇠갑옷");
-	_tiles[322].item = ITEMMANAGER->addItem("폭탄");
-
-
-
-	//MONSTERMANAGER->summonGreenSlime("그린슬라임", _tiles[322].x, _tiles[322].y);
-	//MONSTERMANAGER->summonBlueSlime("블루슬라임", _tiles[323].x, _tiles[323].y);
-	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[327].x, _tiles[327].y);
-	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[582].x, _tiles[582].y);
-	//MONSTERMANAGER->summonRedWraiths("레드레이스", _tiles[586].x, _tiles[586].y);
-
-	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[160].x, _tiles[160].y);
-	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[161].x, _tiles[161].y);
-	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[162].x, _tiles[162].y);
-	//MONSTERMANAGER->summonSkeleton("스켈레톤", _tiles[163].x, _tiles[163].y);
-	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[583].x, _tiles[583].y);
-	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[584].x, _tiles[584].y);
-	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[586].x, _tiles[586].y);
-	//MONSTERMANAGER->summonGhost("투명고스트L", _tiles[587].x, _tiles[587].y);
+	ITEMMANAGER->setMap();
 
 	return S_OK;
 }
@@ -63,39 +35,14 @@ void testScene::update()
 	BEAT->update();
 	PLAYER->update();
 	MONSTERMANAGER->update();
-
-	//for (int i = 0; i < _vItem.size(); i++)
-	//{
-	//	_vItem[i]->update();
-	//	RECT temp;
-	//	if (IntersectRect(&temp, &PLAYER->getCollisionRc(), &_vItem[i]->getRc()))
-	//	{
-	//		PLAYER->getInven()->addItem(ITEMMANAGER->addItem(_vItem[i]->getName()));
-	//		_vItem.erase(_vItem.begin() + i);
-	//		break;
-	//	}
-	//}
-
-	//반짝이느부분
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (_tiles[i].terrain == TERRAIN_GROUND)
-		{
-			if(BEAT->getCnt() %58==0) _tiles[i].terrainFrameX += 1;
-			if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
-		}
-		if (_tiles[i].item != NULL)
-		{
-			_tiles[i].item->setInven(false);
-			_tiles[i].item->setRect(PointMake(_tiles[i].x,_tiles[i].y));
-			_tiles[i].item->update();
-		}
-	}
+	ITEMMANAGER->update();
+	groundPattern();
 }
 
 void testScene::render()
 {
 	allRender();
+
 	debugRender();
 
 	BEAT->render(getMemDC());
@@ -107,14 +54,24 @@ void testScene::render()
 void testScene::allRender()
 {
 	int p = PLAYER->currentTile();
+
 	vector<int> monTile;
-	for (int i = 0; i < MONSTERMANAGER->getMonster().size(); i++)
+	vector<monster*> monster = MONSTERMANAGER->getMonster();
+	for (int i = 0; i < monster.size(); i++)
 	{
-		monTile.push_back(MONSTERMANAGER->getMonster()[i]->currentTile());
+		monTile.push_back(monster[i]->currentTile());
+	}
+
+	vector<int> itemTile;
+	vector<item*> item = ITEMMANAGER->getItemList();
+	for (int i = 0; i < item.size(); i++)
+	{
+		itemTile.push_back(item[i]->getCurrentTile());
 	}
 
 	for (int i = 0; i < TILEX; i++)
 	{
+		//오브젝트
 		for (int k = 0; k < TILEY; k++)
 		{
 			if (CAMERAX - 100 < _tiles[(i*TILEX) + k].x && _tiles[(i*TILEX) + k].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[(i*TILEX) + k].y&& _tiles[(i*TILEX) + k].y < CAMERAY + WINSIZEY + 100)
@@ -122,15 +79,20 @@ void testScene::allRender()
 				if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE)IMAGEMANAGER->frameRender("맵툴지형", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY);
 
 				if (_tiles[(i*TILEX) + k].obj != OBJ_NONE) IMAGEMANAGER->frameRender("맵툴벽", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top - 25, _tiles[(i*TILEX) + k].objFrameX, _tiles[(i*TILEX) + k].objFrameY);
-
-				if (_tiles[(i*TILEX) + k].item != NULL)_tiles[(i*TILEX) + k].item->render(getMemDC());
 			}
 		}
-
+		//아이템
+		for (int k = 0; k < itemTile.size(); k++)
+		{
+			if ((i*TILEX) < itemTile[k] && itemTile[k] < ((i + 1)*TILEX)) 
+				item[k]->render(getMemDC());
+		}
+		//몬스터
 		for (int k = 0; k < monTile.size(); k++)
 		{
-			if ((i*TILEX) < monTile[k] && monTile[k] < ((i + 1)*TILEX)) MONSTERMANAGER->getMonster()[k]->render(getMemDC());
+			if ((i*TILEX) < monTile[k] && monTile[k] < ((i + 1)*TILEX)) monster[k]->render(getMemDC());
 		}
+		//플레이어
 		if ((i*TILEX) < p  && p < ((i + 1)*TILEX))  PLAYER->render(getMemDC());
 	}
 }
@@ -188,4 +150,16 @@ void testScene::load()
 
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
+}
+
+void testScene::groundPattern()
+{
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (_tiles[i].terrain == TERRAIN_GROUND)
+		{
+			if (BEAT->getCnt() % 58 == 0) _tiles[i].terrainFrameX += 1;
+			if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
+		}
+	}
 }

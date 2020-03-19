@@ -17,7 +17,9 @@ HRESULT minotaurs::init(string name, int x, int y, int coin, tagTile * map)
 	_direction = LEFT;
 	_aStar = new aStar;
 	_atk = 2.0f;
-	_minePower = 3;
+	_minePower = 2;
+	addHp();
+	addHp();
 	addHp();
 	addHp();
 	_isDown = false;
@@ -30,10 +32,12 @@ void minotaurs::frontCheck()
 {
 	if (!_isRage)
 	{
+		_minePower = 2;
 		_nextTileIndex = _aStar->aStarBoss(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
 	}
 	else
 	{
+		_minePower = 3;
 		switch (_direction)
 		{
 		case LEFT: _nextTileIndex--;
