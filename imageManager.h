@@ -41,6 +41,7 @@ public:
 	void render(string strKey, HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
 
 	void frameRender(string strKey, HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
+	void alphaRender(string strKey, HDC hdc, int destX, int destY, BYTE alpha);
 
 };
 

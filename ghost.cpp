@@ -27,6 +27,13 @@ void ghost::render(HDC hdc)
 	hpRender(hdc);
 }
 
+void ghost::silhouetteRender(HDC hdc)
+{
+	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
+	_monsterImg->alphaRender(hdc, _collisionRc.left - _monsterImg->getFrameWidth() / 8, _collisionRc.top - _monsterImg->getFrameHeight() / 4, _alpha);
+	hpRender(hdc);
+}
+
 void ghost::frontCheck()
 {
 	alphaCheck();

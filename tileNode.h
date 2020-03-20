@@ -50,9 +50,13 @@ struct tagTile
 	bool walkable;
 	tagTile* parent;
 	int f, g, h;
+
 	string startPoint;
 	string itemPoint;
+
 	int ray;
+	bool look;
+
 };
 
 //셈플타일 구조체

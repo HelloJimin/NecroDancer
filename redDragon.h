@@ -22,6 +22,7 @@ public:
 	void animation() override;
 
 	void render(HDC hdc) override;
+	void silhouetteRender(HDC hdc) override;
 	void move() override;
 	void attack() override;
 	void mine();

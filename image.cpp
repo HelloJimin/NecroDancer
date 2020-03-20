@@ -535,6 +535,53 @@ void image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int cu
 	}
 }
 
+void image::alphaFrameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha)
+{
+	_blendFunc.SourceConstantAlpha = alpha;
+
+	_imageInfo->currentFrameX = currentFrameX;
+	_imageInfo->currentFrameY = currentFrameY;
+
+	if (_isTrans)
+	{
+		BitBlt(_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height,
+			hdc, destX, destY, SRCCOPY);
+
+		GdiTransparentBlt(hdc,
+			destX,
+			destY,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			_transColor);
+
+		AlphaBlend(hdc, destX, destY, _imageInfo->width, _imageInfo->height,
+			_blendImage->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, _blendFunc);
+
+
+	}
+	else
+	{
+		BitBlt(hdc, destX, destY,
+			_imageInfo->frameWidth,
+			_imageInfo->frameHeight,
+			_imageInfo->hMemDC,
+			_imageInfo->currentFrameX * _imageInfo->frameWidth,
+			_imageInfo->currentFrameY * _imageInfo->frameHeight,
+			SRCCOPY);
+
+		AlphaBlend(hdc, destX, destY, _imageInfo->width, _imageInfo->height,
+			_imageInfo->hMemDC, 0, 0, _imageInfo->width, _imageInfo->height, _blendFunc);
+	}
+
+
+
+}
+
 void image::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, int width, int height)
 {
 	_imageInfo->currentFrameX = currentFrameX;

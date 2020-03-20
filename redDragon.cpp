@@ -108,6 +108,14 @@ void redDragon::render(HDC hdc)
 	hpRender(hdc);
 }
 
+void redDragon::silhouetteRender(HDC hdc)
+{
+	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
+	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY+2);
+
+	hpRender(hdc);
+}
+
 void redDragon::move()
 {
 	if (!_isMove) return;

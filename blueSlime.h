@@ -11,5 +11,7 @@ public:
 
 	void frontCheck() override;
 	void choiceAction() override;
+
+	void silhouetteRender(HDC hdc);
 };
 

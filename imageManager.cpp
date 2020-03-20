@@ -207,3 +207,11 @@ void imageManager::frameRender(string strKey, HDC hdc, int destX, int destY, int
 
 	if (img)img->frameRender(hdc, destX, destY, currentFrameX, currentFrameY);
 }
+
+void imageManager::alphaRender(string strKey, HDC hdc, int destX, int destY, BYTE alpha)
+{
+	image* img = findImage(strKey);
+
+	if (img)img->alphaRender(hdc, destX, destY,alpha);
+
+}

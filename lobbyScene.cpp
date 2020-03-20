@@ -53,9 +53,9 @@ void lobbyScene::allRender()
 		{
 			if (CAMERAX - 100 < _tiles[(i*TILEX) + k].x && _tiles[(i*TILEX) + k].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[(i*TILEX) + k].y&& _tiles[(i*TILEX) + k].y < CAMERAY + WINSIZEY + 100 )
 			{
-				if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE && _tiles[(i*TILEX) + k].ray > 0 )IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY);
+				if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE && _tiles[(i*TILEX) + k].look  )IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY);
 
-				if (_tiles[(i*TILEX) + k].obj != OBJ_NONE) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top - 25, _tiles[(i*TILEX) + k].objFrameX, _tiles[(i*TILEX) + k].objFrameY);
+				if (_tiles[(i*TILEX) + k].obj != OBJ_NONE && _tiles[(i*TILEX) + k].look) IMAGEMANAGER->frameRender("¸ÊÅøº®", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top - 25, _tiles[(i*TILEX) + k].objFrameX, _tiles[(i*TILEX) + k].objFrameY);
 			}
 		}
 		if ((i*TILEX) < p  && p < ((i + 1)*TILEX))  PLAYER->render(getMemDC());
@@ -64,22 +64,22 @@ void lobbyScene::allRender()
 
 void lobbyScene::debugRender()
 {
-	if (KEYMANAGER->isToggleKey(VK_TAB))
-	{
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-			{
-				SetBkMode(getMemDC(), TRANSPARENT);
-				//»ö»ó
-				SetTextColor(getMemDC(), RGB(255, 0, 0));
+	//if (KEYMANAGER->isToggleKey(VK_TAB))
+	//{
+	//	for (int i = 0; i < TILEX * TILEY; i++)
+	//	{
+	//		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+	//		{
+	//			SetBkMode(getMemDC(), TRANSPARENT);
+	//			//»ö»ó
+	//			SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-				char str[128];
-				sprintf_s(str, "%d", i);
-				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-			}
-		}
-	}
+	//			char str[128];
+	//			sprintf_s(str, "%d", i);
+	//			TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+	//		}
+	//	}
+	//}
 }
 
 void lobbyScene::setUp()
@@ -121,10 +121,15 @@ void lobbyScene::groundPattern()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (_tiles[i].terrain == TERRAIN_GROUND)
+		if (_tiles[i].terrain == TERRAIN_GROUND && _tiles[i].ray > 0)
 		{
 			if (BEAT->getCnt() % 44 == 0) _tiles[i].terrainFrameX += 1;
 			if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
+		}
+
+		if (_tiles[i].ray <= 0)
+		{
+			_tiles[i].terrainFrameX = 0;
 		}
 	}
 }

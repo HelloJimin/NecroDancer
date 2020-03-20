@@ -98,7 +98,9 @@ public:
 	//프레임렌더
 	void frameRender(HDC hdc, int destX, int destY);
 	void frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
+	void alphaFrameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY,BYTE alpha);
 	void frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, int width, int height);
+
 	//루프렌더(hdc, 루프시킬영역, x오프셋, y오프셋)
 	void loopRender(HDC hdc, const LPRECT drawArea, int offSetX, int offSetY);
 	void loopAlphaRender(HDC hdc, const LPRECT drawArea, int offSetX, int offSetY, BYTE alpha);

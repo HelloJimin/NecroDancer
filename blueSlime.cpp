@@ -76,3 +76,10 @@ void blueSlime::choiceAction()
 		}
 	}
 }
+
+void blueSlime::silhouetteRender(HDC hdc)
+{
+	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
+	_monsterImg->frameRender(hdc, _collisionRc.left - _monsterImg->getFrameWidth() / 8, _collisionRc.top - _monsterImg->getFrameHeight() / 4, _frameX, _frameY+1);
+	hpRender(hdc);
+}

@@ -13,5 +13,7 @@ public:
 
 	virtual HRESULT init(string name, int x, int y, int coin, tagTile * map) override;
 	virtual void update() override;
+	virtual void render(HDC hdc) override;
+	void silhouetteRender(HDC hdc);
 };
 

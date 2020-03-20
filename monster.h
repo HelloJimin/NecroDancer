@@ -34,6 +34,7 @@ protected:
 	bool _isAttack;
 	bool _isHit;
 
+	bool _isLook;
 public:
 	monster();
 	~monster();
@@ -42,6 +43,7 @@ public:
 	virtual void release();
 	virtual void update();
 	virtual void render(HDC hdc);
+	virtual void silhouetteRender(HDC hdc);
 
 	virtual void animation();
 	virtual void frontCheck();
@@ -64,6 +66,6 @@ public:
 	POINT getXY() { return PointMake(_currentX, _currentY); }
 	RECT getRc() { return _collisionRc; }
 
-
+	void setLook(bool look) { _isLook = look; }
 };
 

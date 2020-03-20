@@ -63,7 +63,6 @@ void player::update()
 	attack();
 	move();
 	animation();
-	_ray->update();
 }
 
 void player::render(HDC hdc)
@@ -80,7 +79,7 @@ void player::render(HDC hdc)
 
 	_bodyImg->frameRender(hdc, _rc.left, _rc.top - 28, _frameX, _frameY);
 	_headImg->frameRender(hdc, _rc.left, _rc.top - 33, _frameX, 0);
-	_ray->render(hdc);
+	//_ray->render(hdc);
 }
 
 void player::frontCheck()
@@ -137,6 +136,7 @@ void player::frontCheck()
 	}
 	//앞타일 벽이 아니면 이동
 	moveCheck();
+	_ray->update();
 }
 
 void player::attack()
@@ -432,6 +432,8 @@ void player::setMap(tagTile tile[])
 			break;
 		}
 	}
+	_ray->init();
+	_ray->update();
 }
 
 void player::HPbarSet()

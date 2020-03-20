@@ -7,7 +7,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("샘플창", "images/maptool/샘플창.bmp", 300, WINSIZEY-200, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("맵툴지형", "images/maptool/맵툴_지형.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("맵툴벽", "images/maptool/맵툴_벽.bmp", 104*2, 156*2, 4, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("맵툴벽", "images/maptool/맵툴_벽.bmp", 104*2, 156*2*2, 4, 8, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴몬스터", "images/maptool/맵툴_몬스터.bmp", 216*2, 204*2, 4, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴기타", "images/maptool/맵툴_ETC.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
 
@@ -21,6 +21,9 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("몬스터버튼", "images/maptool/몬스터.bmp", 75, 70, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("세이브버튼", "images/maptool/저장.bmp", 35, 15, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("로드버튼", "images/maptool/로드.bmp", 35, 15, true, RGB(255, 0, 255));
+
+
+	IMAGEMANAGER->addImage("어둡게", "images/어둡게.bmp", 52, 52, true, RGB(255, 0, 255));
 
 
 	//플레이어
@@ -112,17 +115,17 @@ void mainGame::imagesInit()
 	//몬스터
 	IMAGEMANAGER->addFrameImage("그린슬라임", "images/monster/greenSlime.bmp",92*3, 40*3,4,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("블루슬라임", "images/monster/blueSlime.bmp",92*3, 40*3,4,2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("박쥐", "images/monster/bat.bmp",104*3, 32*3,4,2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("스켈레톤", "images/monster/해골.bmp",200*3, 60*3,8,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("박쥐", "images/monster/bat.bmp",104*3, 32*3*2,4,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("스켈레톤", "images/monster/해골.bmp",200*3, 60*3*2,8,4, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("투명고스트L", "images/monster/ghostAlphaL.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("투명고스트R", "images/monster/ghostAlphaR.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("투명고스트L", "images/monster/ghostREAL.bmp",18*3, 22*3,1,1, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addFrameImage("레드레이스", "images/monster/redWraiths.bmp",39*3, 46*3,3,2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("미노타우로스", "images/monster/Minotaurs.bmp",450*3, 100*3,9,2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",549*3, 106*3,9,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("레드레이스", "images/monster/redWraiths.bmp",39*3, 46*3*2,3,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("미노타우로스", "images/monster/Minotaurs.bmp",450*3, 100*3*2,9,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",549*3, 106*3*2,9,4, true, RGB(255, 0, 255));
 
 
 
@@ -189,12 +192,12 @@ void mainGame::imagesInit()
 	EFFECTMANAGER->addEffect("티타늄삽", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f, 5);
 	EFFECTMANAGER->addEffect("유리삽", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f, 5);
 
-	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 5);
+	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
+	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
+	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
+	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
+	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
+	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
 
 	EFFECTMANAGER->addEffect("폭탄애니", "images/effect/폭탄애니.bmp",89*2,24*2,24*2,24*2, 10, 0.1f, 5);
 	EFFECTMANAGER->addEffect("폭탄폭발", "images/effect/폭탄폭발.bmp",576*2,74*2,72*2,74*2, 10, 0.1f, 5);

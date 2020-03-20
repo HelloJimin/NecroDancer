@@ -641,7 +641,7 @@ void mapTool::pageControl()
 		for (int i = 0; i < 16; i++)
 		{
 			_sampleImage[i].image = new image;
-			_sampleImage[i].image->init("images/maptool/¸ÊÅø_º®.bmp", 104 * 2, 156 * 2, 4, 4, true, RGB(255, 0, 255));
+			_sampleImage[i].image->init("images/maptool/¸ÊÅø_º®.bmp", 104 * 2, 156 * 2*2, 4, 8, true, RGB(255, 0, 255));
 		}
 		break;
 	case PAGE_MONSTER:

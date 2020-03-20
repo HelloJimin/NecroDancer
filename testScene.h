@@ -8,6 +8,7 @@ private:
 	vector<item*> _vItem;
 
 	bool _isDebug;
+
 public:
 	testScene();
 	~testScene();

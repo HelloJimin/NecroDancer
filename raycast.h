@@ -1,23 +1,23 @@
 #pragma once
 
-struct ray
-{
-	POINT center;
-	POINT end;
-	float angle;
-	int power;
-};
 class raycast
 {
 private:
-	ray _ray;
+	tagTile* tile;
+	vector<int> open;
+	vector<int> temp;
+	int pTile;
+	bool ok;
 public:
 	raycast();
 	~raycast();
 
+
+	void init();
 	void update();
-	void render(HDC hdc);
 
 	void reset();
+
+	bool wallCheck(int tileNum);
 };
 

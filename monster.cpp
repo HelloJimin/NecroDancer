@@ -39,6 +39,8 @@ HRESULT monster::init(string name, int x, int y, int coin, tagTile * map)
 	_isHit = false;
 
 	addHp();
+
+	_isLook = false;
 	return S_OK;
 }
 
@@ -63,6 +65,13 @@ void monster::render(HDC hdc)
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
 	_monsterImg->frameRender(hdc, _collisionRc.left - _monsterImg->getFrameWidth() / 8, _collisionRc.top- _monsterImg->getFrameHeight()/4, _frameX, _frameY);
+	hpRender(hdc);
+}
+
+void monster::silhouetteRender(HDC hdc)
+{
+	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
+	_monsterImg->frameRender(hdc, _collisionRc.left - _monsterImg->getFrameWidth() / 8, _collisionRc.top - _monsterImg->getFrameHeight() / 4, _frameX, _frameY+2);
 	hpRender(hdc);
 }
 

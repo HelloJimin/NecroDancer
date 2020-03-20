@@ -43,7 +43,7 @@ void timeManager::render(HDC hdc)
 	//배경모드
 	SetBkMode(hdc, TRANSPARENT);
 	//색상
-	SetTextColor(hdc, RGB(255, 255, 0));
+	SetTextColor(hdc, RGB(255, 255,255));
 	//디버그 모드라면
 #ifdef _DEBUG
 
