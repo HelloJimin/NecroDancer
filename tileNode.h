@@ -51,8 +51,8 @@ struct tagTile
 	tagTile* parent;
 	int f, g, h;
 
-	char* startPoint;
-	char* itemPoint;
+	const char* startPoint;
+	const char* itemPoint;
 
 	int ray;
 	bool look;
