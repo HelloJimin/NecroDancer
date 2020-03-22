@@ -20,10 +20,11 @@ HRESULT mainGame::init()
 	SetTextAlign(CAMERAMANAGER->getCameraDC(), TA_RIGHT);
 	
 	SCENEMANAGER->addScene("맵툴신", new mapTool);
+	SCENEMANAGER->addScene("인트로신", new introScene);
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->addScene("로비신", new lobbyScene);
 
-	SCENEMANAGER->changeScene("로비신");
+	SCENEMANAGER->changeScene("인트로신");
 
 	return S_OK;
 }
@@ -61,6 +62,7 @@ void mainGame::render(/*HDC hdc*/)
 	SCENEMANAGER->render();
 	EFFECTMANAGER->render();
 	TIMEMANAGER->render(CAMERAMANAGER->getCameraDC());
+
 	//ANIMATIONMANAGER->render();
 
 	//============================================================================이 밑으로 건드리면 뒤짐=======================================================================================

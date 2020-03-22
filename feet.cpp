@@ -6,9 +6,9 @@ feet::feet()
 {
 }
 
-feet::feet(string name, slotType type, string description, int x, int y)
+feet::feet(string name, slotType type, string description, int x, int y, int price)
 {
-	setItem(type, name, description,  x,  y);
+	setItem(type, name, description,  x,  y,  price);
 	
 }
 
@@ -19,6 +19,7 @@ feet::~feet()
 
 HRESULT feet::init()
 {
+	_isShop = false;
 	if (_name == "ÈûÀÇÀåÈ­" && !check)
 	{
 		PLAYER->playerStatus().atk += 1;

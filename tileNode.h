@@ -15,7 +15,7 @@
 enum TERRAIN
 {
 	//아무것도없는		땅
-	TERRAIN_NONE, TERRAIN_GROUND
+	TERRAIN_NONE, TERRAIN_GROUND, TERRAIN_SHOP
 };
 
 //오브젝트
@@ -51,8 +51,8 @@ struct tagTile
 	tagTile* parent;
 	int f, g, h;
 
-	string startPoint;
-	string itemPoint;
+	char* startPoint;
+	char* itemPoint;
 
 	int ray;
 	bool look;

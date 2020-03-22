@@ -6,9 +6,9 @@ attack::attack()
 {
 }
 
-attack::attack(string name, slotType type, attackForm form, int power, string description, int x, int y)
+attack::attack(string name, slotType type, attackForm form, int power, string description, int x, int y, int price)
 {
-	setItem(type, name, description,  x,  y);
+	setItem(type, name, description, x, y, price);
 	_power = power;
 	_form = form;
 
@@ -29,6 +29,7 @@ attack::~attack()
 HRESULT attack::init()
 {
 	_inInventory = true;
+	_isShop = false;
 	PLAYER->setWeapom(_form);
 	PLAYER->playerStatus().atk = _power;
 	PLAYER->playerStatus().atkRenge.clear();

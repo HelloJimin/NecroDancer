@@ -26,7 +26,11 @@ struct status
 
 	vector<int> atkRenge;
 };
-
+struct coinUI
+{
+	image* x;
+	tagPrice coinImg[3];
+};
 class player : public singletonBase<player>
 {
 private:
@@ -34,7 +38,6 @@ private:
 	RECT _rc;
 	int _collisionX, _collisionY;
 	RECT _collisionRc;
-
 	int _frameX, _frameY;
 
 	int _tileX, _tileY;
@@ -67,6 +70,9 @@ private:
 	RECT _temp;
 
 	attackForm _equipWeaponType;
+
+	coinUI _coinUI;
+	coinUI _diamondUI;
 public:
 	player();
 	~player();
@@ -116,5 +122,9 @@ public:
 	void throwEffect(int endTile, int throwRenge);
 
 	void moveCheck();
+	void buyItem(int itemTile);
+
+	void coinUIupdate();
+	void coinUIrender();
 };
 

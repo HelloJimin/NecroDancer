@@ -16,6 +16,6 @@ public:
 	void choiceAction() override;
 
 	void animation() override;
-	
+
 };
 

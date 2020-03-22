@@ -33,6 +33,19 @@ void lobbyScene::update()
 	PLAYER->update();
 	groundPattern();
 	next();
+
+	for (int i = 0; i < _vTorch.size(); ++i)
+	{
+		_vTorch[i]->update();
+	}
+	for (int i = 0; i < _vTorch.size();)
+	{
+		if (_tiles[_vTorch[i]->getTileNum()].itemPoint != "º®È¶ºÒ")
+		{
+			_vTorch.erase(_vTorch.begin() + i);
+		}
+		else ++i;
+	}
 }
 
 void lobbyScene::render()
@@ -59,6 +72,10 @@ void lobbyScene::allRender()
 			}
 		}
 		if ((i*TILEX) < p  && p < ((i + 1)*TILEX))  PLAYER->render(getMemDC());
+	}
+	for (int i = 0; i < _vTorch.size(); ++i)
+	{
+		_vTorch[i]->render(getMemDC());
 	}
 }
 
@@ -97,7 +114,10 @@ void lobbyScene::setUp()
 	{
 		_tiles[i].x = _tiles[i].rc.left + (_tiles[i].rc.right - _tiles[i].rc.left) / 2;
 		_tiles[i].y = _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2;
+
 	}
+
+
 }
 
 void lobbyScene::load()
@@ -115,6 +135,13 @@ void lobbyScene::load()
 
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (_tiles[i].itemPoint == "º®È¶ºÒ")
+		{
+			_vTorch.push_back(new wallTorch(i, _tiles));
+		}
+	}
 }
 
 void lobbyScene::groundPattern()

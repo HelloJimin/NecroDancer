@@ -7,6 +7,7 @@ player::~player(){}
 HRESULT player::init()
 {
 
+
 	_bodyImg = IMAGEMANAGER->findImage("몸통R");
 	_headImg = IMAGEMANAGER->findImage("케이던스R");
 
@@ -47,6 +48,14 @@ HRESULT player::init()
 	_inven->init();
 
 	_ray = new raycast;
+
+	for (int i = 0; i < 3; i++)
+	{
+		_coinUI.coinImg[i].img = IMAGEMANAGER->findImage("숫자");
+		_diamondUI.coinImg[i].img = IMAGEMANAGER->findImage("숫자");
+	}
+	_diamondUI.x = IMAGEMANAGER->findImage("x버튼");
+	_coinUI.x = IMAGEMANAGER->findImage("x버튼");
 	return S_OK;
 }
 
@@ -63,6 +72,8 @@ void player::update()
 	attack();
 	move();
 	animation();
+	_ray->update(_currentTileIndex);
+	coinUIupdate();
 }
 
 void player::render(HDC hdc)
@@ -136,7 +147,6 @@ void player::frontCheck()
 	}
 	//앞타일 벽이 아니면 이동
 	moveCheck();
-	_ray->update();
 }
 
 void player::attack()
@@ -398,18 +408,12 @@ void player::UIrender(HDC hdc)
 	//인벤토리 렌더....
 	_inven->render(hdc);
 
-	//우상단 코인다이아 부분 렌더
-	IMAGEMANAGER->render("코인다이아", CAMERAMANAGER->getCameraDC(), WINSIZEX - 50*3 , 20 );
-	SetTextColor(CAMERAMANAGER->getCameraDC(), RGB(255, 255, 255));
+	coinUIrender();
+
 	HFONT myFont = CreateFont(20, 0, 0, 0, 800, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, TEXT("굴림"));
 	HFONT oldFont = (HFONT)SelectObject(CAMERAMANAGER->getCameraDC(), myFont);
-	wsprintf(_str, "x%d", _coin);
-	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX - 60, 40 ,  _str, strlen(_str));
-	wsprintf(_str, "x%d", _diamond);
-	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX - 60, 85, _str, strlen(_str));
 	SelectObject(CAMERAMANAGER->getCameraDC(), oldFont);
 	DeleteObject(myFont);
-
 	wsprintf(_str, "박자맞춘 횟수%d", _rhythm);
 	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX - 60, 125, _str, strlen(_str));
 
@@ -432,12 +436,18 @@ void player::setMap(tagTile tile[])
 			break;
 		}
 	}
-	_ray->init();
-	_ray->update();
+	_direction = DOWN;
+	_tileX = _rc.left / TILESIZE;
+	_tileY = _rc.top / TILESIZE;
+	_currentTileIndex = _tileX + _tileY * TILEX;
+	_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
+	_isMove = false;
+	_ray->init(_pCurrentMap);
+	_ray->update(_currentTileIndex);
 }
 
 void player::HPbarSet()
-{
+{ 
 	for (int i = 0; i < _status.vHp.size(); i++)
 	{
 		if (_status.vHp[i].hp <= 0.0f) _status.vHp[i].currentX = 2;
@@ -482,6 +492,9 @@ void player::mine()
 		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
 		_pCurrentMap[_nextTileIndex].strength = 0;
 		_pCurrentMap[_nextTileIndex].walkable = true;
+		_pCurrentMap[_nextTileIndex].itemPoint = "";
+
+
 		if (_pCurrentMap[_nextTileIndex].obj == OBJ_DOOR) 		SOUNDMANAGER->play("openDoor");
 		else 		SOUNDMANAGER->play("mineOK");
 		//SOUNDMANAGER->play("dig");
@@ -860,7 +873,12 @@ void player::moveCheck()
 		{
 			if (_nextTileIndex == ITEMMANAGER->getItemList()[i]->getCurrentTile())
 			{
-				getItem(i);
+				if (ITEMMANAGER->getItemList()[i]->getIsShop())
+				{
+					buyItem(i);
+					return;
+				}
+				else getItem(i);
 			}
 		}
 
@@ -872,6 +890,86 @@ void player::moveCheck()
 		mine();
 		_nextTileIndex = _currentTileIndex;
 	}
+}
+
+void player::buyItem(int itemTile)
+{
+	if (_coin < ITEMMANAGER->getItemList()[itemTile]->getPrice())
+	{
+		_nextTileIndex = _currentTileIndex;
+		return;
+	}
+
+	_coin -= ITEMMANAGER->getItemList()[itemTile]->getPrice();
+	_isMove = true;
+	_currentTileIndex = _nextTileIndex;
+
+	if (_inven->getItemList().empty())
+	{
+		_inven->addItem(ITEMMANAGER->addItem(ITEMMANAGER->getItemList()[itemTile]->getName(), 1, 1));
+		ITEMMANAGER->removeItem(itemTile);
+	}
+	else
+	{
+		int check = 0;
+		for (int i = 0; i < _inven->getItemList().size(); ++i)
+		{
+			if (_inven->getItemList()[i]->getType() != ITEMMANAGER->getItemList()[itemTile]->getType())
+			{
+				check++;
+			}
+			if (_inven->getItemList()[i]->getType() == ITEMMANAGER->getItemList()[itemTile]->getType())
+			{
+				_inven->swapItem(i, ITEMMANAGER->getItemList_ref()[itemTile], itemTile);
+				break;
+			}
+
+			if (check == _inven->getItemList().size())
+			{
+				_inven->addItem(ITEMMANAGER->addItem(ITEMMANAGER->getItemList()[itemTile]->getName(), 1, 1));
+				ITEMMANAGER->removeItem(itemTile);
+				break;
+			}
+		}
+	}
+}
+
+void player::coinUIupdate()
+{
+	_coinUI.coinImg[0].frameX = _coin % 1000 / 100;
+	_coinUI.coinImg[1].frameX = _coin % 100 / 10;
+	_coinUI.coinImg[2].frameX = _coin % 10;
+
+	_diamondUI.coinImg[0].frameX = _diamond % 1000 / 100;
+	_diamondUI.coinImg[1].frameX = _diamond % 100 / 10;
+	_diamondUI.coinImg[2].frameX = _diamond % 10;
+}
+
+void player::coinUIrender()
+{
+	_coinUI.x->render(CAMERAMANAGER->getCameraDC(), WINSIZEX - 100, 45);
+	_diamondUI.x->render(CAMERAMANAGER->getCameraDC(), WINSIZEX - 100, 100);
+
+	int temp = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		if (_coin < 100 && i == 0)continue;
+		if (_coin < 10 && i == 1)continue;
+		_coinUI.coinImg[i].img->frameRender(CAMERAMANAGER->getCameraDC(), WINSIZEX - 80 + (temp*_coinUI.coinImg[i].img->getFrameWidth()), 40, _coinUI.coinImg[i].frameX, 0);
+		temp++;
+	}
+	temp = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		if (_diamond < 100 && i == 0)continue;
+		if (_diamond < 10 && i == 1)continue;
+		_diamondUI.coinImg[i].img->frameRender(CAMERAMANAGER->getCameraDC(), WINSIZEX - 80 + (temp*_diamondUI.coinImg[i].img->getFrameWidth()), 95, _diamondUI.coinImg[i].frameX, 0);
+		temp++;
+	}
+
+	//우상단 코인다이아 부분 렌더
+	IMAGEMANAGER->render("코인다이아", CAMERAMANAGER->getCameraDC(), WINSIZEX - 50 * 3, 20);
+	SetTextColor(CAMERAMANAGER->getCameraDC(), RGB(255, 255, 255));
 }
 
 

@@ -11,16 +11,16 @@ raycast::~raycast()
 {
 }
 
-void raycast::init()
+void raycast::init(tagTile _tile[])
 {
-	tile = PLAYER->getMap();
+	tile = _tile;
 }
 
-void raycast::update()
+void raycast::update(int startTile)
 {
 	reset();
 
-	pTile = PLAYER->currentTile();
+	pTile = startTile;
 	open.push_back(pTile);
 	
 	int power = 5;
@@ -44,6 +44,48 @@ void raycast::update()
 					tile[open[i] + dx[k]].ray = ray;
 					
 					if(tile[open[i] + dx[k]].walkable) temp.push_back(open[i] + dx[k]);
+				}
+			}
+		}
+
+		swap(open, temp);
+		temp.clear();
+
+		if (ray == power)ok = false;
+
+		ray++;
+	}
+}
+
+void raycast::torch(int startTile)
+{
+	open.clear();
+	temp.clear();
+
+	pTile = startTile;
+	open.push_back(pTile);
+
+	int power = 4;
+	int ray = 1;
+
+	int dx[] = { -1, 1, TILEX, -TILEY };
+
+	ok = true;
+
+	while (ok)
+	{
+		for (int i = 0; i < open.size(); ++i)
+		{
+			for (int k = 0; k < 4; ++k)
+			{
+				//if (tile[open[i] + dx[k]].ray > 0) continue;
+
+				if (wallCheck(open[i] + dx[k]))
+				{
+					tile[open[i] + dx[k]].look = true;
+					tile[open[i] + dx[k]].ray = ray;
+
+					if (tile[open[i] + dx[k]].walkable) temp.push_back(open[i] + dx[k]);
 				}
 			}
 		}

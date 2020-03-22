@@ -6,9 +6,9 @@ bomb::bomb()
 {
 }
 
-bomb::bomb(string name, slotType type, int num, string description, int x, int y)
+bomb::bomb(string name, slotType type, int num, string description, int x, int y, int price)
 {
-	setItem(type, name, description,  x,  y);
+	setItem(type, name, description,  x,  y,price);
 	_num = num;
 	_ani = IMAGEMANAGER->findImage("ÆøÅº¾Ö´Ï");
 	_isFire = false;
@@ -23,6 +23,7 @@ bomb::~bomb()
 
 HRESULT bomb::init()
 {
+	_isShop = false;
 	return S_OK;
 }
 
@@ -103,6 +104,8 @@ void bomb::active()
 			{
 				tempMap[check].obj = OBJ_NONE;
 				tempMap[check].strength = 0;
+				tempMap[check].ray = 0;
+				tempMap[check].itemPoint = "";
 				tempMap[check].walkable = true;
 			}
 			if (check == PLAYER->currentTile())

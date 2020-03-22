@@ -11,7 +11,7 @@ private:
 	int bombX, bombY , bombTile;
 public:
 	bomb();
-	bomb(string name, slotType type, int num, string description, int x, int y);
+	bomb(string name, slotType type, int num, string description, int x, int y, int price);
 	~bomb();
 	virtual HRESULT init() override;
 

@@ -36,6 +36,19 @@ void testScene::update()
 	MONSTERMANAGER->update();
 	ITEMMANAGER->update();
 	groundPattern();
+	for (int i = 0; i < _vTorch.size(); ++i)
+	{
+		_vTorch[i]->update();
+	}
+	for (int i = 0; i < _vTorch.size();)
+	{
+		if (_tiles[_vTorch[i]->getTileNum()].itemPoint != "벽횃불")
+		{
+			_vTorch.erase(_vTorch.begin() + i);
+		}
+		else ++i;
+	}
+
 }
 
 void testScene::render()
@@ -73,7 +86,13 @@ void testScene::allRender()
 		//오브젝트
 		for (int k = 0; k < TILEY; k++)
 		{
-			if (CAMERAX - 100 < _tiles[(i*TILEX) + k].x && _tiles[(i*TILEX) + k].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[(i*TILEX) + k].y&& _tiles[(i*TILEX) + k].y < CAMERAY + WINSIZEY + 100 && _tiles[(i*TILEX) + k].look)
+			if (CAMERAX - 100 >= _tiles[(i*TILEX) + k].x || _tiles[(i*TILEX) + k].x >= CAMERAX + WINSIZEX + 100 ||
+				CAMERAY - 100 >= _tiles[(i*TILEX) + k].y || _tiles[(i*TILEX) + k].y >= CAMERAY + WINSIZEY + 100) continue;
+			if (!_tiles[(i*TILEX) + k].look)continue;
+
+
+
+			if (CAMERAX - 100 < _tiles[(i*TILEX) + k].x && _tiles[(i*TILEX) + k].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[(i*TILEX) + k].y&& _tiles[(i*TILEX) + k].y < CAMERAY + WINSIZEY + 100)
 			{
 				if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE && _tiles[(i*TILEX) + k].ray > 0)
 				{
@@ -108,6 +127,11 @@ void testScene::allRender()
 		//플레이어
 		if ((i*TILEX) < p  && p < ((i + 1)*TILEX))  PLAYER->render(getMemDC());
 	}
+
+	for (int i = 0; i < _vTorch.size(); ++i)
+	{
+		_vTorch[i]->render(getMemDC());
+	}
 }
 
 void testScene::debugRender()
@@ -116,6 +140,9 @@ void testScene::debugRender()
 	{
 		for (int i = 0; i < TILEX * TILEY; i++)
 		{
+			if (CAMERAX - 100 >= _tiles[i].x || _tiles[i].x >= CAMERAX + WINSIZEX + 100 ||
+				CAMERAY - 100 >= _tiles[i].y || _tiles[i].y >= CAMERAY + WINSIZEY + 100) continue;
+
 			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
 			{
 				SetBkMode(getMemDC(), TRANSPARENT);
@@ -165,6 +192,14 @@ void testScene::load()
 
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
+
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (_tiles[i].itemPoint == "벽횃불")
+		{
+			_vTorch.push_back(new wallTorch(i,_tiles));
+		}
+	}
 }
 
 void testScene::groundPattern()

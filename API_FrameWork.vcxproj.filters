@@ -142,6 +142,15 @@
     <ClCompile Include="raycast.cpp">
       <Filter>플레이어</Filter>
     </ClCompile>
+    <ClCompile Include="wallTorch.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
+    <ClCompile Include="shopKeeper.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="introScene.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -302,6 +311,15 @@
     </ClInclude>
     <ClInclude Include="raycast.h">
       <Filter>플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="wallTorch.h">
+      <Filter>인게임</Filter>
+    </ClInclude>
+    <ClInclude Include="shopKeeper.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="introScene.h">
+      <Filter>인게임</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

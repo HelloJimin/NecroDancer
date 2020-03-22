@@ -16,7 +16,6 @@ coin::coin(int value, int x, int y)
 	_y = y;
 
 	rcSet();
-
 }
 
 

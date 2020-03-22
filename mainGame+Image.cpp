@@ -44,6 +44,17 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("HP바", "images/UI/hpBar.bmp",72*2, 22*2,3,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("노트", "images/UI/note1.bmp",6*2, 30*2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("빗나감", "images/UI/missed.bmp",36*2, 13*2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("인트로", "images/UI/intro.bmp",WINSIZEX,WINSIZEY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("x버튼", "images/UI/x버튼.bmp",10,10, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("z버튼", "images/UI/z버튼.bmp",10,10, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("스타트", "images/UI/스타트.bmp",330, 162,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("맵툴", "images/UI/맵툴.bmp",330, 162,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("나가기", "images/UI/나가기.bmp",330, 162,1,2, true, RGB(255, 0, 255));
+
+
+	IMAGEMANAGER->addFrameImage("숫자", "images/UI/number.bmp",120, 18,10,1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("벽횃불", "images/UI/벽횃불.bmp",48*2, 21*4, 4, 2, true, RGB(255, 0, 255));
 
 
 
@@ -126,11 +137,14 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("레드레이스", "images/monster/redWraiths.bmp",39*3, 46*3*2,3,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("미노타우로스", "images/monster/Minotaurs.bmp",450*3, 100*3*2,9,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",549*3, 106*3*2,9,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("상점주인", "images/monster/상점주인.bmp",376*3, 152*3,8,4, true, RGB(255, 0, 255));
 
 
 
 	//SOUND
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.mp3", true, true);
+	SOUNDMANAGER->addSound("1-1shop", "sound/1-1shop.mp3", true, true);
+	SOUNDMANAGER->addSound("intro", "sound/intro.mp3", true, true);
 	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);
 
 	//효과음

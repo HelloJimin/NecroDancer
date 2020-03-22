@@ -3,7 +3,7 @@
 #include"mapTool.h"
 #include"testScene.h"
 #include"lobbyScene.h"
-
+#include"introScene.h"
 
 #define DC gameNode::getMemDC()
 

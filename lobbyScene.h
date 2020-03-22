@@ -1,10 +1,13 @@
 #pragma once
 #include "gameNode.h"
 #include"tileNode.h"
+#include"wallTorch.h"
+
 class lobbyScene : public gameNode
 {
 private:
 	tagTile _tiles[TILEX * TILEY];
+	vector<wallTorch*> _vTorch;
 public:
 	lobbyScene();
 	~lobbyScene();

@@ -8,6 +8,7 @@
 #include"bat.h"
 #include"minotaurs.h"
 #include"redDragon.h"
+#include"shopKeeper.h"
 class monsterManager : public singletonBase<monsterManager>
 {
 private:
@@ -32,6 +33,7 @@ public:
 	void summonBat(string name, int x, int y);
 	void summonMinotaurs(string name, int x, int y);
 	void summonRedDragon(string name, int x, int y);
+	void summonShopKeeper(string name, int x, int y);
 
 
 	void summonControl(string name, int x, int y);

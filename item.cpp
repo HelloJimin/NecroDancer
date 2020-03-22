@@ -12,6 +12,8 @@ item::~item()
 
 HRESULT item::init()
 {
+
+	_isShop = false;
 	return S_OK;
 }
 
@@ -47,8 +49,10 @@ void item::setValue(int num)
 {
 }
 
-void item::setItem(slotType type, string name, string description,int x, int y)
+void item::setItem(slotType type, string name, string description, int x, int y, int price)
 {
+	setPrice(price);
+
 	_name = name;
 	_itemImg = IMAGEMANAGER->findImage(name);
 	_description = description;
@@ -116,7 +120,6 @@ void item::animation()
 			_waveCnt = 1;
 		}
 	}
-	
 }
 
 void item::draw(HDC hdc)
@@ -126,13 +129,60 @@ void item::draw(HDC hdc)
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
 		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left+ 8, _rc.top+11);
 	}
-	else
+	else if (!_inInventory && _isShop)
 	{
-		_itemImg->render(hdc, _x-26, _y-52);
+		_itemImg->render(hdc, _x - 26, _y - 52);
+		tagTile* temp = PLAYER->getMap();
+		for (int i = 0; i < _vPriceImg.size(); ++i)
+		{
+			_vPriceImg[i]->img->frameRender(hdc, temp[_currentTileIndex-TILEX*2].rc.left+
+			_vPriceImg[i]->img->getFrameWidth() +(i*_vPriceImg[i]->img->getFrameWidth()), 
+			temp[_currentTileIndex - TILEX * 2].rc.bottom + _vPriceImg[i]->img->getFrameHeight()*4+10,
+			_vPriceImg[i]->frameX, 0);
+		}
+	}
+	else if(!_inInventory)
+	{
+		_itemImg->render(hdc, _x - 26, _y - 52);
 	}
 }
 
 void item::rcSet()
 {
 	_rc = RectMakeCenter(_x + 10, _y + 10, _itemImg->getWidth(), _itemImg->getHeight());
+}
+
+void item::setPrice(int price)
+{
+	_price = price;
+
+	if (_price >= 100)
+	{
+		tagPrice* temp = new tagPrice;
+		temp->img = new image;
+		temp->img =	IMAGEMANAGER->findImage("숫자");
+		temp->frameX = _price % 1000 / 100;
+		_vPriceImg.push_back(temp);
+	}
+	if (_price >= 10)
+	{
+		tagPrice* temp = new tagPrice;
+		temp->img = new image;
+		temp->img = IMAGEMANAGER->findImage("숫자");
+		temp->frameX = _price % 100 / 10;
+		_vPriceImg.push_back(temp);
+	}
+	tagPrice* temp = new tagPrice;
+	temp->img = new image;
+	temp->img = IMAGEMANAGER->findImage("숫자");
+	temp->frameX = _price % 10;
+	_vPriceImg.push_back(temp);
+}
+
+void item::shopCheck()
+{
+	tagTile* _tile = PLAYER->getMap();
+	if (_tile[_currentTileIndex - TILEX * 2].terrain == TERRAIN_SHOP) _isShop = true;
+	else _isShop = false;
+
 }

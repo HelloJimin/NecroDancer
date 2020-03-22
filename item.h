@@ -10,6 +10,11 @@ enum slotType
 	ITEM,
 	BOMB,
 };
+struct tagPrice
+{
+	image* img;
+	int frameX;
+};
 class item
 {
 
@@ -26,11 +31,14 @@ protected:
 	float _x, _y;
 	int _waveCnt;
 
-	int price;
-	int diamondPrice;
+	int _price;
+
 	bool _isGlass;
+	bool _isShop;
 
 	int _currentTileIndex;
+
+	vector<tagPrice*> _vPriceImg;
 public:
 	item();
 	~item();
@@ -47,7 +55,7 @@ public:
 	virtual void setValue(int num);
 
 
-	void setItem(slotType type, string name, string description, int x, int y);
+	void setItem(slotType type, string name, string description, int x, int y, int price);
 	void animation();
 	void draw(HDC hdc);
 
@@ -67,5 +75,12 @@ public:
 
 	float getX() { return _x; }
 	float getY() { return _y; }
+
+	bool getIsShop() { return _isShop; }
+	int getPrice() { return _price; }
+
+	void setPrice(int price);
+
+	void shopCheck();
 };
 

@@ -62,18 +62,6 @@ void mapTool::update()
 	}
 	controlSampleWindow();
 	cameraMove();
-
-	if (BEAT->getCheck())
-	{
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (_tiles[i].terrain == TERRAIN_GROUND)
-			{
-				_tiles[i].terrainFrameX += 1;
-				if (_tiles[i].terrainFrameX > 2)_tiles[i].terrainFrameX = 0;
-			}
-		}
-	}
 }
 
 void mapTool::render()
@@ -106,7 +94,9 @@ void mapTool::render()
 		{
 			if (_tiles[i].startPoint == "플레이어")	IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
 
-			if (_tiles[i].itemPoint != "")IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
+			if (_tiles[i].itemPoint != "" && _tiles[i].itemPoint != "벽횃불" )IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, _tiles[i].g, _tiles[i].h);
+			
+			if (_tiles[i].itemPoint == "벽횃불")IMAGEMANAGER->frameRender("맵툴기타", getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top-40, _tiles[i].g, _tiles[i].h);
 		}
 	}
 	if (KEYMANAGER->isToggleKey(VK_TAB))
@@ -165,7 +155,6 @@ void mapTool::save()
 			arrNum = i;
 			char save[128];
 			wsprintf(save, "save/맵%d.map", arrNum + 1);
-
 
 			file = CreateFile
 			(save,				//생성할 파일또는 열 장치나 파일이름
@@ -281,7 +270,13 @@ void mapTool::mapInit()
 		_tiles[i].walkable = true;
 		_tiles[i].f = BIGNUM;
 		_tiles[i].h = 0;			//계산전이므로 0
+		_tiles[i].g = 0;
+		_tiles[i].node = 0;
+
 		_tiles[i].startPoint = "";
+		_tiles[i].itemPoint = "";
+		_tiles[i].look - false;
+		_tiles[i].ray = 0;
 	}
 }
 
@@ -455,7 +450,7 @@ void mapTool::setMap()
 
 				_tiles[i].terrain = terrainSelect(_currnetTile.x, _currnetTile.y);
 			}
-			if (_page == PAGE_OBJ)
+			else if (_page == PAGE_OBJ)
 			{
 				_tiles[i].objFrameX = _currnetTile.x;
 				_tiles[i].objFrameY = _currnetTile.y;
@@ -466,7 +461,6 @@ void mapTool::setMap()
 			{
 				_tiles[i].g = _currnetTile.x;
 				_tiles[i].h = _currnetTile.y;
-
 				_tiles[i].startPoint = monsterSelect(_currnetTile.x, _currnetTile.y);
 			}
 			else if (_page == PAGE_ETC)
@@ -477,7 +471,7 @@ void mapTool::setMap()
 				if(etcSelect(_currnetTile.x, _currnetTile.y)=="플레이어")_tiles[i].startPoint = etcSelect(_currnetTile.x, _currnetTile.y);
 				else _tiles[i].itemPoint = etcSelect(_currnetTile.x, _currnetTile.y);
 			}
-			if (_page == ERASER)
+			else if (_page == ERASER)
 			{
 				_tiles[i].terrain = TERRAIN_NONE;
 
@@ -493,12 +487,17 @@ void mapTool::setMap()
 				//강도
 				_tiles[i].strength = 0;
 
-		
 				_tiles[i].parent = NULL;
 				_tiles[i].walkable = true;
 				_tiles[i].f = BIGNUM;
 				_tiles[i].h = 0;			//계산전이므로 0
+				_tiles[i].g = 0;
+				_tiles[i].node = 0;
+
 				_tiles[i].startPoint = "";
+				_tiles[i].itemPoint = "";
+				_tiles[i].look - false;
+				_tiles[i].ray = 0;
 			}
 		}
 	}
@@ -597,25 +596,13 @@ void mapTool::drage()
 				_tiles[i].walkable = true;
 				_tiles[i].f = BIGNUM;
 				_tiles[i].h = 0;			//계산전이므로 0
+				_tiles[i].g = 0;
+				_tiles[i].node = 0;
+
 				_tiles[i].startPoint = "";
-				//if (_tiles[i].obj != OBJ_NONE)
-				//{
-				//	_tiles[i].objFrameX = NULL;
-				//	_tiles[i].objFrameY = NULL;
-
-				//	_tiles[i].obj = OBJ_NONE;
-				//}
-				//else if (_tiles[i].startPoint != "")
-				//{
-				//	_tiles[i].startPoint = "";
-				//}
-				//else
-				//{
-				//	_tiles[i].terrainFrameX = NULL;
-				//	_tiles[i].terrainFrameY = NULL;
-
-				//	_tiles[i].terrain = TERRAIN_NONE;
-				//}
+				_tiles[i].itemPoint = "";
+				_tiles[i].look - false;
+				_tiles[i].ray = 0;
 			}
 		}
 	}
@@ -671,7 +658,7 @@ void mapTool::tileAttribute()
 	{
 		for (int k = 0; k < TILEY; k++)
 		{
-			if (_tiles[(i*TILEX) + k].terrain == TERRAIN_NONE) continue;
+			if (_tiles[(i*TILEX) + k].terrain != TERRAIN_GROUND) continue;
 			
 			if (i % 2 == 0) _tiles[(i*TILEX) + k].terrainFrameX = k % 2;
 			else
@@ -722,6 +709,8 @@ void mapTool::tileAttribute()
 
 TERRAIN mapTool::terrainSelect(int frameX, int frameY)
 {
+	if (frameX == 0 && frameY == 2) return TERRAIN_SHOP;
+
 	for (int i = 0; i < 4; i++)
 	{
 		for (int k = 0; k < 4; k++)
@@ -763,7 +752,7 @@ OBJECT mapTool::objSelect(int frameX, int frameY)
 	return OBJ_NONE;
 }
 
-string mapTool::monsterSelect(int frameX, int frameY)
+char* mapTool::monsterSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0) return "그린슬라임";
 	if (frameX == 1 && frameY == 0) return "블루슬라임";
@@ -780,7 +769,7 @@ string mapTool::monsterSelect(int frameX, int frameY)
 	if (frameX == 0 && frameY == 2) return "미노타우로스";
 	if (frameX == 1 && frameY == 2) return "레드드래곤";
 
-	if (frameX == 2 && frameY == 2) return "";
+	if (frameX == 2 && frameY == 2) return "상점주인";
 	if (frameX == 3 && frameY == 2) return "";
 
 	if (frameX == 0 && frameY == 3) return "";
@@ -792,7 +781,7 @@ string mapTool::monsterSelect(int frameX, int frameY)
 	return "";
 }
 
-string mapTool::etcSelect(int frameX, int frameY)
+char* mapTool::etcSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0)
 	{
@@ -804,7 +793,7 @@ string mapTool::etcSelect(int frameX, int frameY)
 	}
 	if (frameX == 1 && frameY == 0) return "";
 
-	if (frameX == 2 && frameY == 0) return "";
+	if (frameX == 2 && frameY == 0) return "벽횃불";
 	if (frameX == 3 && frameY == 0) return "";
 
 	if (frameX == 0 && frameY == 1) return "티타늄단검";

@@ -13,8 +13,9 @@ public:
 	~raycast();
 
 
-	void init();
-	void update();
+	void init(tagTile _tile[]);
+	void update(int startTile);
+	void torch(int startTile);
 
 	void reset();
 

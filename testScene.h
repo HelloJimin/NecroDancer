@@ -1,6 +1,9 @@
 #pragma once
 #include "gameNode.h"
 #include"tileNode.h"
+#include"wallTorch.h"
+
+
 class testScene : public gameNode
 {
 private:
@@ -9,6 +12,7 @@ private:
 
 	bool _isDebug;
 
+	vector<wallTorch*> _vTorch;
 public:
 	testScene();
 	~testScene();

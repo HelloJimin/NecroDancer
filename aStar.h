@@ -14,7 +14,17 @@
 	위 과정을 반복한다.
 	F값이 동일하다면 속도상의 목적으로 오픈리스트에 더 늦게 추가 된것을 선택하는 것이 빠르다.
 */
-
+enum Direction
+{
+	DIRECTION_LEFT,
+	DIRECTION_RIGHT,
+	DIRECTION_UP,
+	DIRECTION_DOWN,
+	DIRECTION_LEFTUP,
+	DIRECTION_RIGHTDOWN,
+	DIRECTION_LEFTDOWN,
+	DIRECTION_RIGHTUP
+};
 class aStar : public gameNode
 {
 private:
@@ -32,6 +42,7 @@ private:
 	bool noPath;
 	//bool startAstar;
 
+	int nextTile;
 public:
 	aStar();
 	~aStar();
@@ -39,10 +50,13 @@ public:
 	int aStarStraight(tagTile tile[], int currentIndex, int endIndex);
 	int aStarTile(tagTile tile[], int currentIndex, int endIndex);
 	int aStarBoss(tagTile tile[], int currentIndex, int endIndex);
+	bool findPlayer(tagTile tile[], int currentIndex, int endIndex);
 	void reset(tagTile tile[]);
 
 	bool noPathCheck(tagTile tile[],int endIndex);
 
 	int randomMove(int currentTile);
+
+	int getNextTile() { return nextTile; }
 };
 
