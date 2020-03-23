@@ -59,6 +59,7 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addFrameImage("숫자", "images/UI/number.bmp",120, 18,10,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("벽횃불", "images/UI/벽횃불.bmp",48*2, 21*4, 4, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("함정", "images/UI/trap.bmp",63*2, 170*2, 3, 10, true, RGB(255, 0, 255));
 
 
 

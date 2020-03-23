@@ -17,6 +17,7 @@ HRESULT testScene::init()
 	load();
 
 	torchInit();
+	trapInit();
 
 	SOUNDMANAGER->play("1-1");
 	BEAT->setBeatOn(true);
@@ -36,12 +37,12 @@ void testScene::release()
 void testScene::update()
 {
 	BEAT->update();
+	torchUpdate();
+	trapUpdate();
 	PLAYER->update();
 	MONSTERMANAGER->update();
 	ITEMMANAGER->update();
 	groundPattern();
-	torchUpdate();
-
 }
 
 void testScene::render()
@@ -222,6 +223,34 @@ void testScene::torchInit()
 		{
 			_vTorch.push_back(new wallTorch(i, _tiles));
 		}
+	}
+}
+
+void testScene::trapInit()
+{
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (_tiles[i].obj == OBJ_LEFT || _tiles[i].obj==OBJ_RIGHT || _tiles[i].obj==OBJ_UP||
+			_tiles[i].obj ==OBJ_DOWN || _tiles[i].obj == OBJ_TRAP)
+		{
+			_vTrap.push_back(new trap(_tiles[i].obj, i, _tiles));
+		}
+	}
+}
+
+void testScene::trapUpdate()
+{
+	for (int i = 0; i < _vTrap.size(); i++)
+	{
+		_vTrap[i]->update();
+	}
+	for (int i = 0; i < _vTrap.size();)
+	{
+		if (_tiles[_vTrap[i]->getTileNum()].obj==OBJ_NONE)
+		{
+			_vTrap.erase(_vTrap.begin() + i);
+		}
+		else ++i;
 	}
 }
 

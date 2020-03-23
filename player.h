@@ -68,6 +68,8 @@ private:
 	bool _isAttack;
 	bool _isFever;
 	bool _isHit;
+
+
 	char _str[128];
 	RECT _temp;
 
@@ -94,7 +96,7 @@ public:
 	void attack();
 	void move();
 	int currentTile() { return _currentTileIndex; }
-	int nextTile() { return _nextTileIndex; }
+	int& nextTile() { return _nextTileIndex; }
 
 	RECT getCollisionRc() { return _collisionRc; }
 
@@ -116,6 +118,7 @@ public:
 	int getY() { return _currentY; }
 
 	DIRECTION getPlayerDir() { return _direction; }
+	void setDirection(DIRECTION dir) { _direction = dir; }
 	void setFrameY(int frameNum) { _frameY = frameNum; }
 	void setWeapom(attackForm form) { _equipWeaponType = form; }
 
@@ -124,6 +127,7 @@ public:
 	bool throwRengeCheck(int nextTile);
 	bool getFever() { return _isFever; }
 	bool& getHit() { return _isHit; }
+	bool getMove() { return _isMove; }
 	void arrowEffect(attackForm form, int monArrNum);
 	void throwEffect(int endTile, int throwRenge);
 

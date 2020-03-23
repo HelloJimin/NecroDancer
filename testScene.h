@@ -2,7 +2,7 @@
 #include "gameNode.h"
 #include"tileNode.h"
 #include"wallTorch.h"
-
+#include"trap.h"
 
 class testScene : public gameNode
 {
@@ -13,8 +13,10 @@ private:
 	bool _isDebug;
 
 	vector<wallTorch*> _vTorch;
+	vector<trap*> _vTrap;
 
 	int _hitCnt;
+
 public:
 	testScene();
 	~testScene();
@@ -29,9 +31,11 @@ public:
 	void setUp();
 	void load();
 
-	void torchUpdate();
 	void torchInit();
+	void torchUpdate();
+
+	void trapInit();
+	void trapUpdate();
+
 	void groundPattern();
-
-
 };
