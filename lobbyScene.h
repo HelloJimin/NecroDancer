@@ -24,5 +24,7 @@ public:
 
 	void groundPattern();
 	void next();
+	void torchUpdate();
+	void torchInit();
 };
 

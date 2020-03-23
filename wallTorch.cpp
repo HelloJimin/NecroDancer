@@ -79,9 +79,4 @@ void wallTorch::findPlayer()
 		_tile[_tileNum].ray = 1;
 		_ray->torch(_aStar->getNextTile());
 	}
-	else
-	{
-		_tile[_tileNum].ray = 1;
-	}
-	
 }

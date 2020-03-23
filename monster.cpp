@@ -206,9 +206,6 @@ bool monster::die()
 	{
 		if (_vHp[i].hp > 0.0f) return false;
 	}
-	_pCurrentMap[_currentTileIndex].walkable = true;
-	ITEMMANAGER->addCoin(_coin, _pCurrentMap[_currentTileIndex].x, _pCurrentMap[_currentTileIndex].y);
-
 	return true;
 }
 
@@ -276,6 +273,10 @@ void monster::aniCheck()
 	case RIGHT:_frameY = 1;
 		break;
 	}
+}
+
+void monster::getHp()
+{
 }
 
 bool monster::walkableCheck()

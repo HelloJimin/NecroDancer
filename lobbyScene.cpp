@@ -16,6 +16,9 @@ HRESULT lobbyScene::init()
 	setUp();
 	load();
 
+	torchInit();
+
+
 	SOUNDMANAGER->play("lobby");
 	BEAT->setBeatOn(false);
 
@@ -33,19 +36,7 @@ void lobbyScene::update()
 	PLAYER->update();
 	groundPattern();
 	next();
-
-	for (int i = 0; i < _vTorch.size(); ++i)
-	{
-		_vTorch[i]->update();
-	}
-	for (int i = 0; i < _vTorch.size();)
-	{
-		if (_tiles[_vTorch[i]->getTileNum()].itemPoint != "º®È¶ºÒ")
-		{
-			_vTorch.erase(_vTorch.begin() + i);
-		}
-		else ++i;
-	}
+	torchUpdate();
 }
 
 void lobbyScene::render()
@@ -81,22 +72,22 @@ void lobbyScene::allRender()
 
 void lobbyScene::debugRender()
 {
-	//if (KEYMANAGER->isToggleKey(VK_TAB))
-	//{
-	//	for (int i = 0; i < TILEX * TILEY; i++)
-	//	{
-	//		if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-	//		{
-	//			SetBkMode(getMemDC(), TRANSPARENT);
-	//			//»ö»ó
-	//			SetTextColor(getMemDC(), RGB(255, 0, 0));
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
+			{
+				SetBkMode(getMemDC(), TRANSPARENT);
+				//»ö»ó
+				SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-	//			char str[128];
-	//			sprintf_s(str, "%d", i);
-	//			TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-	//		}
-	//	}
-	//}
+				char str[128];
+				sprintf_s(str, "%d", i);
+				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+			}
+		}
+	}
 }
 
 void lobbyScene::setUp()
@@ -116,8 +107,6 @@ void lobbyScene::setUp()
 		_tiles[i].y = _tiles[i].rc.top + (_tiles[i].rc.bottom - _tiles[i].rc.top) / 2;
 
 	}
-
-
 }
 
 void lobbyScene::load()
@@ -135,28 +124,16 @@ void lobbyScene::load()
 
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
-	for (int i = 0; i < TILEX * TILEY; i++)
-	{
-		if (_tiles[i].itemPoint == "º®È¶ºÒ")
-		{
-			_vTorch.push_back(new wallTorch(i, _tiles));
-		}
-	}
 }
 
 void lobbyScene::groundPattern()
 {
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
-		if (_tiles[i].terrain == TERRAIN_GROUND && _tiles[i].ray > 0)
+		if (_tiles[i].terrain == TERRAIN_GROUND)
 		{
-			if (BEAT->getCnt() % 44 == 0) _tiles[i].terrainFrameX += 1;
+			if (BEAT->getCnt() % 58 == 0) _tiles[i].terrainFrameX += 1;
 			if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
-		}
-
-		if (_tiles[i].ray <= 0)
-		{
-			_tiles[i].terrainFrameX = 0;
 		}
 	}
 }
@@ -169,6 +146,34 @@ void lobbyScene::next()
 		{
 			SOUNDMANAGER->stop("lobby");
 			SCENEMANAGER->changeScene("Å×½ºÆ®½Å");
+		}
+	}
+}
+
+void lobbyScene::torchUpdate()
+{
+	for (int i = 0; i < _vTorch.size(); ++i)
+	{
+		_vTorch[i]->update();
+	}
+
+	for (int i = 0; i < _vTorch.size();)
+	{
+		if (_tiles[_vTorch[i]->getTileNum()].itemPoint != "º®È¶ºÒ")
+		{
+			_vTorch.erase(_vTorch.begin() + i);
+		}
+		else ++i;
+	}
+}
+
+void lobbyScene::torchInit()
+{
+	for (int i = 0; i < TILEX * TILEY; i++)
+	{
+		if (_tiles[i].itemPoint == "º®È¶ºÒ")
+		{
+			_vTorch.push_back(new wallTorch(i, _tiles));
 		}
 	}
 }

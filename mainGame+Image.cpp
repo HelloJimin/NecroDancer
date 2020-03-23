@@ -6,7 +6,7 @@ void mainGame::imagesInit()
 	//맵툴
 	IMAGEMANAGER->addImage("샘플창", "images/maptool/샘플창.bmp", 300, WINSIZEY-200, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addFrameImage("맵툴지형", "images/maptool/맵툴_지형.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("맵툴지형", "images/maptool/맵툴_지형.bmp", 104*2, 104*2*4, 4, 4*4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴벽", "images/maptool/맵툴_벽.bmp", 104*2, 156*2*2, 4, 8, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴몬스터", "images/maptool/맵툴_몬스터.bmp", 216*2, 204*2, 4, 4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴기타", "images/maptool/맵툴_ETC.bmp", 104*2, 104*2, 4, 4, true, RGB(255, 0, 255));
@@ -47,6 +47,10 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("인트로", "images/UI/intro.bmp",WINSIZEX,WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("x버튼", "images/UI/x버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("z버튼", "images/UI/z버튼.bmp",10,10, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("코인배수", "images/UI/코인배수.bmp",150,30, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("hit", "images/UI/hit.bmp",1024,768, false, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("스타트", "images/UI/스타트.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴", "images/UI/맵툴.bmp",330, 162,1,2, true, RGB(255, 0, 255));
@@ -138,6 +142,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("미노타우로스", "images/monster/Minotaurs.bmp",450*3, 100*3*2,9,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",549*3, 106*3*2,9,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("상점주인", "images/monster/상점주인.bmp",376*3, 152*3,8,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("좀비", "images/monster/좀비.bmp",153*3, 200*3,8,8, true, RGB(255, 0, 255));
 
 
 

@@ -14,6 +14,7 @@ struct miss
 	int speed;
 	RECT rc;
 	image* img;
+	int max;
 };
 class beat : public singletonBase<beat>
 {
@@ -50,9 +51,10 @@ public:
 	void render(HDC hdc);
 
 	void checkBeat();
-	void miss();
+	void missUpdate();
 
 	void addMiss();
+	void addCoinMiss();
 	void removeNote();
 
 	bool getCheck() { return _check;}

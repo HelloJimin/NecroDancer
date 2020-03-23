@@ -13,7 +13,7 @@ HRESULT mapTool::init()
 	for (int i = 0; i < 16; i++)
 	{
 		_sampleImage[i].image = new image;
-		_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2, 4, 4, true, RGB(255, 0, 255));
+		_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2 * 4, 4, 4 * 4, true, RGB(255, 0, 255));
 	}
 	_mouse = false;
 	
@@ -621,7 +621,7 @@ void mapTool::pageControl()
 		for (int i = 0; i < 16; i++)
 		{
 			_sampleImage[i].image = new image;
-			_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2, 4, 4, true, RGB(255, 0, 255));
+			_sampleImage[i].image->init("images/maptool/맵툴_지형.bmp", 104 * 2, 104 * 2 * 4, 4, 4 * 4, true, RGB(255, 0, 255));
 		}
 		break;
 	case PAGE_OBJ:
@@ -752,7 +752,7 @@ OBJECT mapTool::objSelect(int frameX, int frameY)
 	return OBJ_NONE;
 }
 
-char* mapTool::monsterSelect(int frameX, int frameY)
+const char* mapTool::monsterSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0) return "그린슬라임";
 	if (frameX == 1 && frameY == 0) return "블루슬라임";
@@ -763,7 +763,7 @@ char* mapTool::monsterSelect(int frameX, int frameY)
 	if (frameX == 0 && frameY == 1) return "스켈레톤";
 	if (frameX == 1 && frameY == 1) return "박쥐";
 
-	if (frameX == 2 && frameY == 1) return "";
+	if (frameX == 2 && frameY == 1) return "좀비";
 	if (frameX == 3 && frameY == 1) return "";
 
 	if (frameX == 0 && frameY == 2) return "미노타우로스";
@@ -781,7 +781,7 @@ char* mapTool::monsterSelect(int frameX, int frameY)
 	return "";
 }
 
-char* mapTool::etcSelect(int frameX, int frameY)
+const char* mapTool::etcSelect(int frameX, int frameY)
 {
 	if (frameX == 0 && frameY == 0)
 	{

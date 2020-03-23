@@ -59,13 +59,15 @@ private:
 	hp _hp;
 	int _coin;
 	int _diamond;
+	int _coinMultiplier;
 	inventory* _inven;
 	raycast* _ray;
 
 	bool _isDrop;
 	bool _isMove;
 	bool _isAttack;
-
+	bool _isFever;
+	bool _isHit;
 	char _str[128];
 	RECT _temp;
 
@@ -73,6 +75,9 @@ private:
 
 	coinUI _coinUI;
 	coinUI _diamondUI;
+
+	image* _coinFeverImg;
+	image* _coinFeverNumImg;
 public:
 	player();
 	~player();
@@ -117,7 +122,8 @@ public:
 	void effectControl(attackForm form, int rengeArrNum, int monArrNum);
 	bool rengeCheck(int monArrNum, int tile);
 	bool throwRengeCheck(int nextTile);
-
+	bool getFever() { return _isFever; }
+	bool& getHit() { return _isHit; }
 	void arrowEffect(attackForm form, int monArrNum);
 	void throwEffect(int endTile, int throwRenge);
 
@@ -126,5 +132,7 @@ public:
 
 	void coinUIupdate();
 	void coinUIrender();
+
+
 };
 

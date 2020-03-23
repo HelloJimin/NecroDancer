@@ -56,6 +56,10 @@ HRESULT player::init()
 	}
 	_diamondUI.x = IMAGEMANAGER->findImage("x버튼");
 	_coinUI.x = IMAGEMANAGER->findImage("x버튼");
+	_coinFeverImg = IMAGEMANAGER->findImage("코인배수");
+	_coinFeverNumImg = IMAGEMANAGER->findImage("숫자");
+
+
 	return S_OK;
 }
 
@@ -74,6 +78,23 @@ void player::update()
 	animation();
 	_ray->update(_currentTileIndex);
 	coinUIupdate();
+
+	if (_rhythm > 0 && _isFever)
+	{
+		_coinMultiplier = 2;
+		if (_rhythm > 10) _coinMultiplier = 3;
+	}
+	if (_rhythm == 0 && _isFever)
+	{
+		BEAT->addCoinMiss();
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+			if (_pCurrentMap[i].terrainFrameY == 0) continue;
+			_pCurrentMap[i].terrainFrameY = 0;
+		}
+		_isFever = false;
+	}
 }
 
 void player::render(HDC hdc)
@@ -90,7 +111,6 @@ void player::render(HDC hdc)
 
 	_bodyImg->frameRender(hdc, _rc.left, _rc.top - 28, _frameX, _frameY);
 	_headImg->frameRender(hdc, _rc.left, _rc.top - 33, _frameX, 0);
-	//_ray->render(hdc);
 }
 
 void player::frontCheck()
@@ -152,6 +172,7 @@ void player::frontCheck()
 void player::attack()
 {
 	if (!_isAttack) return;
+
 
 	//던지기 공격이면
 	if (_inven->getWeapon()->getBool())
@@ -219,6 +240,18 @@ void player::attack()
 				if (pRenge == mTile)
 				{
 					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+					if (MONSTERMANAGER->getMonster()[k]->die())
+					{
+						if (!_isFever)
+						{
+							for (int i = 0; i < TILEX * TILEY; i++)
+							{
+								if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+								if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
+							}
+							_isFever = true;
+						}
+					}
 				}
 			}
 		}
@@ -240,7 +273,7 @@ void player::attack()
 		_inven->throwItem();
 		_inven->itemPosionSet();
 		_isAttack = false;
-		
+
 		return;
 	} //던지기 끝 
 
@@ -261,6 +294,15 @@ void player::attack()
 			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
 			{
 				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+				if (!_isFever)
+				{
+					for (int i = 0; i < TILEX * TILEY; i++)
+					{
+						if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+						if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
+					}
+					_isFever = true;
+				}
 				SOUNDMANAGER->play("atk");
 				effectControl(_equipWeaponType, i, k);
 
@@ -400,11 +442,17 @@ void player::UIrender(HDC hdc)
 		DeleteObject(myBrush);
 
 	}
+	if (_isFever)
+	{
+		_coinFeverImg->render(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - _coinFeverImg->getWidth(), WINSIZEY - _coinFeverImg->getHeight());
+		_coinFeverNumImg->frameRender(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2+ _coinFeverNumImg->getFrameWidth(), WINSIZEY - _coinFeverNumImg->getFrameHeight()-10, _coinMultiplier, 0);
+	}
 
 	for (int i = 0; i < _status.vHp.size(); i++)
 	{
 		_status.vHp[i].img->frameRender(CAMERAMANAGER->getCameraDC(), _status.vHp[i].rc.left, _status.vHp[i].rc.top, _status.vHp[i].currentX,0);
 	}
+
 	//인벤토리 렌더....
 	_inven->render(hdc);
 
@@ -511,7 +559,15 @@ void player::getItem(int itemTile)
 	//코인을 먹었으면 코인먹고 끝
 	if (ITEMMANAGER->getItemList()[itemTile]->getName() == "코인")
 	{
-		_coin+= ITEMMANAGER->getItemList()[itemTile]->getValue();
+		if (_isFever)
+		{
+			_coin+= ITEMMANAGER->getItemList()[itemTile]->getValue()*_coinMultiplier;
+		}
+		else
+		{
+			_coin += ITEMMANAGER->getItemList()[itemTile]->getValue();
+		}
+
 		ITEMMANAGER->removeItem(itemTile);
 		return;
 	}
@@ -561,6 +617,7 @@ void player::hit(float damege)
 		else break;
 	}
 
+	_isHit = true;
 	_rhythm = 0;
 	HPbarSet();
 }
@@ -971,5 +1028,3 @@ void player::coinUIrender()
 	IMAGEMANAGER->render("코인다이아", CAMERAMANAGER->getCameraDC(), WINSIZEX - 50 * 3, 20);
 	SetTextColor(CAMERAMANAGER->getCameraDC(), RGB(255, 255, 255));
 }
-
-

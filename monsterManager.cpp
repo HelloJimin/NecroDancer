@@ -29,7 +29,14 @@ void monsterManager::update()
 	}
 	for (int i = 0; i < _vMonster.size();)
 	{
-		if (_vMonster[i]->die()) _vMonster.erase(_vMonster.begin() + i);
+		if (_vMonster[i]->die())
+		{
+			tagTile* temp = PLAYER->getMap();
+			temp[_vMonster[i]->currentTile()].walkable = true;
+			ITEMMANAGER->addCoin(_vMonster[i]->getCoin(), temp[_vMonster[i]->currentTile()].x, temp[_vMonster[i]->currentTile()].y);
+			_vMonster.erase(_vMonster.begin() + i);
+		}
+
 		else ++i;
 	}
 }
@@ -69,7 +76,7 @@ void monsterManager::summonBlueSlime(string name, int x, int y)
 void monsterManager::summonSkeleton(string name, int x, int y)
 {
 	monster* mob = new skeleton;
-	mob->init(name, x, y, 25, _map);
+	mob->init(name, x, y, 15, _map);
 	_vMonster.push_back(mob);
 }
 
@@ -115,6 +122,13 @@ void monsterManager::summonShopKeeper(string name, int x, int y)
 	_vMonster.push_back(mob);
 }
 
+void monsterManager::summonZombie(string name, int x, int y)
+{
+	monster* mob = new zombie;
+	mob->init(name, x, y, 10, _map);
+	_vMonster.push_back(mob);
+}
+
 void monsterManager::summonControl(string name, int x, int y)
 {
 	if (name == "그린슬라임")
@@ -152,5 +166,9 @@ void monsterManager::summonControl(string name, int x, int y)
 	else if (name == "상점주인")
 	{
 		summonShopKeeper(name, x, y);
+	}
+	else if (name == "좀비")
+	{
+		summonZombie(name, x, y);
 	}
 }

@@ -4,8 +4,8 @@
 #define TILESIZE 52
 #define BIGNUM 20000		//초기값(F)
 //크기
-#define TILEX 52
-#define TILEY 52
+#define TILEX 40
+#define TILEY 40
 
 //타일 총 사이즈
 #define TILESIZEX TILESIZE * TILEX
@@ -51,8 +51,8 @@ struct tagTile
 	tagTile* parent;
 	int f, g, h;
 
-	const char* startPoint;
-	const char* itemPoint;
+	string startPoint;
+	string itemPoint;
 
 	int ray;
 	bool look;

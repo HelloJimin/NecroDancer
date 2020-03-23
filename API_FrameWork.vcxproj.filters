@@ -151,6 +151,9 @@
     <ClCompile Include="introScene.cpp">
       <Filter>인게임</Filter>
     </ClCompile>
+    <ClCompile Include="zombie.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="introScene.h">
       <Filter>인게임</Filter>
+    </ClInclude>
+    <ClInclude Include="zombie.h">
+      <Filter>몬스터</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

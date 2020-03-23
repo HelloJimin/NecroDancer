@@ -52,6 +52,7 @@ public:
 
 	int currentTile() { return _currentTileIndex; }
 	void setMap(tagTile tile[]) { _pCurrentMap = tile; }
+	int getCoin() { return _coin; }
 
 	virtual void move();
 	virtual bool die();
@@ -59,7 +60,8 @@ public:
 	void hpSet();
 	void hpRender(HDC hdc);
 	void hit(float damage);
-	void aniCheck();
+	virtual void aniCheck();
+	void getHp();
 
 	bool walkableCheck();
 	bool playerCheck();

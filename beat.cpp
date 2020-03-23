@@ -35,6 +35,8 @@ HRESULT beat::init()
 	_miss.img = IMAGEMANAGER->findImage("ºø³ª°¨");
 	_miss.rc = RectMake(_heartBox.left, _heartBox.top, _miss.img->getWidth(), _miss.img->getHeight());
 	_miss.speed = 1;
+	_miss.max = WINSIZEY / 2 + 150;
+
 	_vNote.push_back(_note);
 	return S_OK;
 }
@@ -46,7 +48,7 @@ void beat::release()
 void beat::update()
 {
 	checkBeat();
-	miss();
+	missUpdate();
 	if (!_beatOn)
 	{
 		_check = true;
@@ -140,14 +142,13 @@ void beat::removeNote()
 	}
 }
 
-void beat::miss()
+void beat::missUpdate()
 {
 	for (int i = 0; i < _vMiss.size(); i++)
 	{
 		_vMiss[i].rc.top -= _vMiss[i].speed;
 		_vMiss[i].rc.bottom -= _vMiss[i].speed;
-
-		if (_vMiss[i].rc.top <= WINSIZEY / 2 + 150)
+		if (_vMiss[i].rc.top <= _vMiss[i].max)
 		{
 			_vMiss.erase(_vMiss.begin() + i);
 			break;
@@ -158,4 +159,16 @@ void beat::miss()
 void beat::addMiss()
 {
 	_vMiss.push_back(_miss);
+}
+
+void beat::addCoinMiss()
+{
+	miss _temp;
+
+	_temp.alpha = 0;
+	_temp.img = IMAGEMANAGER->findImage("ÄÚÀÎ¹è¼ö»ç¶óÁü");
+	_temp.rc = RectMakeCenter(_heartBox.left, WINSIZEY/2, _temp.img->getWidth(), _temp.img->getHeight());
+	_temp.speed = 1;
+	_temp.max = WINSIZEY / 2 - 100;
+	_vMiss.push_back(_temp);
 }

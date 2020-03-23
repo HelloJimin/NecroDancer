@@ -16,12 +16,16 @@ HRESULT testScene::init()
 	setUp();
 	load();
 
+	torchInit();
+
 	SOUNDMANAGER->play("1-1");
 	BEAT->setBeatOn(true);
 	
 	PLAYER->setMap(_tiles);
 	MONSTERMANAGER->setMap(_tiles);
 	ITEMMANAGER->setMap();
+
+	_hitCnt = 0;
 	return S_OK;
 }
 
@@ -36,18 +40,7 @@ void testScene::update()
 	MONSTERMANAGER->update();
 	ITEMMANAGER->update();
 	groundPattern();
-	for (int i = 0; i < _vTorch.size(); ++i)
-	{
-		_vTorch[i]->update();
-	}
-	for (int i = 0; i < _vTorch.size();)
-	{
-		if (_tiles[_vTorch[i]->getTileNum()].itemPoint != "º®È¶ºÒ")
-		{
-			_vTorch.erase(_vTorch.begin() + i);
-		}
-		else ++i;
-	}
+	torchUpdate();
 
 }
 
@@ -100,7 +93,7 @@ void testScene::allRender()
 				}
 				else if (_tiles[(i*TILEX) + k].terrain != TERRAIN_NONE && _tiles[(i*TILEX) + k].ray <= 0)
 				{
-					IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY+3);
+					IMAGEMANAGER->frameRender("¸ÊÅøÁöÇü", getMemDC(), _tiles[(i*TILEX) + k].rc.left, _tiles[(i*TILEX) + k].rc.top, _tiles[(i*TILEX) + k].terrainFrameX, _tiles[(i*TILEX) + k].terrainFrameY+8);
 				}
 				if (_tiles[(i*TILEX) + k].obj != OBJ_NONE && _tiles[(i*TILEX) + k].ray > 0)
 				{
@@ -132,6 +125,17 @@ void testScene::allRender()
 	{
 		_vTorch[i]->render(getMemDC());
 	}
+
+	if (PLAYER->getHit())
+	{
+		_hitCnt++;
+		IMAGEMANAGER->alphaRender("hit", getMemDC(), CAMERAX, CAMERAY, 100);
+		if (_hitCnt > 10)
+		{
+			PLAYER->getHit() = false;
+			_hitCnt = 0;
+		}
+	}
 }
 
 void testScene::debugRender()
@@ -141,20 +145,20 @@ void testScene::debugRender()
 		for (int i = 0; i < TILEX * TILEY; i++)
 		{
 			if (CAMERAX - 100 >= _tiles[i].x || _tiles[i].x >= CAMERAX + WINSIZEX + 100 ||
-				CAMERAY - 100 >= _tiles[i].y || _tiles[i].y >= CAMERAY + WINSIZEY + 100) continue;
+				CAMERAY - 100 >= _tiles[i].y || _tiles[i].y >= CAMERAY + WINSIZEY + 100) 
+				continue;
 
-			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-			{
-				SetBkMode(getMemDC(), TRANSPARENT);
-				//»ö»ó
-				SetTextColor(getMemDC(), RGB(255, 0, 0));
 
-				char str[128];
-				sprintf_s(str, "%d", i);
-				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-				sprintf_s(str, "%d", _tiles[i].ray);
-				TextOut(getMemDC(), _tiles[i].rc.left+20, _tiles[i].rc.top+20, str, strlen(str));
-			}
+			SetBkMode(getMemDC(), TRANSPARENT);
+			//»ö»ó
+			SetTextColor(getMemDC(), RGB(255, 0, 0));
+
+			char str[128];
+			sprintf_s(str, "%d", i);
+			TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+			sprintf_s(str, "%d", _tiles[i].ray);
+			TextOut(getMemDC(), _tiles[i].rc.left+20, _tiles[i].rc.top+20, str, strlen(str));
+			
 		}
 	}
 }
@@ -192,12 +196,31 @@ void testScene::load()
 
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
+}
 
+void testScene::torchUpdate()
+{
+	for (int i = 0; i < _vTorch.size(); ++i)
+	{
+		_vTorch[i]->update();
+	}
+	for (int i = 0; i < _vTorch.size();)
+	{
+		if (_tiles[_vTorch[i]->getTileNum()].itemPoint != "º®È¶ºÒ")
+		{
+			_vTorch.erase(_vTorch.begin() + i);
+		}
+		else ++i;
+	}
+}
+
+void testScene::torchInit()
+{
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (_tiles[i].itemPoint == "º®È¶ºÒ")
 		{
-			_vTorch.push_back(new wallTorch(i,_tiles));
+			_vTorch.push_back(new wallTorch(i, _tiles));
 		}
 	}
 }
@@ -208,8 +231,25 @@ void testScene::groundPattern()
 	{
 		if (_tiles[i].terrain == TERRAIN_GROUND)
 		{
-			if (BEAT->getCnt() % 58 == 0) _tiles[i].terrainFrameX += 1;
-			if (_tiles[i].terrainFrameX > 1)_tiles[i].terrainFrameX = 0;
+			if (BEAT->getCnt() % 29 == 0)
+			{
+				_tiles[i].terrainFrameX += 1;
+				if (_tiles[i].terrainFrameX > 1)
+				{
+					_tiles[i].terrainFrameX = 0;
+				}
+
+				//if (!PLAYER->getFever())continue;
+				//
+				//_tiles[i].terrainFrameX += 1;
+				//if (_tiles[i].terrainFrameX > 1)
+				//{
+				//	_tiles[i].terrainFrameX = 0;
+				//}
+
+				//if (_tiles[i].terrainFrameY == 0) _tiles[i].terrainFrameY = 4;
+				//else _tiles[i].terrainFrameY = 0;
+			}
 		}
 	}
 }

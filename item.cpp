@@ -182,7 +182,8 @@ void item::setPrice(int price)
 void item::shopCheck()
 {
 	tagTile* _tile = PLAYER->getMap();
-	if (_tile[_currentTileIndex - TILEX * 2].terrain == TERRAIN_SHOP) _isShop = true;
+	if (_tile[_currentTileIndex - TILEX * 2].terrain == TERRAIN_SHOP || _tile[_currentTileIndex - TILEX * 2].startPoint=="상점주인") 
+		_isShop = true;
 	else _isShop = false;
 
 }

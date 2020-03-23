@@ -13,6 +13,8 @@ private:
 	bool _isDebug;
 
 	vector<wallTorch*> _vTorch;
+
+	int _hitCnt;
 public:
 	testScene();
 	~testScene();
@@ -27,5 +29,9 @@ public:
 	void setUp();
 	void load();
 
+	void torchUpdate();
+	void torchInit();
 	void groundPattern();
+
+
 };

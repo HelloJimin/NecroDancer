@@ -94,7 +94,7 @@ public:
 
 	TERRAIN terrainSelect(int frameX, int frameY);
 	OBJECT	objSelect(int frameX, int frameY);
-	char*	monsterSelect(int frameX, int frameY);
-	char*	etcSelect(int frameX, int frameY);
+	const char*	monsterSelect(int frameX, int frameY);
+	const char*	etcSelect(int frameX, int frameY);
 };
 
