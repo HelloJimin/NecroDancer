@@ -744,7 +744,7 @@ OBJECT mapTool::objSelect(int frameX, int frameY)
 	if (frameX == 3 && frameY == 2) return OBJ_RIGHT;
 
 	if (frameX == 0 && frameY == 3) return OBJ_TRAP;
-	if (frameX == 1 && frameY == 3) return OBJ_TRAP;
+	if (frameX == 1 && frameY == 3) return OBJ_BOMBTRAP;
 
 	if (frameX == 2 && frameY == 3) return OBJ_BLOCK;
 	if (frameX == 3 && frameY == 3) return OBJ_NEXT;
@@ -794,7 +794,7 @@ const char* mapTool::etcSelect(int frameX, int frameY)
 	if (frameX == 1 && frameY == 0) return "";
 
 	if (frameX == 2 && frameY == 0) return "º®È¶ºÒ";
-	if (frameX == 3 && frameY == 0) return "";
+	if (frameX == 3 && frameY == 0) return "ºû³ª´ÂÈ¶ºÒ";
 
 	if (frameX == 0 && frameY == 1) return "Æ¼Å¸´½´Ü°Ë";
 	if (frameX == 1 && frameY == 1) return "Æ¼Å¸´½´ë°Ë";

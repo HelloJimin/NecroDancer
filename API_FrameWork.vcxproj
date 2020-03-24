@@ -23,7 +23,7 @@
     <ProjectGuid>{8FF13C43-33AC-4F4E-825D-B864A3A51362}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>APIFrameWork</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -157,6 +157,7 @@
     <ClInclude Include="blueSlime.h" />
     <ClInclude Include="body.h" />
     <ClInclude Include="bomb.h" />
+    <ClInclude Include="bombExplosion.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="commonMacroFunction.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="tileNode.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="torch.h" />
     <ClInclude Include="trap.h" />
     <ClInclude Include="txtData.h" />
     <ClInclude Include="utils.h" />
@@ -216,6 +218,7 @@
     <ClCompile Include="blueSlime.cpp" />
     <ClCompile Include="body.cpp" />
     <ClCompile Include="bomb.cpp" />
+    <ClCompile Include="bombExplosion.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -252,6 +255,7 @@
     <ClCompile Include="testScene.cpp" />
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="torch.cpp" />
     <ClCompile Include="trap.cpp" />
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="utils.cpp" />

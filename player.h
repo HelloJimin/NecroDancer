@@ -62,13 +62,15 @@ private:
 	int _coinMultiplier;
 	inventory* _inven;
 	raycast* _ray;
+	int _rayPower;
 
 	bool _isDrop;
 	bool _isMove;
 	bool _isAttack;
 	bool _isFever;
 	bool _isHit;
-
+	bool _isBomb;
+	bool _isTaekwondo;
 
 	char _str[128];
 	RECT _temp;
@@ -127,13 +129,17 @@ public:
 	bool throwRengeCheck(int nextTile);
 	bool getFever() { return _isFever; }
 	bool& getHit() { return _isHit; }
+	bool& getBomb() { return _isBomb; }
 	bool getMove() { return _isMove; }
+	bool& getTaekwondo() { return _isTaekwondo; }
+	int& getRayPower() { return _rayPower; }
 	void arrowEffect(attackForm form, int monArrNum);
 	void throwEffect(int endTile, int throwRenge);
-
+	attackForm getAtkForm() { return _equipWeaponType; }
 	void moveCheck();
 	void buyItem(int itemTile);
 
+	void feverTime();
 	void coinUIupdate();
 	void coinUIrender();
 

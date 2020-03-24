@@ -23,7 +23,7 @@ private:
 	float _power;
 
 	isThrow _throw;
-
+	image* _button;
 public:
 	attack();
 	attack(string name, slotType type, attackForm form, int power, string description, int x, int y, int price);

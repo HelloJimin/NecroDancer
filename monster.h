@@ -35,6 +35,8 @@ protected:
 	bool _isHit;
 
 	bool _isLook;
+
+	bool _isBoss;
 public:
 	monster();
 	~monster();
@@ -69,5 +71,10 @@ public:
 	RECT getRc() { return _collisionRc; }
 
 	void setLook(bool look) { _isLook = look; }
+
+	bool getMove() { return _isMove; }
+	bool& getHit() { return _isHit; }
+
+	bool getIsBoss() { return _isBoss; }
 };
 

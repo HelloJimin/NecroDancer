@@ -25,6 +25,7 @@ HRESULT minotaurs::init(string name, int x, int y, int coin, tagTile * map)
 	_isDown = false;
 	_isRage = false;
 	_downCnt = 0;
+	_isBoss = true;
 	return S_OK;
 }
 

@@ -40,5 +40,7 @@ public:
 
 	void summonControl(string name, int x, int y);
 	vector<monster*> getMonster() { return _vMonster; }
+
+	bool getBossMonster();
 };
 

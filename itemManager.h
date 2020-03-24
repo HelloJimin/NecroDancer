@@ -8,6 +8,7 @@
 #include "singletonBase.h"
 #include"bomb.h"
 #include"tileNode.h"
+#include"torch.h"
 class itemManager :  public singletonBase<itemManager>
 {
 private:

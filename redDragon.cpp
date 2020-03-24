@@ -23,7 +23,7 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 	addHp();
 	addHp();
 	addHp();
-
+	_isBoss = true;
 	return S_OK;
 }
 

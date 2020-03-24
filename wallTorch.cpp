@@ -65,12 +65,7 @@ void wallTorch::findPlayer()
 	//		_check = false;
 	//}
 
-
-	if (CAMERAX - TILEX >= _tile[_tileNum].x || _tile[_tileNum].x >= CAMERAX + WINSIZEX + TILEX ||
-		CAMERAY - TILEX >= _tile[_tileNum].y || _tile[_tileNum].y >= CAMERAY + WINSIZEY + TILEX) return;
-
-	int p = PLAYER->currentTile();
-	if (getDistance(_tile[_tileNum].x, _tile[_tileNum].y, _tile[p].x, _tile[p].y) > 400) return;
+	if (getDistance(_tile[_tileNum].x, _tile[_tileNum].y, _tile[PLAYER->currentTile()].x, _tile[PLAYER->currentTile()].y) > 400) return;
 
 	if (_aStar->findPlayer(_tile, _tileNum, PLAYER->currentTile()))
 	{

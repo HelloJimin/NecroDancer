@@ -150,6 +150,8 @@ int aStar::aStarStraight(tagTile tile[], int currentIndex, int endIndex)
 
 int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 {
+	if (!tile[currentIndex].look) return randomMove(currentIndex);
+
 	reset(tile);
 	
 	startTile = currentIndex;
@@ -251,7 +253,7 @@ int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 		}
 		if (isFind) continue;
 		// not Find
-		if (openList.size() == 0 || noPathCheck(tile, endIndex) || closeList.size() > 50)
+		if (openList.size() == 0 || noPathCheck(tile, endIndex) || closeList.size() > 40)
 		{
 			noPath = true;
 			continue;
@@ -584,7 +586,7 @@ bool aStar::findPlayer(tagTile tile[], int currentIndex, int endIndex)
 		if (!tile[nextTile].walkable) return false;
 	}
 
-	if (check > 10) return false;//이부분수정해야할듯
+	if (check > 5) return false;//이부분수정해야할듯
 	else return true;
 
 

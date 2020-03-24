@@ -3,7 +3,7 @@
 #include"tileNode.h"
 #include"wallTorch.h"
 #include"trap.h"
-
+#include"bombExplosion.h"
 class testScene : public gameNode
 {
 private:
@@ -14,9 +14,14 @@ private:
 
 	vector<wallTorch*> _vTorch;
 	vector<trap*> _vTrap;
+	vector<bombExplosion*> _vBomb;
 
 	int _hitCnt;
 
+	int _currentMapNumber;
+
+
+	int _nextDoorNum;
 public:
 	testScene();
 	~testScene();
@@ -28,6 +33,8 @@ public:
 
 	void allRender();
 	void debugRender();
+	void hitRender();
+
 	void setUp();
 	void load();
 
@@ -38,4 +45,11 @@ public:
 	void trapUpdate();
 
 	void groundPattern();
+
+	void addBomb();
+	void bombUpdate();
+
+	bool isWall(int arrNum);
+
+	void doorUpdate();
 };

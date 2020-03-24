@@ -6,8 +6,6 @@ player::~player(){}
 
 HRESULT player::init()
 {
-
-
 	_bodyImg = IMAGEMANAGER->findImage("몸통R");
 	_headImg = IMAGEMANAGER->findImage("케이던스R");
 
@@ -48,6 +46,7 @@ HRESULT player::init()
 	_inven->init();
 
 	_ray = new raycast;
+	_rayPower = 0;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -71,30 +70,16 @@ void player::release()
 void player::update()
 {
 	_inven->update();
-	if(_inven->getBomb() !=NULL)_inven->getBomb()->active();
 	keyControl();
+
 	attack();
 	move();
-	animation();
-	_ray->update(_currentTileIndex);
-	coinUIupdate();
 
-	if (_rhythm > 0 && _isFever)
-	{
-		_coinMultiplier = 2;
-		if (_rhythm > 10) _coinMultiplier = 3;
-	}
-	if (_rhythm == 0 && _isFever)
-	{
-		BEAT->addCoinMiss();
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
-			if (_pCurrentMap[i].terrainFrameY == 0) continue;
-			_pCurrentMap[i].terrainFrameY = 0;
-		}
-		_isFever = false;
-	}
+	animation();
+	_ray->playerRay(_currentTileIndex, _rayPower);
+
+	coinUIupdate();
+	feverTime();
 }
 
 void player::render(HDC hdc)
@@ -240,6 +225,8 @@ void player::attack()
 				if (pRenge == mTile)
 				{
 					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+					if(_isTaekwondo)MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+
 					if (MONSTERMANAGER->getMonster()[k]->die())
 					{
 						if (!_isFever)
@@ -281,19 +268,22 @@ void player::attack()
 	int monsterSize = MONSTERMANAGER->getMonster().size();
 	for (int i = 0; i < _status.atkRenge.size(); ++i)
 	{
+		//공격범위에 벽이 있으면 이동체크
+		if (wallCheck(_status.atkRenge[i]))
+		{
+			moveCheck();
+			_isAttack = false;
+			return;
+		}
+
 		for (int k = 0; k < monsterSize; ++k)
 		{
-			//공격범위에 벽이 있으면 이동체크
-			if (wallCheck(_status.atkRenge[i]))
-			{
-				moveCheck();
-				_isAttack = false;
-				return;
-			}
 			//공격범위에 벽이 없고 몬스터가 있으면 공격 실행
 			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
 			{
 				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+				if (_isTaekwondo)MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+
 				if (!_isFever)
 				{
 					for (int i = 0; i < TILEX * TILEY; i++)
@@ -304,8 +294,9 @@ void player::attack()
 					_isFever = true;
 				}
 				SOUNDMANAGER->play("atk");
-				effectControl(_equipWeaponType, i, k);
-
+				if(_equipWeaponType != FORM_BIG) effectControl(_equipWeaponType, i, k);
+				else 
+					effectControl(_equipWeaponType, 0, k);
 				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
 				{
 					_isAttack = false;
@@ -491,7 +482,7 @@ void player::setMap(tagTile tile[])
 	_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
 	_isMove = false;
 	_ray->init(_pCurrentMap);
-	_ray->update(_currentTileIndex);
+	_ray->playerRay(_currentTileIndex,_rayPower);
 }
 
 void player::HPbarSet()
@@ -604,15 +595,18 @@ void player::getItem(int itemTile)
 
 void player::hit(float damege)
 {
+	int _damege = damege - _status.def;
+	if (_isTaekwondo) _damege *= 2;
+
 	for (int i = 0; i < _status.vHp.size(); i++)
 	{
 		if (_status.vHp[i].hp <= 0) continue;
 		
-		if (damege > 0)
+		if (_damege > 0)
 		{
 			float temp = _status.vHp[i].hp;
-			_status.vHp[i].hp -= damege;
-			damege -= temp;
+			_status.vHp[i].hp -= _damege;
+			_damege -= temp;
 		}
 		else break;
 	}
@@ -721,6 +715,8 @@ bool player::wallCheck(int tile)
 	if (_pCurrentMap[tile].obj == OBJ_GOLDWALL) return true;
 	if (_pCurrentMap[tile].obj == OBJ_IRONWALL) return true;
 	if (_pCurrentMap[tile].obj == OBJ_NEVERWALL) return true;
+	if (_pCurrentMap[tile].obj == OBJ_DOOR) return true;
+
 	return false;
 }
 
@@ -749,16 +745,16 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 		switch (_direction)
 		{
 		case LEFT:
-			EFFECTMANAGER->play("대검L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("대검L",_pCurrentMap[_status.atkRenge[rengeArrNum]].x , _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
 			break;				 
 		case RIGHT:				 
-			EFFECTMANAGER->play("대검R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("대검R", _pCurrentMap[_status.atkRenge[rengeArrNum]].x, _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
 			break;				 
 		case UP:				 
-			EFFECTMANAGER->play("대검Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("대검Up", _pCurrentMap[_status.atkRenge[rengeArrNum]].x, _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
 			break;				 
 		case DOWN:				 
-			EFFECTMANAGER->play("대검Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("대검Down", _pCurrentMap[_status.atkRenge[rengeArrNum]].x, _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
 			break;
 		}
 		break;
@@ -819,6 +815,7 @@ bool player::throwRengeCheck(int nextTile)
 	if (_pCurrentMap[nextTile].obj == OBJ_GOLDWALL)return false;
 	if (_pCurrentMap[nextTile].obj == OBJ_IRONWALL)return false;
 	if (_pCurrentMap[nextTile].obj == OBJ_NEVERWALL)return false;
+	if (_pCurrentMap[nextTile].obj == OBJ_DOOR)return false;
 
 	else return true;
 }
@@ -988,6 +985,26 @@ void player::buyItem(int itemTile)
 				break;
 			}
 		}
+	}
+}
+
+void player::feverTime()
+{
+	if (_rhythm > 0 && _isFever)
+	{
+		_coinMultiplier = 2;
+		if (_rhythm > 10) _coinMultiplier = 3;
+	}
+	if (_rhythm == 0 && _isFever)
+	{
+		BEAT->addCoinMiss();
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+			if (_pCurrentMap[i].terrainFrameY == 0) continue;
+			_pCurrentMap[i].terrainFrameY = 0;
+		}
+		_isFever = false;
 	}
 }
 

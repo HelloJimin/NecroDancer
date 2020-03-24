@@ -14,8 +14,8 @@ public:
 
 
 	void init(tagTile _tile[]);
-	void update(int startTile);
 	void torch(int startTile);
+	void playerRay(int startTile, int rayPower);
 
 	void reset();
 

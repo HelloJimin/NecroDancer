@@ -62,10 +62,12 @@ item * itemManager::addItem(string name,int x, int y)
 	if (name == "Æ¼Å¸´½Ã¤Âï")return new attack("Æ¼Å¸´½Ã¤Âï", ATTACK, FORM_WHIP, 2, "°ø°Ý·Â 2ÀÇ ±âº»´Ü°ËÀÌ´Ù",x,y,300);
 	if (name == "À¯¸®Ã¤Âï")return new attack("À¯¸®Ã¤Âï", ATTACK, FORM_WHIP, 3, "°ø°Ý·Â 3ÀÇ ±âº»´Ü°ËÀÌ´Ù",x,y,50);
 
+	if (name == "±âº»È¶ºÒ")return new torch("±âº»È¶ºÒ", TORCH, 1, "°ø°Ý·Â 3ÀÇ ±âº»´Ü°ËÀÌ´Ù",x,y,100);
+	if (name == "ºû³ª´ÂÈ¶ºÒ")return new torch("ºû³ª´ÂÈ¶ºÒ", TORCH, 3, "°ø°Ý·Â 3ÀÇ ±âº»´Ü°ËÀÌ´Ù",x,y,300);
 
-	if (name == "°¡Á×°©¿Ê")return new body("°¡Á×°©¿Ê",BODY,1,"¹æ¾î·Â 1ÀÇ °©¿ÊÀÌ´Ù",x,y,50);
-	if (name == "¼è°©¿Ê")return new body("¼è°©¿Ê",BODY,2,"¹æ¾î·Â 2ÀÇ °©¿ÊÀÌ´Ù",x,y,200);
-	if (name == "µµº¹")return new body("µµº¹",BODY,3,"°ø°Ý·Â2¹èÀÌ´Ù",x,y,90);
+	if (name == "°¡Á×°©¿Ê")return new body("°¡Á×°©¿Ê",BODY,0.5f,"¹æ¾î·Â 1ÀÇ °©¿ÊÀÌ´Ù",x,y,50);
+	if (name == "¼è°©¿Ê")return new body("¼è°©¿Ê",BODY,1.0f,"¹æ¾î·Â 2ÀÇ °©¿ÊÀÌ´Ù",x,y,200);
+	if (name == "µµº¹")return new body("µµº¹",BODY,0,"°ø°Ý·Â2¹èÀÌ´Ù",x,y,90);
 
 	if (name == "ÈûÀÇÀåÈ­")return new feet("ÈûÀÇÀåÈ­",FEET,"°ø°Ý·Â1 Áõ°¡",x,y,150);
 	if (name == "¹ß·¹½´Áî")return new feet("¹ß·¹½´Áî",FEET,"¹è¼ö°¡ ÃÊ±âÈ­¾ÈµÊ",x,y,150);
@@ -82,6 +84,8 @@ void itemManager::addCoin(int coinValue, int x, int y)
 
 void itemManager::setMap()
 {
+	_vItem.clear();
+
 	_map = PLAYER->getMap();
 
 	for (int i = 0; i < TILEX * TILEY; i++)

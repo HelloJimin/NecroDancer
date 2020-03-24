@@ -3,11 +3,11 @@
 class body : public item
 {
 private:
-	int _power;
+	float _power;
 
 public:
 	body();
-	body(string name, slotType type, int power, string description, int x, int y, int price);
+	body(string name, slotType type, float power, string description, int x, int y, int price);
 	~body();
 	virtual HRESULT init() override;
 

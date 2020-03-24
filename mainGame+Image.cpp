@@ -52,6 +52,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("hit", "images/UI/hit.bmp",1024,768, false, RGB(255, 0, 255));
 
+
 	IMAGEMANAGER->addFrameImage("스타트", "images/UI/스타트.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴", "images/UI/맵툴.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("나가기", "images/UI/나가기.bmp",330, 162,1,2, true, RGB(255, 0, 255));
@@ -59,7 +60,7 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addFrameImage("숫자", "images/UI/number.bmp",120, 18,10,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("벽횃불", "images/UI/벽횃불.bmp",48*2, 21*4, 4, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("함정", "images/UI/trap.bmp",63*2, 170*2, 3, 10, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("함정", "images/UI/trap.bmp",63*2, 204*2, 3, 12, true, RGB(255, 0, 255));
 
 
 
@@ -165,61 +166,61 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("armor", "sound/armor.mp3", false, false);
 
 	//EFFECT
-	EFFECTMANAGER->addEffect("할퀴기", "images/effect/할퀴기.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("점프먼지", "images/effect/jumpDust.bmp", 50*2, 10*2, 10*2, 10*2, 1, 0.5f, 5);
-	EFFECTMANAGER->addEffect("단검L", "images/effect/단검L.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("단검R", "images/effect/단검R.bmp", 60 * 3, 20 * 3, 20 *3, 20 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("단검Up", "images/effect/단검Up.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("단검Down", "images/effect/단검Down.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("할퀴기", "images/effect/할퀴기.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("점프먼지", "images/effect/jumpDust.bmp", 50*2, 10*2, 10*2, 10*2, 1, 0.5f,5);
+	EFFECTMANAGER->addEffect("단검L", "images/effect/단검L.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("단검R", "images/effect/단검R.bmp", 60 * 3, 20 * 3, 20 *3, 20 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("단검Up", "images/effect/단검Up.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("단검Down", "images/effect/단검Down.bmp", 60 * 3, 20 * 3, 20 * 3, 20 * 3, 1, 0.3f,1);
 
-	EFFECTMANAGER->addEffect("대검L", "images/effect/대검L.bmp",  69 * 3, 69 * 3, 23 * 3, 69 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("대검R", "images/effect/대검R.bmp",  69 * 3, 69 * 3, 23 * 3, 69 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("대검Up", "images/effect/대검Up.bmp", 69 * 3, 69 * 3, 69 * 3, 23 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("대검Down", "images/effect/대검Down.bmp", 69 * 3, 69 * 3, 69 * 3, 23 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("대검L", "images/effect/대검L.bmp",  69 * 3, 69 * 3, 23 * 3, 69 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("대검R", "images/effect/대검R.bmp",  69 * 3, 69 * 3, 23 * 3, 69 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("대검Up", "images/effect/대검Up.bmp", 69 * 3, 69 * 3, 69 * 3, 23 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("대검Down", "images/effect/대검Down.bmp", 69 * 3, 69 * 3, 69 * 3, 23 * 3, 1, 0.3f,1);
 
-	EFFECTMANAGER->addEffect("화살끝L", "images/effect/화살끝L.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("화살끝R", "images/effect/화살끝R.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("화살끝Up", "images/effect/화살끝Up.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("화살끝Down", "images/effect/화살끝Down.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("화살라인가로", "images/effect/화살라인가로.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("화살라인세로", "images/effect/화살라인세로.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("화살끝L", "images/effect/화살끝L.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("화살끝R", "images/effect/화살끝R.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("화살끝Up", "images/effect/화살끝Up.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("화살끝Down", "images/effect/화살끝Down.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("화살라인가로", "images/effect/화살라인가로.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("화살라인세로", "images/effect/화살라인세로.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,1);
 
-	EFFECTMANAGER->addEffect("채찍R0", "images/effect/채찍R0.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍R1", "images/effect/채찍R1.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍R2", "images/effect/채찍R2.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍R3", "images/effect/채찍R3.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍R4", "images/effect/채찍R4.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("채찍R0", "images/effect/채찍R0.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍R1", "images/effect/채찍R1.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍R2", "images/effect/채찍R2.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍R3", "images/effect/채찍R3.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍R4", "images/effect/채찍R4.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
 																							   
-	EFFECTMANAGER->addEffect("채찍L0", "images/effect/채찍L0.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍L1", "images/effect/채찍L1.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍L2", "images/effect/채찍L2.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍L3", "images/effect/채찍L3.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍L4", "images/effect/채찍L4.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("채찍L0", "images/effect/채찍L0.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍L1", "images/effect/채찍L1.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍L2", "images/effect/채찍L2.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍L3", "images/effect/채찍L3.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍L4", "images/effect/채찍L4.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
 																							   
-	EFFECTMANAGER->addEffect("채찍U0", "images/effect/채찍U0.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍U1", "images/effect/채찍U1.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍U2", "images/effect/채찍U2.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍U3", "images/effect/채찍U3.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍U4", "images/effect/채찍U4.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("채찍U0", "images/effect/채찍U0.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍U1", "images/effect/채찍U1.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍U2", "images/effect/채찍U2.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍U3", "images/effect/채찍U3.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍U4", "images/effect/채찍U4.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
 																							   
-	EFFECTMANAGER->addEffect("채찍D0", "images/effect/채찍D0.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍D1", "images/effect/채찍D1.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍D2", "images/effect/채찍D2.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍D3", "images/effect/채찍D3.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
-	EFFECTMANAGER->addEffect("채찍D4", "images/effect/채찍D4.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f, 5);
+	EFFECTMANAGER->addEffect("채찍D0", "images/effect/채찍D0.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍D1", "images/effect/채찍D1.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍D2", "images/effect/채찍D2.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍D3", "images/effect/채찍D3.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("채찍D4", "images/effect/채찍D4.bmp", 112 * 3, 96 * 3, 112 * 3, 24 * 3, 1, 0.3f,1);
 
-	EFFECTMANAGER->addEffect("기본삽", "images/item/nomalShovel.bmp", 48,48,48,48, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("티타늄삽", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f, 5);
-	EFFECTMANAGER->addEffect("유리삽", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f, 5);
+	EFFECTMANAGER->addEffect("기본삽", "images/item/nomalShovel.bmp", 48,48,48,48, 1, 0.1f,1);
+	EFFECTMANAGER->addEffect("티타늄삽", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f,1);
+	EFFECTMANAGER->addEffect("유리삽", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f,1);
 
-	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
-	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
-	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
-	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
-	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
-	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 15);
+	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
 
-	EFFECTMANAGER->addEffect("폭탄애니", "images/effect/폭탄애니.bmp",89*2,24*2,24*2,24*2, 10, 0.1f, 5);
-	EFFECTMANAGER->addEffect("폭탄폭발", "images/effect/폭탄폭발.bmp",576*2,74*2,72*2,74*2, 10, 0.1f, 5);
+	EFFECTMANAGER->addEffect("폭탄애니", "images/effect/폭탄애니.bmp",89*2,24*2,24*2,24*2, 10, 0.1f,1);
+	EFFECTMANAGER->addEffect("폭탄폭발", "images/effect/폭탄폭발.bmp",576*2,74*2,72*2,74*2, 10, 0.1f,1);
 
 }

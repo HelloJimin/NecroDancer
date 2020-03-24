@@ -126,16 +126,27 @@ void inventory::itemPosionSet()
 	for (int i = 0; i < _vItem.size(); ++i)
 	{
 		_vItem[i]->setInven(true);
+
 		if (_vItem[i]->getType() != BOMB) _vItem[i]->setRect(PointMake(30 + i * 66, 20));
 
-		if (_vItem[i]->getType() == BOMB && getWeapon() == NULL)
+		if (_vItem[i]->getType() == BOMB)
 		{
-			_vItem[i]->setRect(PointMake(30, 20 + 66));
+			if (PLAYER->getAtkForm() != FORM_SHORT)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66));
+
+			}
+			else if (PLAYER->getAtkForm() == FORM_SHORT)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66 + 66));
+			}
+
+			if(getWeapon() == NULL)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66));
+			}
 		}
-		else if (_vItem[i]->getType() == BOMB && getWeapon() != NULL)
-		{
-			_vItem[i]->setRect(PointMake(30, 20 + 66+66));
-		}
+
 		_vItem[i]->rcSet();
 	}
 }

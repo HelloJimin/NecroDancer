@@ -11,7 +11,7 @@ attack::attack(string name, slotType type, attackForm form, int power, string de
 	setItem(type, name, description, x, y, price);
 	_power = power;
 	_form = form;
-
+	_button = IMAGEMANAGER->findImage("z버튼");
 	if (form == FORM_SHORT)
 	{
 		_throw.slot = IMAGEMANAGER->findImage("던지기");
@@ -93,10 +93,10 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - 5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - 1 - TILEX * 2;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - 1 - TILEX * 2;
 			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() - 1 - TILEX;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - 1;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - 1 + TILEX;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - 1;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - 1 + TILEX;
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - 1 + TILEX * 2;
 			break;
 		}
@@ -124,10 +124,10 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + 5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + 1 - TILEX*2;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + 1 - TILEX*2;
 			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() + 1 - TILEX;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + 1;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + 1 + TILEX;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + 1;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + 1 + TILEX;
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + 1 + TILEX*2;
 			break;
 		}
@@ -155,10 +155,10 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - TILEX*5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - TILEX - 2;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - TILEX - 2;
 			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() - TILEX -1;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - TILEX;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() - TILEX + 1;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() - TILEX;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() - TILEX + 1;
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() - TILEX + 2;
 			break;
 		}
@@ -186,10 +186,10 @@ void attack::active()
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + TILEX * 5;
 			break;
 		case FORM_WHIP:
-			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + TILEX - 2;
+			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + TILEX - 2;
 			PLAYER->playerStatus().atkRenge[1] = PLAYER->currentTile() + TILEX - 1;
-			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + TILEX;
-			PLAYER->playerStatus().atkRenge[3] = PLAYER->currentTile() + TILEX + 1;
+			PLAYER->playerStatus().atkRenge[0] = PLAYER->currentTile() + TILEX;
+			PLAYER->playerStatus().atkRenge[2] = PLAYER->currentTile() + TILEX + 1;
 			PLAYER->playerStatus().atkRenge[4] = PLAYER->currentTile() + TILEX + 2;
 			break;
 		}
@@ -217,8 +217,9 @@ void attack::render(HDC hdc)
 
 	if (_inInventory && _form == FORM_SHORT)
 	{
-		_throw.slot->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left, _throw.rc.top);
-		_throw.item->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left + 8, _throw.rc.top + 11);
+		_throw.slot->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left+7, _throw.rc.top+21);
+		_throw.item->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left + 14, _throw.rc.top + 32);
+		if(!_throw.fire) _button->render(CAMERAMANAGER->getCameraDC(), _throw.rc.left + 32, _throw.rc.top + 75);
 	}
 }
 

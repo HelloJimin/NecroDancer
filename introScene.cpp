@@ -46,6 +46,7 @@ void introScene::update()
 	{
 		if (_buttonNum <2) _buttonNum++;
 	}
+
 	_check = _button[_buttonNum].rc;
 
 	RECT temp;
@@ -67,6 +68,7 @@ void introScene::update()
 				SCENEMANAGER->changeScene("¸ÊÅø½Å");
 				break;
 			case 2:
+				PostQuitMessage(0);
 				break;
 			}
 		}

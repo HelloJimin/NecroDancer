@@ -50,6 +50,8 @@ void monsterManager::render(HDC hdc)
 
 void monsterManager::setMap(tagTile * map)
 {
+	_vMonster.clear();
+
 	_map = map;
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
@@ -171,4 +173,16 @@ void monsterManager::summonControl(string name, int x, int y)
 	{
 		summonZombie(name, x, y);
 	}
+}
+
+bool monsterManager::getBossMonster()
+{
+	for (int i = 0; i < _vMonster.size();++i)
+	{
+		if (_vMonster[i]->getIsBoss())
+		{
+			return true;
+		}
+	}
+	return false;
 }
