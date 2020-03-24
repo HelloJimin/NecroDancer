@@ -24,7 +24,7 @@ HRESULT mainGame::init()
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->addScene("로비신", new lobbyScene);
 
-	SCENEMANAGER->changeScene("인트로신");
+	SCENEMANAGER->changeScene("테스트신");
 
 	return S_OK;
 }

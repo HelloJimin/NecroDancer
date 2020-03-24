@@ -208,19 +208,20 @@ int soundManager::getLength(string keyName)
 	}
 }
 
-int soundManager::getPosition(string keyName)
+int soundManager::getPosition(string keyName, unsigned int& pos)
 {
-	int count = 0;
-	UINT now = 0;
-
 	arrSoundIter iter = m_totalSounds.begin();
+
+	int count = 0;
 
 	for (iter; iter != m_totalSounds.end(); ++iter, count++)
 	{
 		if (keyName == iter->first)
 		{
-			m_channel[count]->getPosition(&now, FMOD_TIMEUNIT_MS);
-			return now;
+			m_channel[count]->getPosition(&pos, FMOD_TIMEUNIT_MS);
+			break;
 		}
 	}
+	return pos;
+
 }

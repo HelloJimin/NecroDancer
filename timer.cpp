@@ -43,6 +43,10 @@ HRESULT timer::init()
 	_FPStimeElapsed = 0.0f;
 	_worldTime = 0.0f;
 
+	_countTime = 0;
+
+	_countTimeResetSwitch = _countTimeSwitch = false;
+
 	return S_OK;
 }
 
@@ -90,7 +94,15 @@ void timer::tick(float lockFPS)
 	}
 
 
-
+	if (_countTimeSwitch)
+	{
+		_countTime += _timeElapsed;
+	}
+	if (_countTimeResetSwitch)
+	{
+		_countTimeResetSwitch = false;
+		_countTime = 0;
+	}
 }
 
 unsigned long timer::getFrameRate(char * str) const

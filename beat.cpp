@@ -13,6 +13,10 @@ beat::~beat()
 
 HRESULT beat::init()
 {
+	TIMEMANAGER->setCountTime(0);
+	TIMEMANAGER->setCountTimeResetSwitch(true); // 세는 시간 리셋
+	TIMEMANAGER->setCountTimeSwitch(true); // 시간 세기 ON
+
 	//턴초기화
 	_cnt = 0;
 	_speed = 6;
@@ -38,6 +42,7 @@ HRESULT beat::init()
 	_miss.max = WINSIZEY / 2 + 150;
 
 	_vNote.push_back(_note);
+	_deltaTime = TIMEMANAGER->getElapsedTime();
 	return S_OK;
 }
 
@@ -47,12 +52,18 @@ void beat::release()
 
 void beat::update()
 {
+	SOUNDMANAGER->getPosition("1-1", _songPos);
+	if (_songPos > 0)
+	{
+		_deltaTime = TIMEMANAGER->getElapsedTime();
+	}
 	checkBeat();
 	missUpdate();
 	if (!_beatOn)
 	{
 		_check = true;
 	}
+
 }
 
 void beat::render(HDC hdc)
@@ -73,7 +84,7 @@ void beat::render(HDC hdc)
 	{
 		Rectangle(CAMERAMANAGER->getCameraDC(), _collisionHeart.left, _collisionHeart.top, _collisionHeart.right, _collisionHeart.bottom);
 		UINT a = SOUNDMANAGER->getLength("1-1");
-		UINT b = SOUNDMANAGER->getPosition("1-1");
+		UINT b = SOUNDMANAGER->getPosition("1-1",b);
 		char str[128];
 		wsprintf(str, "%d", a);
 		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2,str, strlen(str));
@@ -81,24 +92,68 @@ void beat::render(HDC hdc)
 		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2+100, str,strlen(str));
 	}
 }
+void beat::load()
+{
+	ifstream readFile;
+	string tempWord;
+	readFile.open("sound/1-1.txt"); // 파일 열기
+
+	if (readFile.is_open()) // 파일이 정상적으로 열려있다면
+	{
+		while (!readFile.eof()) // 읽어오는 파일의 끝을 만날때까지 반복
+		{
+			char temp; // 문자를 하나씩 뽑기 위한 변수
+			readFile.get(temp); // 문자 하나 뽑기 
+			if (temp == ',')
+			{
+				//++_countComma; // 콤마 세기
+				_vRenge.push_back(atoi(tempWord.c_str())); // 변환 순서 : 문자열 -> char*로 변환 -> atoi는 char*을 int로 변환
+				tempWord = ""; // string 초기화
+				continue;
+			}
+			tempWord += temp; // 한 글자씩 string에 합침
+		}
+		//_msTimeInfo.erase(_msTimeInfo.begin() + (_msTimeInfo.size() - 1)); // 현재 구조상 맨 마지막 부분에 0을 항상 저장하므로 맨 마지막 요소를 제거함
+		readFile.close(); // 파일 닫기
+	}
+
+	_songLength = SOUNDMANAGER->getLength("1-1");
+	//for (int i = 0; i < _vRenge.size() - 2; i++) // FMOD::SOUND에 getLength() 함수가 망가져서 만들었음 ㅠㅠ... 아마 원인이 함수도 음악 파일 확장자에 따라서 잘 작동되는 함수가 있는 반면 아닌 함수도 있다. 예를 들어 getVolume함수 같은 경우에도 일부 확장자만 함수 사용이 가능함
+	//{
+	//	int getMS = _vRenge[i + 1] - _vRenge[i]; // 한 개의 비트 간격을 받아오기 위해서..
+	//	_songLength += getMS; // 길이를 담아준다. 나중엔 _songLength가 곡의 총 길이가 된다.
+	//}
+}
 
 void beat::checkBeat()
 {
-	_speed = 290 * TIMEMANAGER->getElapsedTime();
+	_speed = 521 * _deltaTime;
+	int tempMS = 521;
+	int bpm = 60000 / tempMS;
+	_speed = lerp(0, WINSIZEX/2, (_deltaTime / ((tempMS + bpm) / 1000.0f)) / 3);
+	noteTimeInterval = 521/ 1000.0f;
+	noteTimeIntervalCount = TIMEMANAGER->getCountTime();
+
+	if (noteTimeIntervalCount > noteTimeInterval)
+	{
+		TIMEMANAGER->setCountTime(0);
+		noteTimeIntervalCount = 0;
+		_vNote.push_back(_note);
+	}
 	//_speed = _collisionHeart.left / 43;
 	_cnt++;
-
+	UINT b;
+	SOUNDMANAGER->getPosition("1-1", b);
 	//UINT a = SOUNDMANAGER->getLength("1-1");
-	int b = SOUNDMANAGER->getPosition("1-1") % 521;
+	//UINT b = SOUNDMANAGER->getPosition("1-1",b) % 521;
 	//if (_cnt+1 == 30)
 	//a = SOUNDMANAGER->getPosition("1-1");
 
-	//if (b % 521 == 0)
-	if (_cnt % 29 == 0)
-	{
-		_turn++;
-		_vNote.push_back(_note);
-	}
+	//if (_cnt % 29 == 0)
+	//{
+	//	_turn++;
+	//	_vNote.push_back(_note);
+	//}
 
 
 	for (int i = 0; i < _vNote.size(); i++)

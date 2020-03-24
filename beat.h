@@ -38,9 +38,14 @@ private:
 	RECT _temp;
 
 	float test;
-
+	float _deltaTime;
 
 	bool _beatOn;
+	vector<int> _vRenge;
+	unsigned int _songLength;
+	unsigned int _songPos;
+	float noteTimeInterval;
+	float noteTimeIntervalCount;
 public:
 	beat();
 	~beat();
@@ -56,10 +61,14 @@ public:
 	void addMiss();
 	void addCoinMiss();
 	void removeNote();
-
+	void load();
 	bool getCheck() { return _check;}
 	int getCnt() { return _cnt; }
 
 	void setBeatOn(bool beaton) { _beatOn = beaton; }
+
+	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
+
+
 };
 

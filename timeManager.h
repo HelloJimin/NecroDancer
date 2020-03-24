@@ -19,7 +19,9 @@ public:
 	float getElapsedTime()const { return _timer->getElapsedTime(); }
 	float getWorldTime()const { return _timer->getWorldTime(); }
 
-
-
+	inline float getCountTime() { return _timer->getCountTime(); }
+	inline void setCountTime(float countTime) { *(_timer->getCountTimePt()) = countTime; }
+	inline void setCountTimeResetSwitch(bool resetSwitch) { *(_timer->getCountTimeResetSwitchPt()) = resetSwitch; }
+	inline void setCountTimeSwitch(bool ONOff_Switch) { *(_timer->getCountTimeSwitchPt()) = ONOff_Switch; }
 };
 
