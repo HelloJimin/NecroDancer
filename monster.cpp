@@ -50,6 +50,15 @@ void monster::release()
 
 void monster::update()
 {
+
+	if (BEAT->getIsBeat() && !_isBeat)
+	{
+		_turnCnt++;
+		_isBeat = true;
+	}
+	if (!BEAT->getIsBeat()) _isBeat = false;
+
+
 	_pCurrentMap[_currentTileIndex].walkable = false;
 
 	choiceAction();
@@ -295,7 +304,7 @@ bool monster::playerCheck()
 
 void monster::choiceAction()
 {
-	if (BEAT->getCnt() % 58 == 0)
+	if (TURN2 && _isBeat)
 	{
 		if (playerCheck())
 		{

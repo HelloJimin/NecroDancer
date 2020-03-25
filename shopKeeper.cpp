@@ -54,7 +54,7 @@ void shopKeeper::frontCheck()
 
 void shopKeeper::choiceAction()
 {
-	if (BEAT->getCnt() % 29 == 0)
+	if (TURN1 && _isBeat)
 	{
 		frontCheck();
 

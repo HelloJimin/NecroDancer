@@ -148,6 +148,12 @@ void lobbyScene::next()
 			SCENEMANAGER->changeScene("테스트신");
 		}
 	}
+
+	if (KEYMANAGER->isOnceKeyDown('K'))
+	{
+		SOUNDMANAGER->stop("lobby");
+		SCENEMANAGER->changeScene("테스트신");
+	}
 }
 
 void lobbyScene::torchUpdate()

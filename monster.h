@@ -1,4 +1,7 @@
 #pragma once
+#define TURN1 _turnCnt % 1 == 0
+#define TURN2 _turnCnt % 2 == 0
+
 enum DIRECTION_ANI
 {
 	LEFT_TOP,
@@ -37,6 +40,9 @@ protected:
 	bool _isLook;
 
 	bool _isBoss;
+
+	bool _isBeat;
+	int _turnCnt;
 public:
 	monster();
 	~monster();

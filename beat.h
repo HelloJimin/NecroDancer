@@ -4,9 +4,12 @@
 struct note
 {
 	int alpha;
-	float x[2], y;
-	RECT rc[2];
-	image* img[2];
+	float x, y;
+	RECT rc;
+	image* img;
+	float speed;
+	bool render;
+	bool colHeart;
 };
 struct miss
 {
@@ -15,6 +18,7 @@ struct miss
 	RECT rc;
 	image* img;
 	int max;
+
 };
 class beat : public singletonBase<beat>
 {
@@ -22,15 +26,16 @@ private:
 	int _anime;
 	int _cnt;
 	int _turn;
-	float _speed;
-	bool _check;
 
+	bool _check;
+	bool _isBeat;
 	RECT _collisionHeart;
 	RECT _heartBox;
 	image* _heart;
 
-	note _note;
-	vector<note> _vNote;
+
+	vector<note> _vNoteL;
+	vector<note> _vNoteR;
 
 	miss _miss;
 	vector<miss> _vMiss;
@@ -39,6 +44,9 @@ private:
 
 	float test;
 	float _deltaTime;
+	
+	string _oldMap;
+	string _currentMap;
 
 	bool _beatOn;
 	vector<int> _vRenge;
@@ -46,6 +54,9 @@ private:
 	unsigned int _songPos;
 	float noteTimeInterval;
 	float noteTimeIntervalCount;
+	int _currentNoteCnt;
+
+	float _okTime;
 public:
 	beat();
 	~beat();
@@ -61,14 +72,20 @@ public:
 	void addMiss();
 	void addCoinMiss();
 	void removeNote();
-	void load();
+	void load(string map);
 	bool getCheck() { return _check;}
-	int getCnt() { return _cnt; }
 
+	int getCnt() { return _cnt; }
+	bool getIsBeat() { return _isBeat; }
 	void setBeatOn(bool beaton) { _beatOn = beaton; }
 
 	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
 
+	void setMap(string currentMap);
 
+	void addNote(float x);
+
+	void okTimeReset() { _okTime = 0; }
+	float getOkTime() { return _okTime; }
 };
 

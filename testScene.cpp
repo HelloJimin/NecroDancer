@@ -15,10 +15,13 @@ HRESULT testScene::init()
 {
 	_currentMapNumber = 1;
 
+
+	_currentMap = "1-1";
+
+
 	setUp();
 	load();
 	BEAT->setBeatOn(true);
-
 	_hitCnt = 0;
 	return S_OK;
 }
@@ -216,42 +219,67 @@ void testScene::setUp()
 void testScene::load()
 {
 	char map[128];
-
-	wsprintf(map, "save/맵%d.map", _currentMapNumber+1);
-	HANDLE file;
-	DWORD read;
-	file = CreateFile
-	(map,			//생성할 파일또는 열 장치나 파일이름
-		GENERIC_READ,		//파일이나 장치를 만들거나 열때 사용할 권한
-		0,					//파일 공유 모드입력
-		NULL,				//파일또는 장치를 열때 보안 및 특성
-		OPEN_EXISTING,		//파일이나 장치를 열때 취할 행동
-		FILE_ATTRIBUTE_NORMAL, //파일이나 장치를 열때 갖게 될 특성
-		NULL);				//만들어질 파일이 갖게 될 특성 확장 특성에 대한 정보
-
-	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
-	CloseHandle(file);
-
 	wsprintf(map, "1-%d", _currentMapNumber);
-	SOUNDMANAGER->play(map);
 
-	PLAYER->setMap(_tiles);
-	MONSTERMANAGER->setMap(_tiles);
-	ITEMMANAGER->setMap();
-
-	torchInit();
-	trapInit();
-
-	for (int i = 0; i < TILEX * TILEY; i++)
+	if (_currentMap != _oldMap)
 	{
-		if (_tiles[i].obj == OBJ_BLOCK || _tiles[i].obj == OBJ_NEXT)
+		if (_currentMap == "1-1")
 		{
-			_nextDoorNum = i;
-			break;
+			HANDLE file;
+			DWORD read;
+			file = CreateFile
+			("save/맵2.map",			//생성할 파일또는 열 장치나 파일이름
+				GENERIC_READ,		//파일이나 장치를 만들거나 열때 사용할 권한
+				0,					//파일 공유 모드입력
+				NULL,				//파일또는 장치를 열때 보안 및 특성
+				OPEN_EXISTING,		//파일이나 장치를 열때 취할 행동
+				FILE_ATTRIBUTE_NORMAL, //파일이나 장치를 열때 갖게 될 특성
+				NULL);				//만들어질 파일이 갖게 될 특성 확장 특성에 대한 정보
+
+			ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
+			CloseHandle(file);
 		}
+		if (_currentMap == "1-2")
+		{
+			HANDLE file;
+			DWORD read;
+			file = CreateFile
+			("save/맵3.map",			//생성할 파일또는 열 장치나 파일이름
+				GENERIC_READ,		//파일이나 장치를 만들거나 열때 사용할 권한
+				0,					//파일 공유 모드입력
+				NULL,				//파일또는 장치를 열때 보안 및 특성
+				OPEN_EXISTING,		//파일이나 장치를 열때 취할 행동
+				FILE_ATTRIBUTE_NORMAL, //파일이나 장치를 열때 갖게 될 특성
+				NULL);				//만들어질 파일이 갖게 될 특성 확장 특성에 대한 정보
+
+			ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
+			CloseHandle(file);
+		}
+		SOUNDMANAGER->stop(_oldMap);
+		SOUNDMANAGER->play(_currentMap);
+
+		BEAT->setMap(_currentMap);
+
+		PLAYER->setMap(_tiles);
+		MONSTERMANAGER->setMap(_tiles);
+		ITEMMANAGER->setMap();
+		torchInit();
+		trapInit();
+
+
+		for (int i = 0; i < TILEX * TILEY; i++)
+		{
+			if (_tiles[i].obj == OBJ_BLOCK || _tiles[i].obj == OBJ_NEXT)
+			{
+				_nextDoorNum = i;
+				break;
+			}
+		}
+
+		_oldMap = _currentMap;
+		_currentMap = "1-2";
 	}
 
-	_currentMapNumber++;
 }
 
 void testScene::torchUpdate()

@@ -78,7 +78,7 @@ void bat::frontCheck()
 
 void bat::choiceAction()
 {
-	if (BEAT->getCnt() % 58 == 0)
+	if (TURN2 && _isBeat)
 	{
 		frontCheck();
 

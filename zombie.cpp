@@ -71,7 +71,7 @@ void zombie::frontCheck()
 
 void zombie::choiceAction()
 {
-	if (BEAT->getCnt() % 58 == 0)
+	if (TURN2 && _isBeat)
 	{
 		frontCheck();
 

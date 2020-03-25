@@ -149,7 +149,8 @@ void mainGame::imagesInit()
 
 
 	//SOUND
-	SOUNDMANAGER->addSound("1-1", "sound/1-1.mp3", true, true);
+	SOUNDMANAGER->addSound("1-1", "sound/1-1.ogg", true, true);
+	SOUNDMANAGER->addSound("1-2", "sound/1-2.ogg", true, true);
 	SOUNDMANAGER->addSound("1-1shop", "sound/1-1shop.mp3", true, true);
 	SOUNDMANAGER->addSound("intro", "sound/intro.mp3", true, true);
 	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);

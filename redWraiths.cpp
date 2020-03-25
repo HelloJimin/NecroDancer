@@ -34,7 +34,7 @@ void redWraiths::frontCheck()
 
 void redWraiths::choiceAction()
 {
-	if (BEAT->getCnt() % 29 == 0)
+	if (TURN1 && _isBeat)
 	{
 		frontCheck();
 

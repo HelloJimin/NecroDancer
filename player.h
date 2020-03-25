@@ -71,6 +71,7 @@ private:
 	bool _isHit;
 	bool _isBomb;
 	bool _isTaekwondo;
+	bool _isOk;
 
 	char _str[128];
 	RECT _temp;
@@ -132,6 +133,7 @@ public:
 	bool& getBomb() { return _isBomb; }
 	bool getMove() { return _isMove; }
 	bool& getTaekwondo() { return _isTaekwondo; }
+	bool& getOk() { return _isOk; }
 	int& getRayPower() { return _rayPower; }
 	void arrowEffect(attackForm form, int monArrNum);
 	void throwEffect(int endTile, int throwRenge);

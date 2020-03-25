@@ -48,7 +48,7 @@ void ghost::frontCheck()
 
 void ghost::choiceAction()
 {
-	if (BEAT->getCnt() % 29 == 0)
+	if (TURN1 && _isBeat)
 	{
 		atkCnt++;
 		atkCnt %= 2;

@@ -622,10 +622,11 @@ void player::keyControl()
 	
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
-		if (BEAT->getCheck())
+		if (BEAT->getOkTime()>0)
 		{
 			_direction = LEFT;
 			BEAT->removeNote();
+			BEAT->okTimeReset();
 			frontCheck();
 		}
 		else
@@ -636,10 +637,11 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 	{
-		if (BEAT->getCheck())
+		if (BEAT->getOkTime()>0)
 		{
 			_direction = RIGHT;
 			BEAT->removeNote();
+			BEAT->okTimeReset();
 			frontCheck();
 		}
 		else
@@ -650,10 +652,11 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_UP))
 	{
-		if (BEAT->getCheck())
+		if (BEAT->getOkTime()>0)
 		{
 			_direction = UP;
 			BEAT->removeNote();
+			BEAT->okTimeReset();
 			frontCheck();
 		}
 		else
@@ -664,10 +667,11 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 	{
-		if (BEAT->getCheck())
+		if (BEAT->getOkTime()>0)
 		{
 			_direction = DOWN;
 			BEAT->removeNote();
+				BEAT->okTimeReset();
 			frontCheck();
 		}
 		else

@@ -38,14 +38,14 @@ void redDragon::frontCheck()
 
 void redDragon::choiceAction()
 {
-	if (BEAT->getCnt() % 29 == 0)
+	if (TURN1 && _isBeat)
 	{
 		if (_isBreath)
 		{
 			_isAttack = true;
 		}
 	}
-	if (BEAT->getCnt() % 58 == 0)
+	if (TURN2 && _isBeat)
 	{
 		frontCheck();
 		if (_isBreath) return;

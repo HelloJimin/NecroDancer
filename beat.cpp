@@ -13,27 +13,18 @@ beat::~beat()
 
 HRESULT beat::init()
 {
-	TIMEMANAGER->setCountTime(0);
-	TIMEMANAGER->setCountTimeResetSwitch(true); // 세는 시간 리셋
-	TIMEMANAGER->setCountTimeSwitch(true); // 시간 세기 ON
-
 	//턴초기화
+	load("1-1");
+
 	_cnt = 0;
-	_speed = 6;
 	_anime = 0;
 	_turn = 0;
+	_okTime = 0;
+
+
 	_heart = IMAGEMANAGER->findImage("심장");
 	_heartBox = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, _heart->getFrameWidth(), _heart->getFrameHeight());
-	_collisionHeart = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, 120, 50 * 2);
-	for (int i = 0; i < 2; i++)
-	{
-		_note.img[i] = IMAGEMANAGER->findImage("노트");
-		_note.x[0] = 0;
-		_note.x[1] = WINSIZEX;
-		_note.y = WINSIZEY - 100;
-		_note.rc[i] = RectMakeCenter(_note.x[i], _note.y, _note.img[i]->getWidth(), _note.img[i]->getHeight());
-		_note.alpha = 0;
-	}
+	_collisionHeart = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, 100, 50 * 2);
 
 	_miss.alpha = 0;
 	_miss.img = IMAGEMANAGER->findImage("빗나감");
@@ -41,8 +32,6 @@ HRESULT beat::init()
 	_miss.speed = 1;
 	_miss.max = WINSIZEY / 2 + 150;
 
-	_vNote.push_back(_note);
-	_deltaTime = TIMEMANAGER->getElapsedTime();
 	return S_OK;
 }
 
@@ -52,18 +41,14 @@ void beat::release()
 
 void beat::update()
 {
-	SOUNDMANAGER->getPosition("1-1", _songPos);
+	_cnt++;
+
+	SOUNDMANAGER->getPosition(_currentMap, _songPos);
 	if (_songPos > 0)
 	{
-		_deltaTime = TIMEMANAGER->getElapsedTime();
+		checkBeat();
 	}
-	checkBeat();
 	missUpdate();
-	if (!_beatOn)
-	{
-		_check = true;
-	}
-
 }
 
 void beat::render(HDC hdc)
@@ -73,18 +58,18 @@ void beat::render(HDC hdc)
 	{
 		_vMiss[i].img->render(CAMERAMANAGER->getCameraDC(), _vMiss[i].rc.left, _vMiss[i].rc.top);
 	}
-	for (int i = 0; i < _vNote.size(); i++)
+	for (int i = 0; i < _vNoteL.size(); i++)
 	{
-		if (_vNote[i].rc[0].right <= _heartBox.right - 40) _vNote[i].img[0]->alphaRender(CAMERAMANAGER->getCameraDC(), _vNote[i].rc[0].left, _vNote[i].rc[0].top, 255);
-		if (_vNote[i].rc[1].left >= _heartBox.left + 40) _vNote[i].img[1]->alphaRender(CAMERAMANAGER->getCameraDC(), _vNote[i].rc[1].left, _vNote[i].rc[1].top, 255);
+		if (!_vNoteL[i].render)continue;
+			_vNoteL[i].img->alphaRender(CAMERAMANAGER->getCameraDC(), _vNoteL[i].rc.left, _vNoteL[i].rc.top, 255);
 	}
 	_heart->frameRender(CAMERAMANAGER->getCameraDC(), _heartBox.left, _heartBox.top, _anime, 0);
 
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(CAMERAMANAGER->getCameraDC(), _collisionHeart.left, _collisionHeart.top, _collisionHeart.right, _collisionHeart.bottom);
-		UINT a = SOUNDMANAGER->getLength("1-1");
-		UINT b = SOUNDMANAGER->getPosition("1-1",b);
+		UINT a = SOUNDMANAGER->getLength(_currentMap);
+		UINT b = SOUNDMANAGER->getPosition(_currentMap,b);
 		char str[128];
 		wsprintf(str, "%d", a);
 		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2,str, strlen(str));
@@ -92,11 +77,12 @@ void beat::render(HDC hdc)
 		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2+100, str,strlen(str));
 	}
 }
-void beat::load()
+void beat::load(string map)
 {
 	ifstream readFile;
 	string tempWord;
-	readFile.open("sound/1-1.txt"); // 파일 열기
+	if(map=="1-1") readFile.open("sound/1-1.txt"); // 파일 열기
+	else if(map=="1-2") readFile.open("sound/1-2.txt"); // 파일 열기
 
 	if (readFile.is_open()) // 파일이 정상적으로 열려있다면
 	{
@@ -125,73 +111,136 @@ void beat::load()
 	//}
 }
 
-void beat::checkBeat()
+void beat::setMap(string currentMap)
 {
-	_speed = 521 * _deltaTime;
-	int tempMS = 521;
-	int bpm = 60000 / tempMS;
-	_speed = lerp(0, WINSIZEX/2, (_deltaTime / ((tempMS + bpm) / 1000.0f)) / 3);
-	noteTimeInterval = 521/ 1000.0f;
-	noteTimeIntervalCount = TIMEMANAGER->getCountTime();
-
-	if (noteTimeIntervalCount > noteTimeInterval)
+	_currentMap = currentMap;
+	if (_currentMap != _oldMap)
 	{
+		_vRenge.clear();
+		_vNoteL.clear();
 		TIMEMANAGER->setCountTime(0);
+		TIMEMANAGER->setCountTimeResetSwitch(true); // 세는 시간 리셋
+		TIMEMANAGER->setCountTimeSwitch(true); // 시간 세기 ON
+		_deltaTime = TIMEMANAGER->getElapsedTime();
+		_currentNoteCnt = 0;
+		_cnt = 0;
+		_okTime = 0;
 		noteTimeIntervalCount = 0;
-		_vNote.push_back(_note);
-	}
-	//_speed = _collisionHeart.left / 43;
-	_cnt++;
-	UINT b;
-	SOUNDMANAGER->getPosition("1-1", b);
-	//UINT a = SOUNDMANAGER->getLength("1-1");
-	//UINT b = SOUNDMANAGER->getPosition("1-1",b) % 521;
-	//if (_cnt+1 == 30)
-	//a = SOUNDMANAGER->getPosition("1-1");
 
-	//if (_cnt % 29 == 0)
+		_oldMap = _currentMap;
+		load(currentMap);
+	}
+
+
+	//for (int i = 0; i < 3; i++)
 	//{
-	//	_turn++;
-	//	_vNote.push_back(_note);
+	//	int tempMS = _vRenge[_currentNoteCnt + 1] - _vRenge[_currentNoteCnt];
+	//	int bpm = 60000 / tempMS;
+
+	//	note _note;
+
+	//	_note.img = IMAGEMANAGER->findImage("노트");
+	//	_note.x = WINSIZEX / 2 - (WINSIZEX / 2 / 3 * (i + 1));
+	//	_note.y = WINSIZEY - 100;
+	//	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
+	//	_note.alpha = 0;
+	//	_note.speed = lerp(_note.x, _note.x+WINSIZEX/2/3, (_deltaTime / ((tempMS + bpm) / 1000.0f)));
+	//	_note.render = true;
+	//	_vNoteL.push_back(_note);
+	//	noteTimeInterval = tempMS / 1000.0f;
+	//	_currentNoteCnt++;
 	//}
 
+}
 
-	for (int i = 0; i < _vNote.size(); i++)
+
+void beat::addNote(float x)
+{
+
+	int tempMS = _vRenge[_currentNoteCnt+1] - _vRenge[_currentNoteCnt]-x;
+	int bpm = 60000 / tempMS;
+
+	note _note;
+
+	_note.img = IMAGEMANAGER->findImage("노트");
+	_note.x = 0;
+	_note.y = WINSIZEY - 100;
+	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
+	_note.alpha = 0;
+	_note.colHeart = false;
+
+	_note.speed = lerp(_note.x, _heartBox.right, (_deltaTime / ((tempMS + bpm) / 1000.0f)) / 3);
+	_note.render = true;
+	_vNoteL.push_back(_note);
+
+	noteTimeInterval = tempMS / 1000.0f;
+	_currentNoteCnt++;
+
+}
+
+void beat::checkBeat()
+{
+	noteTimeIntervalCount = TIMEMANAGER->getCountTime();
+	if (noteTimeIntervalCount >= noteTimeInterval)
 	{
-		_vNote[i].alpha += 7;
-		_vNote[i].x[0] += _speed;
-		_vNote[i].x[1] -= _speed;
+		float lapse = (noteTimeIntervalCount - noteTimeInterval)*1000.0f;
+		addNote(lapse);
+		_turn++;
 
-		_vNote[i].rc[0] = RectMakeCenter(_vNote[i].x[0], _vNote[i].y, _vNote[i].img[0]->getWidth(), _vNote[i].img[0]->getHeight());
-		_vNote[i].rc[1] = RectMakeCenter(_vNote[i].x[1], _vNote[i].y, _vNote[i].img[1]->getWidth(), _vNote[i].img[1]->getHeight());
+		TIMEMANAGER->setCountTime(0);
+		noteTimeIntervalCount = 0;
+	}
 
-		if (IntersectRect(&_temp, &_vNote[i].rc[0], &_collisionHeart))
+	for (int i = 0; i < _vNoteL.size();)
+	{
+		_vNoteL[i].x += _vNoteL[i].speed;
+		_vNoteL[i].rc = RectMakeCenter(_vNoteL[i].x, _vNoteL[i].y, _vNoteL[i].img->getWidth(), _vNoteL[i].img->getHeight());
+
+		if (IntersectRect(&_temp, &_vNoteL[i].rc, &_collisionHeart))
 		{
-			_check = true;
+			if(!_vNoteL[i].colHeart)
+				_isBeat = true;
+			_vNoteL[i].colHeart = true;
+			_okTime ++;
 		}
-
-		if (_vNote[i].rc[0].right >= _collisionHeart.right)
+		if (_vNoteL[i].x > WINSIZEX / 2)
 		{
-			//if (!KEYMANAGER->isOnceKeyDown(VK_DOWN) && !KEYMANAGER->isOnceKeyDown(VK_UP) &&
-			//	!KEYMANAGER->isOnceKeyDown(VK_LEFT) && !KEYMANAGER->isOnceKeyDown(VK_RIGHT))
-			_check = false;
-			_vNote.erase(_vNote.begin() + i);
-			break;
+			//_vNoteL[i].render = false;
 		}
+		//if (_vNoteL[i].x-(_collisionHeart.right-_collisionHeart.left)/2 > WINSIZEX/2)
+		if (_vNoteL[i].x-(_heart->getFrameWidth()/2) > WINSIZEX/2)
+		{
+			_vNoteL.erase(_vNoteL.begin() + i);
+			_okTime = 0;
+		}
+		else
+		{
+			++i;
+		}
+	}
+	if (_okTime > 0) _check = true;
+	else _check = false;
+	
+	if (_isBeat)
+	{
+		_anime++;
+		if (_anime > _heart->getMaxFrameX())
+		{
+			_anime = 0;
+			_isBeat = false;
 
-		if (_check)_anime = 1;
-		if (!_check)_anime = 0;
+		}
 	}
 }
 
 void beat::removeNote()
 {
-	for (int i = 0; i < _vNote.size(); i++)
+	for (int i = 0; i < _vNoteL.size(); i++)
 	{
-		if (IntersectRect(&_temp, &_vNote[i].rc[0], &_collisionHeart))
+		if (IntersectRect(&_temp, &_vNoteL[i].rc, &_collisionHeart))
 		{
 			_check = false;
-			_vNote.erase(_vNote.begin() + i);
+			_vNoteL.erase(_vNoteL.begin() + i);
 			break;
 		}
 	}

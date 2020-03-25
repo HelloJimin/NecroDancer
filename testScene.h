@@ -22,6 +22,9 @@ private:
 
 
 	int _nextDoorNum;
+
+	string _oldMap;
+	string _currentMap;
 public:
 	testScene();
 	~testScene();
