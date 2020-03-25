@@ -3,29 +3,28 @@
 
 struct note
 {
-	int alpha;
-	float x, y;
 	RECT rc;
 	image* img;
+	int alpha;
+	float x, y;
 	float speed;
-	bool render;
 	bool colHeart;
+	bool render;
 };
 struct miss
 {
-	int alpha;
-	int speed;
 	RECT rc;
 	image* img;
+	int alpha;
+	int speed;
 	int max;
-
 };
+
 class beat : public singletonBase<beat>
 {
 private:
 	int _anime;
 	int _cnt;
-	int _turn;
 
 	bool _check;
 	bool _isBeat;
@@ -33,27 +32,23 @@ private:
 	RECT _heartBox;
 	image* _heart;
 
-
+	vector<int> _vRenge;
 	vector<note> _vNoteL;
 	vector<note> _vNoteR;
-
-	miss _miss;
 	vector<miss> _vMiss;
 
 	RECT _temp;
-
-	float test;
-	float _deltaTime;
 	
 	string _oldMap;
 	string _currentMap;
 
-	bool _beatOn;
-	vector<int> _vRenge;
 	unsigned int _songLength;
 	unsigned int _songPos;
-	float noteTimeInterval;
-	float noteTimeIntervalCount;
+
+	float _noteTiming;
+	float _noteStartTiming;
+
+	float _deltaTime;
 	int _currentNoteCnt;
 
 	float _okTime;
@@ -77,7 +72,6 @@ public:
 
 	int getCnt() { return _cnt; }
 	bool getIsBeat() { return _isBeat; }
-	void setBeatOn(bool beaton) { _beatOn = beaton; }
 
 	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
 
@@ -87,5 +81,8 @@ public:
 
 	void okTimeReset() { _okTime = 0; }
 	float getOkTime() { return _okTime; }
+
+	void beatStart();
+	void noteMove();
 };
 

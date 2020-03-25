@@ -20,7 +20,6 @@ HRESULT lobbyScene::init()
 
 
 	SOUNDMANAGER->play("lobby");
-	BEAT->setBeatOn(false);
 
 	PLAYER->setMap(_tiles);
 	return S_OK;

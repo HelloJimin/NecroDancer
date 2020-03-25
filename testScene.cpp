@@ -13,15 +13,11 @@ testScene::~testScene()
 
 HRESULT testScene::init()
 {
-	_currentMapNumber = 1;
-
-
 	_currentMap = "1-1";
 
-
-	setUp();
+	//setUp();
 	load();
-	BEAT->setBeatOn(true);
+
 	_hitCnt = 0;
 	return S_OK;
 }
@@ -218,9 +214,6 @@ void testScene::setUp()
 
 void testScene::load()
 {
-	char map[128];
-	wsprintf(map, "1-%d", _currentMapNumber);
-
 	if (_currentMap != _oldMap)
 	{
 		if (_currentMap == "1-1")
@@ -263,6 +256,7 @@ void testScene::load()
 		PLAYER->setMap(_tiles);
 		MONSTERMANAGER->setMap(_tiles);
 		ITEMMANAGER->setMap();
+
 		torchInit();
 		trapInit();
 

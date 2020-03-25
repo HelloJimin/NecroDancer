@@ -637,7 +637,7 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 	{
-		if (BEAT->getOkTime()>0)
+		if (_isBeat)
 		{
 			_direction = RIGHT;
 			BEAT->removeNote();
@@ -652,7 +652,7 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_UP))
 	{
-		if (BEAT->getOkTime()>0)
+		if (_isBeat)
 		{
 			_direction = UP;
 			BEAT->removeNote();
@@ -667,7 +667,7 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 	{
-		if (BEAT->getOkTime()>0)
+		if (_isBeat)
 		{
 			_direction = DOWN;
 			BEAT->removeNote();

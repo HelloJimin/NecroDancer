@@ -18,9 +18,6 @@ private:
 
 	int _hitCnt;
 
-	int _currentMapNumber;
-
-
 	int _nextDoorNum;
 
 	string _oldMap;

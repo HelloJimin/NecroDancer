@@ -72,7 +72,7 @@ private:
 	bool _isBomb;
 	bool _isTaekwondo;
 	bool _isOk;
-
+	bool _isBeat;
 	char _str[128];
 	RECT _temp;
 
@@ -145,6 +145,7 @@ public:
 	void coinUIupdate();
 	void coinUIrender();
 
+	void setIsBeat(bool beat) { _isBeat = beat; }
 
 };
 
