@@ -50,6 +50,7 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addImage("코인배수", "images/UI/코인배수.bmp",150,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("출구계단열림", "images/UI/출구계단열림.bmp",180,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("hit", "images/UI/hit.bmp",1024,768, false, RGB(255, 0, 255));
 
 
@@ -146,6 +147,9 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("상점주인", "images/monster/상점주인.bmp",376*3, 152*3,8,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("좀비", "images/monster/좀비.bmp",153*3, 200*3,8,8, true, RGB(255, 0, 255));
 
+	IMAGEMANAGER->addFrameImage("데스메탈1", "images/boss/phase1.bmp",168*3, 424*3,2,8, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("데스메탈2", "images/boss/phase2.bmp",168*3, 212*3,2,4, true, RGB(255, 0, 255));
+
 
 
 	//SOUND
@@ -154,6 +158,7 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("1-1shop", "sound/1-1shop.mp3", true, true);
 	SOUNDMANAGER->addSound("intro", "sound/intro.mp3", true, true);
 	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);
+	SOUNDMANAGER->addSound("boss", "sound/boss.ogg", true, true);
 
 	//효과음
 	SOUNDMANAGER->addSound("hit", "sound/hit.mp3", false, false);

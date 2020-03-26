@@ -4,6 +4,7 @@
 #include"testScene.h"
 #include"lobbyScene.h"
 #include"introScene.h"
+#include"bossStage.h"
 
 #define DC gameNode::getMemDC()
 

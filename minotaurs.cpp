@@ -276,3 +276,14 @@ void minotaurs::rageCheck()
 		break;
 	}
 }
+
+bool minotaurs::die()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0.0f) return false;
+	}
+
+	BEAT->addHint("출구계단열림");
+	return true;
+}

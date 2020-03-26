@@ -65,7 +65,7 @@ public:
 	void missUpdate();
 
 	void addMiss();
-	void addCoinMiss();
+	void addHint(string keyname);
 	void removeNote();
 	void load(string map);
 	bool getCheck() { return _check;}
@@ -77,7 +77,7 @@ public:
 
 	void setMap(string currentMap);
 
-	void addNote(float x);
+	void addNote(float lapse);
 
 	void okTimeReset() { _okTime = 0; }
 	float getOkTime() { return _okTime; }

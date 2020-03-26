@@ -31,6 +31,14 @@ HRESULT shopKeeper::init(string name, int x, int y, int coin, tagTile * map)
 
 void shopKeeper::update()
 {
+	if (BEAT->getIsBeat() && !_isBeat)
+	{
+		_turnCnt++;
+		_isBeat = true;
+	}
+	if (!BEAT->getIsBeat()) _isBeat = false;
+
+
 	_pCurrentMap[_currentTileIndex].walkable = false;
 	animation();
 

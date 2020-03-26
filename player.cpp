@@ -134,21 +134,9 @@ void player::frontCheck()
 		}
 
 		//ÆòÅ¸
-		_inven->getWeapon()->active();
+		attackCheck();
 
-		int monsterSize = MONSTERMANAGER->getMonster().size();
-
-		for (int i = 0; i < _status.atkRenge.size(); ++i)
-		{
-			for (int k = 0; k < monsterSize; ++k)
-			{
-				if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
-				{
-					_isAttack = true;
-					return;
-				}
-			}
-		}
+		if (_isAttack) return;
 	}
 	//¾ÕÅ¸ÀÏ º®ÀÌ ¾Æ´Ï¸é ÀÌµ¿
 	moveCheck();
@@ -162,149 +150,31 @@ void player::attack()
 	//´øÁö±â °ø°ÝÀÌ¸é
 	if (_inven->getWeapon()->getBool())
 	{
-		int arrowRenge = 0;
-		int temp = _nextTileIndex;
-
-		switch (_direction)
-		{
-		case LEFT:
-			while (throwRengeCheck(temp))
-			{
-				arrowRenge++;
-				temp--;
-			}
-			break;
-		case RIGHT:
-			while (throwRengeCheck(temp))
-			{
-				arrowRenge++;
-				temp++;
-			}
-			break;
-		case UP:
-			while (throwRengeCheck(temp))
-			{
-				arrowRenge++;
-				temp -= TILEY;
-			}
-			break;
-		case DOWN:
-			while (throwRengeCheck(temp))
-			{
-				arrowRenge++;
-				temp += TILEY;
-			}
-			break;
-		}
-		throwEffect(temp,arrowRenge);
-
-		int monsterSize = MONSTERMANAGER->getMonster().size();
-
-		for (int i = 0; i < arrowRenge; ++i)
-		{
-			for (int k = 0; k < monsterSize; ++k)
-			{
-				int pRenge;
-				switch (_direction)
-				{
-				case LEFT:
-					pRenge = _nextTileIndex - i;
-					break;
-				case RIGHT:
-					pRenge = _nextTileIndex + i;
-					break;
-				case UP:
-					pRenge = _nextTileIndex - (i*TILEX);
-					break;
-				case DOWN:
-					pRenge = _nextTileIndex + (i*TILEX);
-					break;
-				}
-				int mTile = MONSTERMANAGER->getMonster()[k]->currentTile();
-
-				if (pRenge == mTile)
-				{
-					MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
-					if(_isTaekwondo)MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
-
-					if (MONSTERMANAGER->getMonster()[k]->die())
-					{
-						if (!_isFever)
-						{
-							for (int i = 0; i < TILEX * TILEY; i++)
-							{
-								if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
-								if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
-							}
-							_isFever = true;
-						}
-					}
-				}
-			}
-		}
-		switch (_direction)
-		{
-		case LEFT:
-		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp + 1].x, _pCurrentMap[temp + 1].y);
-			break;
-		case RIGHT:
-		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp - 1].x, _pCurrentMap[temp - 1].y);
-			break;
-		case UP:
-		 ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp + TILEX].x, _pCurrentMap[temp + TILEX].y);
-			break;
-		case DOWN:
-		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp - TILEX].x, _pCurrentMap[temp - TILEX].y);
-			break;
-		}
-		_inven->throwItem();
-		_inven->itemPosionSet();
-		_isAttack = false;
-
+		isThrow();
 		return;
 	} //´øÁö±â ³¡ 
 
 	//ÆòÅ¸
-	int monsterSize = MONSTERMANAGER->getMonster().size();
-	for (int i = 0; i < _status.atkRenge.size(); ++i)
+
+	for (int i = 0; i < _vTarget.size(); ++i)
 	{
-		//°ø°Ý¹üÀ§¿¡ º®ÀÌ ÀÖÀ¸¸é ÀÌµ¿Ã¼Å©
-		if (wallCheck(_status.atkRenge[i]))
-		{
-			moveCheck();
-			_isAttack = false;
-			return;
-		}
+		MONSTERMANAGER->getMonster()[_vTarget[i]]->hit(_status.atk);
+		if (_isTaekwondo)MONSTERMANAGER->getMonster()[_vTarget[i]]->hit(_status.atk);
 
-		for (int k = 0; k < monsterSize; ++k)
+		if (!_isFever)
 		{
-			//°ø°Ý¹üÀ§¿¡ º®ÀÌ ¾ø°í ¸ó½ºÅÍ°¡ ÀÖÀ¸¸é °ø°Ý ½ÇÇà
-			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
+			for (int i = 0; i < TILEX * TILEY; i++)
 			{
-				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
-				if (_isTaekwondo)MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
-
-				if (!_isFever)
-				{
-					for (int i = 0; i < TILEX * TILEY; i++)
-					{
-						if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
-						if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
-					}
-					_isFever = true;
-				}
-				SOUNDMANAGER->play("atk");
-				if(_equipWeaponType != FORM_BIG) effectControl(_equipWeaponType, i, k);
-				else 
-					effectControl(_equipWeaponType, 0, k);
-				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
-				{
-					_isAttack = false;
-					return;
-				}
+				if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+				if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
 			}
+			_isFever = true;
 		}
+
+		 effectControl(_equipWeaponType, 0, _vTarget[i]);
+
 	}
+	SOUNDMANAGER->play("atk");
 	_isAttack = false;
 }
 
@@ -619,10 +489,10 @@ void player::hit(float damege)
 void player::keyControl()
 {
 	if (_isMove) return;
-	
+	_isBeat = true;
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
-		if (BEAT->getOkTime()>0)
+		if (_isBeat)
 		{
 			_direction = LEFT;
 			BEAT->removeNote();
@@ -631,6 +501,7 @@ void player::keyControl()
 		}
 		else
 		{
+			BEAT->removeNote();
 			BEAT->addMiss();
 			_rhythm = 0;
 		}
@@ -646,6 +517,7 @@ void player::keyControl()
 		}
 		else
 		{
+			BEAT->removeNote();
 			BEAT->addMiss();
 			_rhythm = 0;
 		}
@@ -661,6 +533,7 @@ void player::keyControl()
 		}
 		else
 		{
+			BEAT->removeNote();
 			BEAT->addMiss();
 			_rhythm = 0;
 		}
@@ -671,11 +544,12 @@ void player::keyControl()
 		{
 			_direction = DOWN;
 			BEAT->removeNote();
-				BEAT->okTimeReset();
+			BEAT->okTimeReset();
 			frontCheck();
 		}
 		else
 		{
+			BEAT->removeNote();
 			BEAT->addMiss();
 			_rhythm = 0;
 		}
@@ -749,16 +623,16 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 		switch (_direction)
 		{
 		case LEFT:
-			EFFECTMANAGER->play("´ë°ËL",_pCurrentMap[_status.atkRenge[rengeArrNum]].x , _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
+			EFFECTMANAGER->play("´ë°ËL",_pCurrentMap[_status.atkRenge[0]].x , _pCurrentMap[_status.atkRenge[0]].y);
 			break;				 
 		case RIGHT:				 
-			EFFECTMANAGER->play("´ë°ËR", _pCurrentMap[_status.atkRenge[rengeArrNum]].x, _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
+			EFFECTMANAGER->play("´ë°ËR", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;				 
 		case UP:				 
-			EFFECTMANAGER->play("´ë°ËUp", _pCurrentMap[_status.atkRenge[rengeArrNum]].x, _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
+			EFFECTMANAGER->play("´ë°ËUp", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;				 
 		case DOWN:				 
-			EFFECTMANAGER->play("´ë°ËDown", _pCurrentMap[_status.atkRenge[rengeArrNum]].x, _pCurrentMap[_status.atkRenge[rengeArrNum]].y);
+			EFFECTMANAGER->play("´ë°ËDown", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;
 		}
 		break;
@@ -769,35 +643,43 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 		arrowEffect(form, monArrNum);
 		break;
 	case FORM_WHIP: //Ã¤Âï
+		int renge;
+		for (int i = 0; i < _status.atkRenge.size(); ++i)
+		{
+			if (MONSTERMANAGER->getMonster()[monArrNum]->currentTile() == _status.atkRenge[i])
+			{
+				renge = i;
+			}
+		}
 		switch (_direction)
 		{
 		case LEFT:
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("Ã¤ÂïL0", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("Ã¤ÂïL1", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("Ã¤ÂïL2", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("Ã¤ÂïL3", _collisionX-30,_collisionY);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("Ã¤ÂïL4", _collisionX-30,_collisionY);
+			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïL0", _collisionX-30,_collisionY);
+			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïL1", _collisionX-30,_collisionY);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïL2", _collisionX-30,_collisionY);
+			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïL3", _collisionX-30,_collisionY);
+			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïL4", _collisionX-30,_collisionY);
 			break;													
 		case RIGHT:													
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("Ã¤ÂïR0", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("Ã¤ÂïR1", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("Ã¤ÂïR2", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("Ã¤ÂïR3", _collisionX+30,_collisionY);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("Ã¤ÂïR4", _collisionX+30,_collisionY);
+			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïR0", _collisionX+30,_collisionY);
+			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïR1", _collisionX+30,_collisionY);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïR2", _collisionX+30,_collisionY);
+			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïR3", _collisionX+30,_collisionY);
+			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïR4", _collisionX+30,_collisionY);
 			break;													
 		case UP:													
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("Ã¤ÂïU0", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("Ã¤ÂïU1", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("Ã¤ÂïU2", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("Ã¤ÂïU3", _collisionX,_collisionY-30);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("Ã¤ÂïU4", _collisionX,_collisionY-30);
+			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïU0", _collisionX,_collisionY-30);
+			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïU1", _collisionX,_collisionY-30);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïU2", _collisionX,_collisionY-30);
+			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïU3", _collisionX,_collisionY-30);
+			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïU4", _collisionX,_collisionY-30);
 			break;													
 		case DOWN:													
-			if		(rengeArrNum == 0)EFFECTMANAGER->play("Ã¤ÂïD0", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 1)EFFECTMANAGER->play("Ã¤ÂïD1", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 2)EFFECTMANAGER->play("Ã¤ÂïD2", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 3)EFFECTMANAGER->play("Ã¤ÂïD3", _collisionX,_collisionY+30);
-			else if (rengeArrNum == 4)EFFECTMANAGER->play("Ã¤ÂïD4", _collisionX,_collisionY+30);
+			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïD0", _collisionX,_collisionY+30);
+			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïD1", _collisionX,_collisionY+30);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïD2", _collisionX,_collisionY+30);
+			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïD3", _collisionX,_collisionY+30);
+			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïD4", _collisionX,_collisionY+30);
 			break;
 		}
 		
@@ -1001,7 +883,7 @@ void player::feverTime()
 	}
 	if (_rhythm == 0 && _isFever)
 	{
-		BEAT->addCoinMiss();
+		BEAT->addHint("ÄÚÀÎ¹è¼ö»ç¶óÁü");
 		for (int i = 0; i < TILEX * TILEY; i++)
 		{
 			if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
@@ -1048,4 +930,151 @@ void player::coinUIrender()
 	//¿ì»ó´Ü ÄÚÀÎ´ÙÀÌ¾Æ ºÎºÐ ·»´õ
 	IMAGEMANAGER->render("ÄÚÀÎ´ÙÀÌ¾Æ", CAMERAMANAGER->getCameraDC(), WINSIZEX - 50 * 3, 20);
 	SetTextColor(CAMERAMANAGER->getCameraDC(), RGB(255, 255, 255));
+}
+
+void player::attackCheck()
+{
+	_inven->getWeapon()->active();
+
+	bool whipCheck = false;
+	int check = 0;
+	int breakCheck = 0;
+	_vTarget.clear();
+
+	for (int i = 0; i < _status.atkRenge.size(); ++i)
+	{
+		if (whipCheck && i == check + 2) continue;
+
+		if (wallCheck(_status.atkRenge[i]))
+		{
+			if (_equipWeaponType == FORM_WHIP)
+			{
+				whipCheck = true;
+				check = i;
+				breakCheck++;
+
+				if (breakCheck == 2) break;
+				continue;
+			}
+			if (_equipWeaponType == FORM_BIG && _equipWeaponType == FORM_SPEAR) continue;
+
+			break;
+		}
+
+		for (int k = 0; k < MONSTERMANAGER->getMonster().size(); ++k)
+		{
+			if (_status.atkRenge[i] == MONSTERMANAGER->getMonster()[k]->currentTile())
+			{
+				_vTarget.push_back(k);
+				_isAttack = true;
+				if (_equipWeaponType == FORM_SHORT || _equipWeaponType == FORM_BOW || _equipWeaponType == FORM_WHIP)
+				{
+					return;
+				}
+			}
+		}
+	}
+}
+
+void player::isThrow()
+{
+	int arrowRenge = 0;
+	int temp = _nextTileIndex;
+
+	switch (_direction)
+	{
+	case LEFT:
+		while (throwRengeCheck(temp))
+		{
+			arrowRenge++;
+			temp--;
+		}
+		break;
+	case RIGHT:
+		while (throwRengeCheck(temp))
+		{
+			arrowRenge++;
+			temp++;
+		}
+		break;
+	case UP:
+		while (throwRengeCheck(temp))
+		{
+			arrowRenge++;
+			temp -= TILEY;
+		}
+		break;
+	case DOWN:
+		while (throwRengeCheck(temp))
+		{
+			arrowRenge++;
+			temp += TILEY;
+		}
+		break;
+	}
+	throwEffect(temp, arrowRenge);
+
+	int monsterSize = MONSTERMANAGER->getMonster().size();
+
+	for (int i = 0; i < arrowRenge; ++i)
+	{
+		for (int k = 0; k < monsterSize; ++k)
+		{
+			int pRenge;
+			switch (_direction)
+			{
+			case LEFT:
+				pRenge = _nextTileIndex - i;
+				break;
+			case RIGHT:
+				pRenge = _nextTileIndex + i;
+				break;
+			case UP:
+				pRenge = _nextTileIndex - (i*TILEX);
+				break;
+			case DOWN:
+				pRenge = _nextTileIndex + (i*TILEX);
+				break;
+			}
+			int mTile = MONSTERMANAGER->getMonster()[k]->currentTile();
+
+			if (pRenge == mTile)
+			{
+				MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+				if (_isTaekwondo)MONSTERMANAGER->getMonster()[k]->hit(_status.atk);
+
+				if (MONSTERMANAGER->getMonster()[k]->die())
+				{
+					if (!_isFever)
+					{
+						for (int i = 0; i < TILEX * TILEY; i++)
+						{
+							if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+							if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
+						}
+						_isFever = true;
+					}
+				}
+			}
+		}
+	}
+	switch (_direction)
+	{
+	case LEFT:
+		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp + 1].x, _pCurrentMap[temp + 1].y);
+		break;
+	case RIGHT:
+		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp - 1].x, _pCurrentMap[temp - 1].y);
+		break;
+	case UP:
+		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp + TILEX].x, _pCurrentMap[temp + TILEX].y);
+		break;
+	case DOWN:
+		ITEMMANAGER->addItemList(_inven->getWeapon()->getName(), _pCurrentMap[temp - TILEX].x, _pCurrentMap[temp - TILEX].y);
+		break;
+	}
+	_inven->throwItem();
+	_inven->itemPosionSet();
+	_isAttack = false;
+
 }

@@ -163,6 +163,12 @@
     <ClCompile Include="torch.cpp">
       <Filter>아이템</Filter>
     </ClCompile>
+    <ClCompile Include="deathmetal.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
+    <ClCompile Include="bossStage.cpp">
+      <Filter>인게임</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -344,6 +350,12 @@
     </ClInclude>
     <ClInclude Include="torch.h">
       <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="deathmetal.h">
+      <Filter>몬스터</Filter>
+    </ClInclude>
+    <ClInclude Include="bossStage.h">
+      <Filter>인게임</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

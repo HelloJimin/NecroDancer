@@ -67,7 +67,7 @@ public:
 	void addHp();
 	void hpSet();
 	void hpRender(HDC hdc);
-	void hit(float damage);
+	virtual void hit(float damage);
 	virtual void aniCheck();
 	void getHp();
 

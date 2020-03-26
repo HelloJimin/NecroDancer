@@ -131,6 +131,13 @@ void monsterManager::summonZombie(string name, int x, int y)
 	_vMonster.push_back(mob);
 }
 
+void monsterManager::summonBoss(string name, int x, int y)
+{
+	monster* mob = new deathmetal;
+	mob->init(name, x, y, 100, _map);
+	_vMonster.push_back(mob);
+}
+
 void monsterManager::summonControl(string name, int x, int y)
 {
 	if (name == "그린슬라임")
@@ -172,6 +179,10 @@ void monsterManager::summonControl(string name, int x, int y)
 	else if (name == "좀비")
 	{
 		summonZombie(name, x, y);
+	}
+	else if (name == "데스메탈1")
+	{
+		summonBoss(name, x, y);
 	}
 }
 

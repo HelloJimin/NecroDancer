@@ -10,6 +10,7 @@
 #include"redDragon.h"
 #include"shopKeeper.h"
 #include"zombie.h"
+#include"deathmetal.h"
 class monsterManager : public singletonBase<monsterManager>
 {
 private:
@@ -36,6 +37,7 @@ public:
 	void summonRedDragon(string name, int x, int y);
 	void summonShopKeeper(string name, int x, int y);
 	void summonZombie(string name, int x, int y);
+	void summonBoss(string name, int x, int y);
 
 
 	void summonControl(string name, int x, int y);

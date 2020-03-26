@@ -83,6 +83,8 @@ private:
 
 	image* _coinFeverImg;
 	image* _coinFeverNumImg;
+
+	vector<int> _vTarget;
 public:
 	player();
 	~player();
@@ -117,8 +119,8 @@ public:
 	bool walkableCheck();
 	bool wallCheck(int tile);
 
-	int getX() { return _currentX; }
-	int getY() { return _currentY; }
+	int getX() { return _collisionRc.left ; }
+	int getY() { return _collisionRc.top ; }
 
 	DIRECTION getPlayerDir() { return _direction; }
 	void setDirection(DIRECTION dir) { _direction = dir; }
@@ -147,5 +149,7 @@ public:
 
 	void setIsBeat(bool beat) { _isBeat = beat; }
 
+	void attackCheck();
+	void isThrow();
 };
 

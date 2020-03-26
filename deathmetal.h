@@ -1,22 +1,26 @@
 #pragma once
-#include "monster.h"
+#include"monster.h"
 #include"aStar.h"
-class minotaurs : public monster
+
+enum bossPhase
+{
+	PHASE_ONE,
+	PHASE_TWO,
+	PHASE_THREE
+};
+class deathmetal : public monster
 {
 private:
-
 	aStar* _aStar;
+	bossPhase _phase;
 
-	int _minePower;
-	bool _isDown;
-
-	bool _isRage;
-	int _downCnt;
 public:
-	minotaurs();
-	~minotaurs();
+	deathmetal();
+	~deathmetal();
 
 	HRESULT init(string name, int x, int y, int coin, tagTile * map) override;
+
+	void update() override;
 
 	void frontCheck() override;
 	void choiceAction() override;
@@ -26,10 +30,8 @@ public:
 	void render(HDC hdc) override;
 	void silhouetteRender(HDC hdc) override;
 	void move() override;
+	void aniCheck() override;
+	void hit(float damage) override;
 
-	void mine();
-
-	void rageCheck();
-	bool die() override;
 };
 

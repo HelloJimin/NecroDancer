@@ -23,8 +23,9 @@ HRESULT mainGame::init()
 	SCENEMANAGER->addScene("인트로신", new introScene);
 	SCENEMANAGER->addScene("테스트신", new testScene);
 	SCENEMANAGER->addScene("로비신", new lobbyScene);
+	SCENEMANAGER->addScene("보스신", new bossStage);
 
-	SCENEMANAGER->changeScene("로비신");
+	SCENEMANAGER->changeScene("인트로신");
 
 	return S_OK;
 }
