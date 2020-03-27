@@ -181,7 +181,46 @@ void player::attack()
 void player::move()
 {
 	if (!_isMove)return;
-	
+	/*float a;
+	float b;
+	float c;
+
+		a = _pCurrentMap[_nextTileIndex].x;
+		b = _pCurrentMap[_nextTileIndex].y -26 ;
+		c = _pCurrentMap[_nextTileIndex].y;
+
+
+
+	float xSpeed = lerp(_currentX, a, TIMEMANAGER->getElapsedTime()/ 0.2f);
+	float ySpeed;
+	if(!_isTurn)  ySpeed = lerp(_pCurrentMap[_nextTileIndex+1].y, b, TIMEMANAGER->getElapsedTime()/ 0.2f);
+	else ySpeed = lerp(_pCurrentMap[_nextTileIndex+1].y, c, TIMEMANAGER->getElapsedTime() / 0.2f);
+
+	if (_currentX == _pCurrentMap[_nextTileIndex].x && _currentY == _pCurrentMap[_nextTileIndex].y)
+	{
+		_isMove = false;
+		_isTurn = false;
+	}
+	switch (_direction)
+	{
+	case LEFT:
+		_currentX += xSpeed;
+		_collisionX += xSpeed;
+		_currentY += ySpeed;
+
+		if (_currentY == b) _isTurn = true;
+
+
+
+		break;
+	case RIGHT:
+
+		break;
+	case UP:
+		break;
+	case DOWN:
+		break;
+	}*/
 	switch (_direction)
 	{
 	case LEFT:
@@ -489,7 +528,7 @@ void player::hit(float damege)
 void player::keyControl()
 {
 	if (_isMove) return;
-	_isBeat = true;
+	//_isBeat = true;
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
 		if (_isBeat)

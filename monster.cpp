@@ -56,7 +56,7 @@ void monster::update()
 		_turnCnt++;
 		_isBeat = true;
 	}
-	if (!BEAT->getIsBeat()) _isBeat = false;
+	else if (!BEAT->getIsBeat()) _isBeat = false;
 
 
 	_pCurrentMap[_currentTileIndex].walkable = false;

@@ -209,21 +209,28 @@ void bossStage::hitRender()
 void bossStage::close()
 {
 	if (_close) return;
-	if (PLAYER->currentTile() < 605)
+	if (PLAYER->currentTile() < 737)
 	{
 		_close = true;
-		for (int i = 605; i < 608; ++i)
+		for (int i = 737; i < 740; ++i)
 		{
 			_tiles[i].obj = OBJ_IRONWALL;
 			_tiles[i].strength = 5;
 			_tiles[i].objFrameX = 3;
 			_tiles[i].objFrameY = 0;
-			_tiles[i].walkable = false;
 		}
-		for (int i = 605; i < TILEX*TILEY; i++)
+
+		for (int i = 0; i < TILEX*TILEY; ++i)
 		{
-			_tiles[i].ray = 0;
-			_tiles[i].look = false;
+			if (_tiles[i].terrain != TERRAIN_GROUND) _tiles[i].walkable = false;
+			if (_tiles[i].obj == OBJ_IRONWALL) _tiles[i].walkable = false;
+			
+			if (i >= 737)
+			{
+				_tiles[i].ray = 0;
+				_tiles[i].look = false;
+				_tiles[i].walkable = false;
+			}
 		}
 	}
 }

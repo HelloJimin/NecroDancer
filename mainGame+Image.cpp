@@ -148,7 +148,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("Á»ºñ", "images/monster/Á»ºñ.bmp",153*3, 200*3,8,8, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("µ¥½º¸ÞÅ»1", "images/boss/phase1.bmp",168*3, 424*3,2,8, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("µ¥½º¸ÞÅ»2", "images/boss/phase2.bmp",168*3, 212*3,2,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("µ¥½º¸ÞÅ»2", "images/boss/phase2.bmp",168*3, 424*3,2,8, true, RGB(255, 0, 255));
 
 
 

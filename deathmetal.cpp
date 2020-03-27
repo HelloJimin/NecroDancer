@@ -29,6 +29,12 @@ HRESULT deathmetal::init(string name, int x, int y, int coin, tagTile * map)
 	_direction = LEFT;
 	_phase = PHASE_ONE;
 
+
+	for (int i = 0; i < 737; ++i)
+	{
+		if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+		_field.push_back(i);
+	}
 	return S_OK;
 }
 
@@ -37,9 +43,12 @@ void deathmetal::update()
 	if (BEAT->getIsBeat() && !_isBeat)
 	{
 		_turnCnt++;
+		_teleportCnt++;
 		_isBeat = true;
+		_isSkill = false;
 	}
 	if (!BEAT->getIsBeat()) _isBeat = false;
+
 
 
 	_pCurrentMap[_currentTileIndex].walkable = false;
@@ -63,8 +72,11 @@ void deathmetal::frontCheck()
 
 		break;
 	case PHASE_TWO:
+		_nextTileIndex = _aStar->aStarReverse(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
+
 		break;
 	case PHASE_THREE:
+
 		break;
 	}
 	aniCheck();
@@ -72,16 +84,42 @@ void deathmetal::frontCheck()
 
 void deathmetal::choiceAction()
 {
-	if (_isMove) return;
+	if (_isMove)
+		return;
+
 	if (TURN2 && _isBeat)
 	{
 		frontCheck();
 
-		if (playerCheck())
+		switch (_phase)
 		{
-			_isAttack = true;
-			_nextTileIndex = _currentTileIndex;
-			return;
+		case PHASE_ONE:
+			if (playerCheck())
+			{
+				_isAttack = true;
+				_nextTileIndex = _currentTileIndex;
+				return;
+			}
+			break;
+		case PHASE_TWO:
+			if (_turnCnt % 10 == 0 && MONSTERMANAGER->getMonster().size()<5)
+			{
+				_isSkill = true;
+				summon();
+				return;
+			}
+			break;
+		case PHASE_THREE:
+			break;		
+		}
+
+		if (_phase != PHASE_ONE)
+		{
+			if (_teleportCnt == 10)
+			{
+				teleport();
+				return;
+			}
 		}
 
 		if (walkableCheck())
@@ -133,16 +171,28 @@ void deathmetal::render(HDC hdc)
 
 	//	break;
 	//}
-	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX * 2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY);
-
+	if (_isSkill)
+	{
+		_monsterImg->frameRender(hdc, _collisionRc.left - TILEX * 2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY + 2);
+	}
+	else
+	{
+		_monsterImg->frameRender(hdc, _collisionRc.left - TILEX * 2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY);
+	}
 	hpRender(hdc);
 }
 
 void deathmetal::silhouetteRender(HDC hdc)
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
-	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX * 2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY + 4);
-
+	if (_isSkill)
+	{
+		_monsterImg->frameRender(hdc, _collisionRc.left - TILEX * 2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY + 6);
+	}
+	else
+	{
+		_monsterImg->frameRender(hdc, _collisionRc.left - TILEX * 2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY+4);
+	}
 	hpRender(hdc);
 }
 
@@ -235,16 +285,30 @@ void deathmetal::aniCheck()
 	else if (_nextTileIndex == _currentTileIndex + TILEX)_direction = DOWN;
 	else if (_nextTileIndex == _currentTileIndex - TILEX)_direction = UP;
 
-	switch (_direction)
+	if (_phase == PHASE_ONE)
 	{
-	case LEFT:_frameY = 0;
-		break;
-	case RIGHT:_frameY = 1;
-		break;
-	case UP:_frameY = 3;
-		break;
-	case DOWN:_frameY = 2;
-		break;
+		switch (_direction)
+		{
+		case LEFT:_frameY = 0;
+			break;
+		case RIGHT:_frameY = 1;
+			break;
+		case UP:_frameY = 3;
+			break;
+		case DOWN:_frameY = 2;
+			break;
+		}
+	}
+	else
+	{
+		switch (_direction)
+		{
+		case LEFT:_frameY = 0;
+			break;
+		case RIGHT:_frameY = 1;
+			break;
+		}
+
 	}
 }
 
@@ -256,7 +320,6 @@ void deathmetal::hit(float damage)
 		if (_direction == 0 && pDirection == 1 || _direction == 1 && pDirection == 0 ||
 			_direction == 2 && pDirection == 3 || _direction == 3 && pDirection == 2)
 		{
-
 			switch (_direction)
 			{
 			case LEFT:
@@ -282,16 +345,21 @@ void deathmetal::hit(float damage)
 				_pCurrentMap[_currentTileIndex].walkable = true;
 				_pCurrentMap[_nextTileIndex].walkable = false;
 				_currentTileIndex = _nextTileIndex;
-
 			}
-
-
 			return;
 		}
 	}
 
-
 	_isHit = true;
+	_hitCnt++;
+
+	if (_hitCnt == 3)
+	{
+		_teleportCnt = 0;
+		_phase = PHASE_TWO;
+		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
+	}
+	if (_hitCnt == 6) _phase = PHASE_THREE;
 
 	for (int i = 0; i < _vHp.size(); i++)
 	{
@@ -305,4 +373,56 @@ void deathmetal::hit(float damage)
 		}
 		else break;
 	}
+
+	if (_phase != PHASE_ONE)
+	{
+		teleport();
+	}
+}
+
+void deathmetal::teleport()
+{
+	_teleportCnt = 0;
+
+	int summonPosition;
+	bool ok = true;
+
+	while (ok)
+	{
+		int random = RND->getInt(_field.size());
+		summonPosition = _field[random];
+
+		if (_pCurrentMap[_field[random]].walkable) ok = false;
+	}
+
+	//int summonPosition = PLAYER->currentTile();
+
+	//if (_pCurrentMap[summonPosition - 7].walkable) summonPosition = summonPosition - 7;
+	//else if (_pCurrentMap[summonPosition + 7].walkable) summonPosition = summonPosition + 7;
+	//else if (_pCurrentMap[summonPosition + TILEX * 7].walkable) summonPosition = summonPosition + TILEX * 7;
+	//else if (_pCurrentMap[summonPosition - TILEX * 7].walkable) summonPosition = summonPosition - TILEX * 7;
+	//else summonPosition = 555;
+
+	_pCurrentMap[_currentTileIndex].walkable = true;
+
+	_currentTileIndex = summonPosition;
+	_currentX = _pCurrentMap[_currentTileIndex].x;
+	_currentY = _pCurrentMap[_currentTileIndex].y;
+	_nextTileIndex = summonPosition + TILEX;
+	_direction = DOWN;
+	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
+
+	//_isMove = true;
+}
+
+void deathmetal::summon()
+{
+	int summonPosition = PLAYER->currentTile();
+
+	if (_pCurrentMap[summonPosition - 5].walkable) summonPosition = summonPosition - 5;
+	else if (_pCurrentMap[summonPosition + 5].walkable) summonPosition = summonPosition + 5;
+	else if (_pCurrentMap[summonPosition + TILEX * 5].walkable) summonPosition = summonPosition + TILEX * 5;
+	else if (_pCurrentMap[summonPosition - TILEX * 5].walkable) summonPosition = summonPosition - TILEX * 5;
+
+	MONSTERMANAGER->summonSkeleton("½ºÄÌ·¹Åæ", _pCurrentMap[summonPosition].x, _pCurrentMap[summonPosition].y);
 }

@@ -51,6 +51,9 @@ private:
 	float _deltaTime;
 	int _currentNoteCnt;
 
+	float spd1;
+	float spd2;
+
 	float _okTime;
 public:
 	beat();

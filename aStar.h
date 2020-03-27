@@ -31,6 +31,7 @@ private:
 
 	vector<int> openList;
 	vector<int>closeList;
+	vector<int> list;
 	vector<int>::iterator iter;
 
 	const tagTile * tiles;
@@ -43,13 +44,17 @@ private:
 	//bool startAstar;
 
 	int nextTile;
+
 public:
 	aStar();
 	~aStar();
 
 	int aStarStraight(tagTile tile[], int currentIndex, int endIndex);
 	int aStarTile(tagTile tile[], int currentIndex, int endIndex);
+	int aStarReverse(tagTile tile[], int currentIndex, int endIndex);
 	int aStarBoss(tagTile tile[], int currentIndex, int endIndex);
+
+
 	bool findPlayer(tagTile tile[], int currentIndex, int endIndex);
 	void reset(tagTile tile[]);
 

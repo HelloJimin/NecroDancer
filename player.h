@@ -85,6 +85,8 @@ private:
 	image* _coinFeverNumImg;
 
 	vector<int> _vTarget;
+
+	bool _isTurn;
 public:
 	player();
 	~player();
@@ -151,5 +153,8 @@ public:
 
 	void attackCheck();
 	void isThrow();
+
+	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
+
 };
 

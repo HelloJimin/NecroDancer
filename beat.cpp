@@ -129,6 +129,12 @@ void beat::setMap(string currentMap)
 
 		load(currentMap);
 		_oldMap = _currentMap;
+
+		int tempMS = _vRenge[_currentNoteCnt + 1] - _vRenge[_currentNoteCnt];
+		//int tempMS =  _vRenge[_currentNoteCnt+1] - _vRenge[_currentNoteCnt]+ lapse;
+		int bpm = 60000 / tempMS;
+		spd1 = lerp(0, WINSIZEX / 2, (_deltaTime / ((tempMS+bpm) / 1000.0f)) / 4);
+		spd2 = lerp(WINSIZEX , WINSIZEX / 2, (_deltaTime / ((tempMS + bpm) / 1000.0f)) / 4);
 	}
 
 	//for (int i = 0; i < 3; i++)
@@ -157,7 +163,7 @@ void beat::beatStart()
 	_noteStartTiming = TIMEMANAGER->getCountTime();
 	if (_noteStartTiming >= _noteTiming)
 	{
-		float lapse = (_noteStartTiming - _noteTiming) * 1000.0f;
+		float lapse = (_noteStartTiming - _noteTiming);
 		addNote(lapse);
 
 		TIMEMANAGER->setCountTime(0);
@@ -174,19 +180,21 @@ void beat::addNote(float lapse)
 	note _note;
 
 	_note.img = IMAGEMANAGER->findImage("³ëÆ®");
-	_note.x = 0+ lapse;
+	_note.x = 0;
 	_note.y = WINSIZEY - 100;
 	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
 	_note.alpha = 0;
 	_note.colHeart = false;
 	_note.render = true;
-	_note.speed = lerp(0, WINSIZEX/2, (_deltaTime / (tempMS / 1000.0f)) /5 );
+	//_note.speed = lerp(0- lapse, WINSIZEX/2, (_deltaTime / (tempMS / 1000.0f)) /4 );
+	_note.speed = spd1;
 
 	_vNoteL.push_back(_note);
 
-	_note.x = WINSIZEX - lapse;
+	_note.x = WINSIZEX ;
 	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
-	_note.speed = lerp(WINSIZEX, WINSIZEX/2, (_deltaTime / (tempMS / 1000.0f)) /5 );
+	//_note.speed = lerp(WINSIZEX+ lapse, WINSIZEX/2, (_deltaTime / (tempMS / 1000.0f)) /4 );
+	_note.speed = spd2;
 
 	_vNoteR.push_back(_note);
 
