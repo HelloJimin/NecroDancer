@@ -181,46 +181,60 @@ void player::attack()
 void player::move()
 {
 	if (!_isMove)return;
-	/*float a;
-	float b;
-	float c;
-
-		a = _pCurrentMap[_nextTileIndex].x;
-		b = _pCurrentMap[_nextTileIndex].y -26 ;
-		c = _pCurrentMap[_nextTileIndex].y;
+	//float a;
+	//float a1;
+	//float b;
+	//float b1;
 
 
+	//	a1 = _pCurrentMap[_nextTileIndex].x -26;
+	//	b1 = _pCurrentMap[_nextTileIndex].y -26 ;
 
-	float xSpeed = lerp(_currentX, a, TIMEMANAGER->getElapsedTime()/ 0.2f);
-	float ySpeed;
-	if(!_isTurn)  ySpeed = lerp(_pCurrentMap[_nextTileIndex+1].y, b, TIMEMANAGER->getElapsedTime()/ 0.2f);
-	else ySpeed = lerp(_pCurrentMap[_nextTileIndex+1].y, c, TIMEMANAGER->getElapsedTime() / 0.2f);
+	//	a = _pCurrentMap[_nextTileIndex].x;
+	//	b = _pCurrentMap[_nextTileIndex].y;
 
-	if (_currentX == _pCurrentMap[_nextTileIndex].x && _currentY == _pCurrentMap[_nextTileIndex].y)
-	{
-		_isMove = false;
-		_isTurn = false;
-	}
-	switch (_direction)
-	{
-	case LEFT:
-		_currentX += xSpeed;
-		_collisionX += xSpeed;
-		_currentY += ySpeed;
-
-		if (_currentY == b) _isTurn = true;
+	//	float x1speed= lerp(_pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].x - 26, TIMEMANAGER->getElapsedTime() / 0.3f);
+	//	float x2speed= lerp(0, 26, TIMEMANAGER->getElapsedTime() / 0.3f);
+	//	float y1speed= lerp(_pCurrentMap[_nextTileIndex].y, _pCurrentMap[_nextTileIndex].y - 26, TIMEMANAGER->getElapsedTime() / 0.3f);
+	//	float y2speed= lerp(0, 26, TIMEMANAGER->getElapsedTime() / 0.3f);
 
 
 
-		break;
-	case RIGHT:
+	//if (_currentX == _pCurrentMap[_nextTileIndex].x && _currentY == _pCurrentMap[_nextTileIndex].y)
+	//{
+	//	_isMove = false;
+	//	_isTurn = false;
+	//}
+	//switch (_direction)
+	//{
+	//case LEFT:
+	//	if (!_isTurn)
+	//	{
+	//		_currentX += x1speed;
+	//		_collisionX += x1speed;
+	//		_currentY += y1speed;
+	//	}
+	//	else
+	//	{
+	//		_currentX -= x2speed;
+	//		_collisionX -= x2speed;
+	//		_currentY += y2speed;
+	//	}
 
-		break;
-	case UP:
-		break;
-	case DOWN:
-		break;
-	}*/
+	//	if (_currentY == b1)
+	//		_isTurn = true;
+
+
+
+	//	break;
+	//case RIGHT:
+
+	//	break;
+	//case UP:
+	//	break;
+	//case DOWN:
+	//	break;
+	//}
 	switch (_direction)
 	{
 	case LEFT:
@@ -531,7 +545,7 @@ void player::keyControl()
 	//_isBeat = true;
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
-		if (_isBeat)
+		if (BEAT->getOkTime())
 		{
 			_direction = LEFT;
 			BEAT->removeNote();
@@ -547,7 +561,7 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 	{
-		if (_isBeat)
+		if (BEAT->getOkTime())
 		{
 			_direction = RIGHT;
 			BEAT->removeNote();
@@ -563,7 +577,7 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_UP))
 	{
-		if (_isBeat)
+		if (BEAT->getOkTime())
 		{
 			_direction = UP;
 			BEAT->removeNote();
@@ -579,7 +593,7 @@ void player::keyControl()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 	{
-		if (_isBeat)
+		if (BEAT->getOkTime())
 		{
 			_direction = DOWN;
 			BEAT->removeNote();

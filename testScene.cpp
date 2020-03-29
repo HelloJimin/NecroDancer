@@ -29,9 +29,9 @@ void testScene::release()
 void testScene::update()
 {
 	BEAT->update();
+	MONSTERMANAGER->update();
 	PLAYER->update();
 	
-	MONSTERMANAGER->update();
 	ITEMMANAGER->update();
 	
 	groundPattern();

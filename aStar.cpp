@@ -298,24 +298,8 @@ int aStar::aStarReverse(tagTile tile[], int currentIndex, int endIndex)
 
 	currentTile = currentIndex;
 
-	endTile = currentIndex+ (currentIndex-endIndex);
-	if (endTile < 0) endTile = 0;
-	if (!tile[endTile].walkable)
-	{
-		int dx[] = { 703, 693, 253, 263 };
-		int check = 500;
-		int end = 0;
-		for (int i = 0; i < 4; i++)
-		{
-			int endt = abs(currentIndex - dx[i]);
-			if (endt < check)
-			{
-				check = endt;
-				end = dx[i];
-			}
-		}
-		endTile = end;
-	}
+	endTile = endIndex;
+
 
 	int endX = endTile % TILEX;
 	int endY = endTile / TILEX;
@@ -342,7 +326,7 @@ int aStar::aStarReverse(tagTile tile[], int currentIndex, int endIndex)
 			{
 				bool isOpen;
 				// 대각선 타일의 이동 문제로 (주변에 블락있으면 못감) 임시로 블락 상태 저장
-				if (!tile[y * TILEX + x].walkable) tempBlock[i] = true;
+				if (!tile[y * TILEX + x].walkable || y * TILEX + x == PLAYER->currentTile()) tempBlock[i] = true;
 				else {
 					// check closeList z
 					bool isClose = false;
@@ -437,7 +421,7 @@ int aStar::aStarReverse(tagTile tile[], int currentIndex, int endIndex)
 		}
 	}
 
-	if (noPath) return randomMove(currentIndex);
+	if (noPath) return currentIndex;
 	int nextTile = endTile;
 	while (tile[nextTile].node != startTile && isFind)
 	{

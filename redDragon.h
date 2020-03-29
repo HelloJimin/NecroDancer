@@ -28,7 +28,9 @@ public:
 	void mine();
 
 	void breathCheck();
-	bool die() override;
 	bool rengeCheck(int tile);
+
+
+	bool die() override;
 };
 

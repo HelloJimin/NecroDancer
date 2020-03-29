@@ -46,6 +46,7 @@ void beat::update()
 		if (_currentNoteCnt > _vRenge.size() - 5)
 		{
 			_currentNoteCnt = 3;
+			_noteTiming = 0;
 		}
 	}
 	missUpdate();
@@ -129,12 +130,12 @@ void beat::setMap(string currentMap)
 
 		load(currentMap);
 		_oldMap = _currentMap;
-
+		_noteTiming = 0;
 		int tempMS = _vRenge[_currentNoteCnt + 1] - _vRenge[_currentNoteCnt];
 		//int tempMS =  _vRenge[_currentNoteCnt+1] - _vRenge[_currentNoteCnt]+ lapse;
 		int bpm = 60000 / tempMS;
-		spd1 = lerp(0, WINSIZEX / 2, (_deltaTime / ((tempMS+bpm) / 1000.0f)) / 4);
-		spd2 = lerp(WINSIZEX , WINSIZEX / 2, (_deltaTime / ((tempMS + bpm) / 1000.0f)) / 4);
+		//spd1 = lerp(0, WINSIZEX / 2, (_deltaTime / ((tempMS+bpm) / 1000.0f)) / 4);
+		//spd2 = lerp(WINSIZEX , WINSIZEX / 2, (_deltaTime / ((tempMS + bpm) / 1000.0f)) / 4);
 	}
 
 	//for (int i = 0; i < 3; i++)
@@ -160,10 +161,11 @@ void beat::setMap(string currentMap)
 
 void beat::beatStart()
 {
-	_noteStartTiming = TIMEMANAGER->getCountTime();
-	if (_noteStartTiming >= _noteTiming)
+	//_noteStartTiming = TIMEMANAGER->getCountTime();
+	UINT b = SOUNDMANAGER->getPosition(_currentMap, b);
+	if (_songPos >= _noteTiming)
 	{
-		float lapse = (_noteStartTiming - _noteTiming);
+		float lapse = (b - _noteTiming);
 		addNote(lapse);
 
 		TIMEMANAGER->setCountTime(0);
@@ -175,7 +177,7 @@ void beat::addNote(float lapse)
 {
 	int tempMS =  _vRenge[_currentNoteCnt+1] - _vRenge[_currentNoteCnt];
 	//int tempMS =  _vRenge[_currentNoteCnt+1] - _vRenge[_currentNoteCnt]+ lapse;
-	//int bpm = 60000 / tempMS;
+	int bpm = 60000 / tempMS;
 
 	note _note;
 
@@ -186,19 +188,21 @@ void beat::addNote(float lapse)
 	_note.alpha = 0;
 	_note.colHeart = false;
 	_note.render = true;
-	//_note.speed = lerp(0- lapse, WINSIZEX/2, (_deltaTime / (tempMS / 1000.0f)) /4 );
-	_note.speed = spd1;
+	_note.speed = lerp(0, WINSIZEX/2, (_deltaTime / ((tempMS) / 1000.0f)) /4);
+	//_note.speed = _deltaTime * tempMS / 2;
+
 
 	_vNoteL.push_back(_note);
 
-	_note.x = WINSIZEX ;
+	_note.x = WINSIZEX;
 	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
-	//_note.speed = lerp(WINSIZEX+ lapse, WINSIZEX/2, (_deltaTime / (tempMS / 1000.0f)) /4 );
-	_note.speed = spd2;
+	_note.speed = lerp(WINSIZEX, WINSIZEX/2, (_deltaTime / ((tempMS) / 1000.0f)) /4);
+	//_note.speed = _deltaTime * tempMS * (tempMS/1000.0f);
+
 
 	_vNoteR.push_back(_note);
 
-	_noteTiming = tempMS / 1000.0f;
+	_noteTiming += tempMS;
 	_currentNoteCnt++;
 }
 

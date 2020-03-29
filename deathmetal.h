@@ -16,9 +16,13 @@ private:
 
 	int _hitCnt;
 	vector<int> _field;
-	int _teleportCnt;
+	vector<int> _phaseThreeField;
 
 	bool _isSkill;
+	bool _isBreath;
+	bool _delay;
+
+	int _breathRenge;
 public:
 	deathmetal();
 	~deathmetal();
@@ -34,10 +38,16 @@ public:
 
 	void render(HDC hdc) override;
 	void silhouetteRender(HDC hdc) override;
+	void attack() override;
+	bool rengeCheck(int tile);
 	void move() override;
 	void aniCheck() override;
 	void hit(float damage) override;
 	void teleport();
-	void summon();
+	void summon(string name);
+
+	int endTileFind();
+
+	bool endLineCheck();
 };
 
