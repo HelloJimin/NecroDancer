@@ -78,6 +78,9 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("던지기", "images/item/THROW.bmp",60, 66, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("던지세요", "images/item/press.bmp",60, 66, true, RGB(255, 0, 255));
 
+
+	IMAGEMANAGER->addImage("HP슬롯", "images/item/HP슬롯.bmp",48, 48, true, RGB(255, 0, 255));
+
 	//무기
 	IMAGEMANAGER->addImage("기본단검", "images/item/nomalShort.bmp", 48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("티타늄단검", "images/item/titaniumShort.bmp", 48, 48, true, RGB(255, 0, 255));
@@ -143,7 +146,7 @@ void mainGame::imagesInit()
 
 	IMAGEMANAGER->addFrameImage("레드레이스", "images/monster/redWraiths.bmp",39*3, 46*3*2,3,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("미노타우로스", "images/monster/Minotaurs.bmp",450*3, 100*3*2,9,4, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",549*3, 106*3*2,9,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("레드드래곤", "images/monster/드래곤.bmp",675*3, 106*3*2,9,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("상점주인", "images/monster/상점주인.bmp",376*3, 152*3,8,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("좀비", "images/monster/좀비.bmp",153*3, 200*3,8,8, true, RGB(255, 0, 255));
 
@@ -188,8 +191,8 @@ void mainGame::imagesInit()
 	EFFECTMANAGER->addEffect("화살끝R", "images/effect/화살끝R.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f,1);
 	EFFECTMANAGER->addEffect("화살끝Up", "images/effect/화살끝Up.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,1);
 	EFFECTMANAGER->addEffect("화살끝Down", "images/effect/화살끝Down.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,1);
-	EFFECTMANAGER->addEffect("화살라인가로", "images/effect/화살라인가로.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f,1);
-	EFFECTMANAGER->addEffect("화살라인세로", "images/effect/화살라인세로.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,1);
+	EFFECTMANAGER->addEffect("화살라인가로", "images/effect/화살라인가로.bmp", 104 * 3, 12 * 3, 52 * 3, 12 * 3, 1, 0.3f,3);
+	EFFECTMANAGER->addEffect("화살라인세로", "images/effect/화살라인세로.bmp", 12 * 3, 104 * 3, 12 * 3, 52 * 3, 1, 0.3f,3);
 
 	EFFECTMANAGER->addEffect("채찍R0", "images/effect/채찍R0.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
 	EFFECTMANAGER->addEffect("채찍R1", "images/effect/채찍R1.bmp", 96 * 3, 112 * 3, 24 * 3, 112 * 3, 1, 0.3f,1);
@@ -219,12 +222,12 @@ void mainGame::imagesInit()
 	EFFECTMANAGER->addEffect("티타늄삽", "images/item/titaniumShovel.bmp", 48,48, 48,48, 1, 0.1f,1);
 	EFFECTMANAGER->addEffect("유리삽", "images/item/glassShovel.bmp",48,48,48,48, 1, 0.1f,1);
 
-	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
-	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
-	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
-	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
-	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
-	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",168*2,24*2,24*2,24*2, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스1L", "images/effect/드래곤브레스1L.bmp",52*7,52,52,52, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스1R", "images/effect/드래곤브레스1R.bmp",52*7,52,52,52, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스2", "images/effect/드래곤브레스2.bmp",52*7,52,52,52, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스3", "images/effect/드래곤브레스3.bmp",52*7,52,52,52, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스4", "images/effect/드래곤브레스4.bmp",52*7,52,52,52, 1, 0.1f, 10);
+	EFFECTMANAGER->addEffect("드래곤브레스5", "images/effect/드래곤브레스5.bmp",52*7,52,52,52, 1, 0.1f, 10);
 
 	EFFECTMANAGER->addEffect("폭탄애니", "images/effect/폭탄애니.bmp",89*2,24*2,24*2,24*2, 10, 0.1f,1);
 	EFFECTMANAGER->addEffect("폭탄폭발", "images/effect/폭탄폭발.bmp",576*2,74*2,72*2,74*2, 10, 0.1f,1);

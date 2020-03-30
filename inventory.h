@@ -23,6 +23,7 @@ public:
 	item* getWeapon();
 	item* getShovel();
 	item* getBomb();
+	item* getApple();
 
 	void throwItem();
 

@@ -58,8 +58,9 @@ void minotaurs::frontCheck()
 
 void minotaurs::choiceAction()
 {
-	if (TURN1 && _isBeat)
+	if ( _isBeat)
 	{
+		_isBeat = false;
 		if (_isDown)
 		{
 			_downCnt++;

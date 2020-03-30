@@ -44,6 +44,7 @@ void bomb::render(HDC hdc)
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
 		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left + 8, _rc.top + 11);
 		_button->render(CAMERAMANAGER->getCameraDC(), _rc.left + 25, _rc.top + 60);
+		IMAGEMANAGER->frameRender("¼ýÀÚ", CAMERAMANAGER->getCameraDC(), _rc.left + 40, _rc.top + 55 , _num,0);
 	}
 	else if(!_inInventory)
 	{

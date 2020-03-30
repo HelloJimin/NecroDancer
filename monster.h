@@ -82,5 +82,7 @@ public:
 	bool& getHit() { return _isHit; }
 
 	bool getIsBoss() { return _isBoss; }
+	
+	virtual void setIsBeat(int turn) { if(turn % 3 == 0) _isBeat = true; }
 };
 

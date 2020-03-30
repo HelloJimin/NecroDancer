@@ -23,7 +23,7 @@
     <ProjectGuid>{8FF13C43-33AC-4F4E-825D-B864A3A51362}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>APIFrameWork</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,6 +150,7 @@
     <ClInclude Include="animation.h" />
     <ClInclude Include="animationManager.h" />
     <ClInclude Include="API_FrameWork.h" />
+    <ClInclude Include="apple.h" />
     <ClInclude Include="aStar.h" />
     <ClInclude Include="attack.h" />
     <ClInclude Include="bat.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="ghost.h" />
     <ClInclude Include="greenSlime.h" />
+    <ClInclude Include="hpSlot.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="introScene.h" />
@@ -213,6 +215,7 @@
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="animationManager.cpp" />
+    <ClCompile Include="apple.cpp" />
     <ClCompile Include="aStar.cpp" />
     <ClCompile Include="attack.cpp" />
     <ClCompile Include="bat.cpp" />
@@ -231,6 +234,7 @@
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="greenSlime.cpp" />
+    <ClCompile Include="hpSlot.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="introScene.cpp" />

@@ -109,6 +109,15 @@ item * inventory::getBomb()
 	return NULL;
 }
 
+item * inventory::getApple()
+{
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		if (_vItem[i]->getType() == ITEM) return _vItem[i];
+	}
+	return NULL;
+}
+
 void inventory::throwItem()
 {
 	for (int i = 0; i < _vItem.size(); ++i)
@@ -146,7 +155,26 @@ void inventory::itemPosionSet()
 				_vItem[i]->setRect(PointMake(30, 50 + 66));
 			}
 		}
+		if (_vItem[i]->getType() == ITEM)
+		{
+			if (PLAYER->getAtkForm() != FORM_SHORT && getBomb() == NULL)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66));
+			}
+			else if (PLAYER->getAtkForm() == FORM_SHORT && getBomb() == NULL)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66 + 66));
+			}
+			else if (PLAYER->getAtkForm() != FORM_SHORT && getBomb() != NULL)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66 + 66));
+			}
+			else if (PLAYER->getAtkForm() == FORM_SHORT && getBomb() != NULL)
+			{
+				_vItem[i]->setRect(PointMake(30, 50 + 66 + 66 + 89));
+			}
 
+		}
 		_vItem[i]->rcSet();
 	}
 }

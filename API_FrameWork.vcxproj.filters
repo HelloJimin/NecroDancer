@@ -169,6 +169,12 @@
     <ClCompile Include="bossStage.cpp">
       <Filter>인게임</Filter>
     </ClCompile>
+    <ClCompile Include="hpSlot.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
+    <ClCompile Include="apple.cpp">
+      <Filter>아이템</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -356,6 +362,12 @@
     </ClInclude>
     <ClInclude Include="bossStage.h">
       <Filter>인게임</Filter>
+    </ClInclude>
+    <ClInclude Include="hpSlot.h">
+      <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="apple.h">
+      <Filter>아이템</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

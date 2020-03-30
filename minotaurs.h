@@ -31,5 +31,7 @@ public:
 
 	void rageCheck();
 	bool die() override;
+
+	virtual void setIsBeat(int turn) { if (turn % 1 == 0) _isBeat = true; }
 };
 

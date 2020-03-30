@@ -14,12 +14,13 @@ beat::~beat()
 HRESULT beat::init()
 {
 	//턴초기화
-	load("1-1");
+	//load("1-1");
+
+	_currentMap = "lobby";
 
 	_cnt = 0;
 	_anime = 0;	
 	_okTime = 0;
-
 
 	_heart = IMAGEMANAGER->findImage("심장");
 	_heartBox = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, 90, _heart->getFrameHeight());
@@ -36,6 +37,11 @@ void beat::update()
 {
 	_cnt++;
 
+	if (_currentMap == "lobby")
+	{
+		_okTime = 1;
+		return;
+	}
 	SOUNDMANAGER->getPosition(_currentMap, _songPos);
 	if (_songPos > 0)
 	{
@@ -161,11 +167,10 @@ void beat::setMap(string currentMap)
 
 void beat::beatStart()
 {
-	//_noteStartTiming = TIMEMANAGER->getCountTime();
-	UINT b = SOUNDMANAGER->getPosition(_currentMap, b);
-	if (_songPos >= _noteTiming)
+	_noteStartTiming = TIMEMANAGER->getCountTime()*1000.0f;
+	if (_noteStartTiming >= _noteTiming)
 	{
-		float lapse = (b - _noteTiming);
+		float lapse = (_noteStartTiming - _noteTiming);
 		addNote(lapse);
 
 		TIMEMANAGER->setCountTime(0);
@@ -202,8 +207,12 @@ void beat::addNote(float lapse)
 
 	_vNoteR.push_back(_note);
 
-	_noteTiming += tempMS;
+	//_noteTiming += tempMS;
+	_noteTiming = tempMS;
 	_currentNoteCnt++;
+
+	MONSTERMANAGER->setMove(_currentNoteCnt);
+	
 }
 
 void beat::noteMove()

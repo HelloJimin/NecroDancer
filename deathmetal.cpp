@@ -27,7 +27,7 @@ HRESULT deathmetal::init(string name, int x, int y, int coin, tagTile * map)
 
 	_direction = LEFT;
 	_phase = PHASE_ONE;
-
+	_turnSpeed = 3;
 	for (int i = 0; i < 737; ++i)
 	{
 		if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
@@ -38,19 +38,20 @@ HRESULT deathmetal::init(string name, int x, int y, int coin, tagTile * map)
 		_phaseThreeField.push_back(253 + (i*TILEX));
 		_phaseThreeField.push_back(263 + (i*TILEX));
 	}
+	summon("¹ÚÁã");
+	summon("¹ÚÁã");
+	summon("¹ÚÁã");
 
 	return S_OK;
 }
 
 void deathmetal::update()
 {
-	if (BEAT->getIsBeat() && !_isBeat)
+	if (_isBeat)
 	{
-		_turnCnt++;
-		_isBeat = true;
 		_isSkill = false;
+		_turnCnt++;
 	}
-	if (!BEAT->getIsBeat()) _isBeat = false;
 
 	_pCurrentMap[_currentTileIndex].walkable = false;
 
@@ -62,6 +63,11 @@ void deathmetal::update()
 	animation();
 	hpSet();
 
+	if (_delay && _isBeat)
+	{
+		_isBreath = true;
+		_isAttack = true;
+	}
 }
 
 void deathmetal::frontCheck()
@@ -77,34 +83,32 @@ void deathmetal::frontCheck()
 
 		break;
 	case PHASE_THREE:
+		int metal;
+		int player;
+		for (int i = 0; i < _phaseThreeField.size(); i += 2)
+		{
+			if (_phaseThreeField[i] <= PLAYER->currentTile() && PLAYER->currentTile() <= _phaseThreeField[i + 1])
+			{
+				player = i;
+			}
+			if (_phaseThreeField[i] <= _currentTileIndex && _currentTileIndex <= _phaseThreeField[i + 1])
+			{
+				metal = i;
+			}
+		}
+
+		if (metal == player)
+		{
+			_nextTileIndex = _currentTileIndex;
+			_isSkill = true;
+			_delay = true;
+			return;
+		}
+
 		if (endLineCheck())
 		{
-			int metal;
-			int player;
-
-			for (int i = 0; i < _phaseThreeField.size(); i+=2)
-			{
-				if (_phaseThreeField[i] <= PLAYER->currentTile() && PLAYER->currentTile() <= _phaseThreeField[i + 1])
-				{
-					player = i;
-				}
-				if (_phaseThreeField[i] <= _currentTileIndex && _currentTileIndex <= _phaseThreeField[i + 1])
-				{
-					metal = i;
-				}
-			}
-
-			_isBreath = false;
-
 			if (metal > player) _nextTileIndex = _currentTileIndex - TILEX;
 			else if (metal < player) _nextTileIndex = _currentTileIndex + TILEX;
-			else if (metal == player)
-			{
-				if (_delay)_isBreath = true;
-				_nextTileIndex = _currentTileIndex;
-				_isSkill = true;
-				_delay = true;
-			}
 		}
 		else
 		{
@@ -118,13 +122,13 @@ void deathmetal::frontCheck()
 
 void deathmetal::choiceAction()
 {
-	if (_isMove)
-		return;
+	if (_isMove) return;
+	if (_delay) return;
 
-	if (TURN2 && _isBeat && _turnCnt % 2 == 0)
+	if (_isBeat)
 	{
+		_isBeat = false;
 		frontCheck();
-
 		switch (_phase)
 		{
 		case PHASE_ONE:
@@ -136,12 +140,12 @@ void deathmetal::choiceAction()
 			}
 			break;
 		case PHASE_TWO:
-			if (_turnCnt % 10 == 0 )
+			if (_turnCnt % 4 == 0 )
 			{
 				_isSkill = true;
-	/*			summon("½ºÄÌ·¹Åæ");
 				summon("½ºÄÌ·¹Åæ");
-				summon("½ºÄÌ·¹Åæ");*/
+				summon("½ºÄÌ·¹Åæ");
+				summon("½ºÄÌ·¹Åæ");
 				return;
 			}
 			break;
@@ -150,6 +154,13 @@ void deathmetal::choiceAction()
 			{
 				_isSkill = true;
 				_isAttack = true;
+				return;
+			}
+
+			if (playerCheck())
+			{
+				_isAttack = true;
+				_nextTileIndex = _currentTileIndex;
 				return;
 			}
 			break;		
@@ -236,7 +247,9 @@ void deathmetal::attack()
 	if (_isBreath)
 	{
 		_delay = false;
-
+		_isSkill = false;
+		_isAttack = false;
+		_isBreath = false;
 		int _breathRengeL = 0;
 		int _breathRengeR = 0;
 		int _leftTile = _currentTileIndex - 1;
@@ -264,7 +277,7 @@ void deathmetal::attack()
 		{
 			wsprintf(breath, "µå·¡°ïºê·¹½º%d", i % 4 + 2);
 
-			EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex - 1].x - ((i + 1) * 48), _pCurrentMap[_currentTileIndex - 1].y);
+			EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex - 1].x - ((i + 1) * 52), _pCurrentMap[_currentTileIndex - 1].y);
 			if (_currentTileIndex - 1 - i == PLAYER->currentTile()) PLAYER->hit(_atk);
 			_isAttack = false;
 		}
@@ -272,7 +285,7 @@ void deathmetal::attack()
 		{
 			wsprintf(breath, "µå·¡°ïºê·¹½º%d", i % 4 + 2);
 
-			EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex + 1].x + ((i + 1) * 48), _pCurrentMap[_currentTileIndex + 1].y);
+			EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex + 1].x + ((i + 1) * 52), _pCurrentMap[_currentTileIndex + 1].y);
 			if (_currentTileIndex + 1 + i == PLAYER->currentTile()) PLAYER->hit(_atk);
 			_isAttack = false;
 		}
@@ -453,21 +466,28 @@ void deathmetal::hit(float damage)
 		}
 	}
 
+	_delay = false;
+	_isSkill = false;
+	_isAttack = false;
+	_isMove = false;
+
 	_isHit = true;
 	_hitCnt++;
 
-	if (_hitCnt == 1)
-	{
-		_phase = PHASE_THREE;
-		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
-	}
-	//if (_hitCnt == 3)
+	//if (_hitCnt == 1)
 	//{
-	//	_phase = PHASE_TWO;
+	//	_turnSpeed = 2;
+	//	_phase = PHASE_THREE;
 	//	_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
 	//}
+	if (_hitCnt == 3)
+	{
+		_turnSpeed = 2;
+		_phase = PHASE_TWO;
+		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
+	}
 
-	//if (_hitCnt == 6) _phase = PHASE_THREE;
+	if (_hitCnt == 6) _phase = PHASE_THREE;
 
 	for (int i = 0; i < _vHp.size(); i++)
 	{

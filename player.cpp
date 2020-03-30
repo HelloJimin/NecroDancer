@@ -421,15 +421,15 @@ void player::HPbarSet()
 
 	//if (KEYMANAGER->isOnceKeyDown('J')) //회복
 	//{
-	//	for (int i = _vHp.size()-1; i >= 0; i--)
-	//	{
-	//		if (_vHp[i].hp <= 0.5f)
-	//		{
-	//			_vHp[i].hp += 0.5f;
-	//			break;
-	//		}
-	//		else continue;
-	//	}
+		//for (int i = _vHp.size()-1; i >= 0; i--)
+		//{
+		//	if (_vHp[i].hp <= 0.5f)
+		//	{
+		//		_vHp[i].hp += 0.5f;
+		//		break;
+		//	}
+		//	else continue;
+		//}
 	//}
 	//if (KEYMANAGER->isOnceKeyDown('K')) //추가
 	//{
@@ -471,6 +471,19 @@ void player::mine()
 void player::getItem(int itemTile)
 {
 	//코인을 먹었으면 코인먹고 끝
+	if (ITEMMANAGER->getItemList()[itemTile]->getName() == "HP슬롯")
+	{
+		hp _temp;
+		_temp.currentX = 2;
+		_temp.img = IMAGEMANAGER->findImage("HP바");
+		_temp.hp = 0.0f;
+		//_status.vHp.push_back(_temp);
+		_status.vHp.insert(_status.vHp.begin(), _temp);
+		HPbarSet();
+		ITEMMANAGER->removeItem(itemTile);
+		return;
+	}
+
 	if (ITEMMANAGER->getItemList()[itemTile]->getName() == "코인")
 	{
 		if (_isFever)
@@ -518,7 +531,7 @@ void player::getItem(int itemTile)
 
 void player::hit(float damege)
 {
-	int _damege = damege - _status.def;
+	float _damege = damege - _status.def;
 	if (_isTaekwondo) _damege *= 2;
 
 	for (int i = 0; i < _status.vHp.size(); i++)
@@ -529,6 +542,7 @@ void player::hit(float damege)
 		{
 			float temp = _status.vHp[i].hp;
 			_status.vHp[i].hp -= _damege;
+			if (_status.vHp[i].hp < 0) _status.vHp[i].hp = 0;
 			_damege -= temp;
 		}
 		else break;
@@ -767,7 +781,7 @@ void player::arrowEffect(attackForm form, int monArrNum)
 	switch (_direction)
 	{
 	case LEFT:
-		EFFECTMANAGER->play("화살끝L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		EFFECTMANAGER->play("화살끝L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x+52, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
 		while (rengeCheck(monArrNum, temp))
 		{
 			arrowRenge++;
@@ -775,7 +789,7 @@ void player::arrowEffect(attackForm form, int monArrNum)
 		}
 		break;
 	case RIGHT:
-		EFFECTMANAGER->play("화살끝R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		EFFECTMANAGER->play("화살끝R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x-52, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
 		while (rengeCheck(monArrNum, temp))
 		{
 			arrowRenge++;
@@ -783,7 +797,7 @@ void player::arrowEffect(attackForm form, int monArrNum)
 		}
 		break;
 	case UP:
-		EFFECTMANAGER->play("화살끝Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		EFFECTMANAGER->play("화살끝Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y+52);
 		while (rengeCheck(monArrNum, temp))
 		{
 			arrowRenge++;
@@ -791,7 +805,7 @@ void player::arrowEffect(attackForm form, int monArrNum)
 		}
 		break;
 	case DOWN:
-		EFFECTMANAGER->play("화살끝Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+		EFFECTMANAGER->play("화살끝Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y-52);
 		while (rengeCheck(monArrNum, temp))
 		{
 			arrowRenge++;
@@ -805,16 +819,16 @@ void player::arrowEffect(attackForm form, int monArrNum)
 		switch (_direction)
 		{
 		case LEFT:
-			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x - ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x - (i * 52), _pCurrentMap[_nextTileIndex].y);
 			break;
 		case RIGHT:
-			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x + ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x + (i * 52), _pCurrentMap[_nextTileIndex].y);
 			break;
 		case UP:
-			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - (i * TILEX));
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - (i * 52));
 			break;
 		case DOWN:
-			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y + (i * TILEX));
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y + (i * 52));
 			break;
 		}
 	}
@@ -825,16 +839,16 @@ void player::throwEffect(int endTile, int throwRenge)
 	switch (_direction)
 	{
 	case LEFT:
-		EFFECTMANAGER->play("화살끝L", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		EFFECTMANAGER->play("화살끝L", _pCurrentMap[endTile].x+104, _pCurrentMap[endTile].y);
 		break;
 	case RIGHT:
-		EFFECTMANAGER->play("화살끝R", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		EFFECTMANAGER->play("화살끝R", _pCurrentMap[endTile].x-104, _pCurrentMap[endTile].y);
 		break;
 	case UP:
-		EFFECTMANAGER->play("화살끝Up", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		EFFECTMANAGER->play("화살끝Up", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y+104);
 		break;
 	case DOWN:
-		EFFECTMANAGER->play("화살끝Down", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y);
+		EFFECTMANAGER->play("화살끝Down", _pCurrentMap[endTile].x, _pCurrentMap[endTile].y-104);
 		break;
 	}
 
@@ -843,16 +857,16 @@ void player::throwEffect(int endTile, int throwRenge)
 		switch (_direction)
 		{
 		case LEFT:
-			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x - ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x - (i * 52), _pCurrentMap[_nextTileIndex].y);
 			break;
 		case RIGHT:
-			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x + ((i + 1) * 52), _pCurrentMap[_nextTileIndex].y);
+			EFFECTMANAGER->play("화살라인가로", _pCurrentMap[_nextTileIndex].x + (i * 52), _pCurrentMap[_nextTileIndex].y);
 			break;
 		case UP:
-			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - (i * TILEX));
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - (i * 52));
 			break;
 		case DOWN:
-			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x , _pCurrentMap[_nextTileIndex].y + (i * TILEX));
+			EFFECTMANAGER->play("화살라인세로", _pCurrentMap[_nextTileIndex].x , _pCurrentMap[_nextTileIndex].y + (i * 52));
 			break;
 		}
 	}
@@ -1130,4 +1144,27 @@ void player::isThrow()
 	_inven->itemPosionSet();
 	_isAttack = false;
 
+}
+
+void player::heal(float healPower)
+{
+	for (int i = _status.vHp.size() - 1; i >= 0; i--)
+	{
+		if (_status.vHp[i].hp <= healPower)
+		{
+			_status.vHp[i].hp += healPower;
+			break;
+		}
+		else continue;
+	}
+	HPbarSet();
+	//for (int i = 0; i < _status.vHp.size(); i++)
+	//{
+	//	if (_status.vHp[i].hp <= 0.5f)
+	//	{
+	//		_status.vHp[i].hp += 0.5f;
+	//		break;
+	//	}
+	//	else continue;
+	//}
 }

@@ -48,8 +48,8 @@ void bossStage::release()
 void bossStage::update()
 {
 	BEAT->update();
-	MONSTERMANAGER->update();
 	PLAYER->update();
+	MONSTERMANAGER->update();
 
 	ITEMMANAGER->update();
 

@@ -23,6 +23,8 @@ private:
 	bool _delay;
 
 	int _breathRenge;
+
+	int _turnSpeed = 3;
 public:
 	deathmetal();
 	~deathmetal();
@@ -49,5 +51,7 @@ public:
 	int endTileFind();
 
 	bool endLineCheck();
+
+	virtual void setIsBeat(int turn) { if (turn % _turnSpeed == 0) _isBeat = true; }
 };
 

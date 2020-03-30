@@ -791,7 +791,7 @@ const char* mapTool::etcSelect(int frameX, int frameY)
 		}
 		return "ÇÃ·¹ÀÌ¾î";
 	}
-	if (frameX == 1 && frameY == 0) return "";
+	if (frameX == 1 && frameY == 0) return "HP½½·Ô";
 
 	if (frameX == 2 && frameY == 0) return "º®È¶ºÒ";
 	if (frameX == 3 && frameY == 0) return "ºû³ª´ÂÈ¶ºÒ";

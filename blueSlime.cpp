@@ -36,8 +36,9 @@ void blueSlime::frontCheck()
 
 void blueSlime::choiceAction()
 {
-	if (TURN2 && _isBeat)
+	if (_isBeat)
 	{
+		_isBeat = false;
 		frontCheck();
 		if (playerCheck())
 		{

@@ -44,5 +44,7 @@ public:
 	vector<monster*> getMonster() { return _vMonster; }
 
 	bool getBossMonster();
+
+	void setMove(int turn);
 };
 

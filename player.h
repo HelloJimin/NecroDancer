@@ -150,9 +150,11 @@ public:
 	void coinUIrender();
 
 	void setIsBeat(bool beat) { _isBeat = beat; }
-
+	bool getIsBeat() { return _isBeat; }
 	void attackCheck();
 	void isThrow();
+
+	void heal(float healPower);
 
 	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
 

@@ -62,10 +62,10 @@ void shopKeeper::frontCheck()
 
 void shopKeeper::choiceAction()
 {
-	if (TURN1 && _isBeat)
+	if ( _isBeat)
 	{
 		frontCheck();
-
+		_isBeat = false;
 		if (playerCheck())
 		{
 			_isAttack = true;

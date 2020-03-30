@@ -9,7 +9,7 @@ private:
 	int _breathRenge;
 	int _minePower;
 	bool _isBreath;
-
+	bool _delay;
 public:
 	redDragon();
 	~redDragon();
@@ -32,5 +32,7 @@ public:
 
 
 	bool die() override;
+
+	virtual void setIsBeat(int turn) { if (turn % 2 == 0) _isBeat = true; }
 };
 

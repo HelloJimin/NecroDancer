@@ -29,10 +29,10 @@ void skeleton::frontCheck()
 
 void skeleton::choiceAction()
 {
-	if (TURN2 && _isBeat)
+	if (_isBeat)
 	{
 		frontCheck();
-
+		_isBeat = false;
 		if (playerCheck())
 		{
 			_isAttack = true;

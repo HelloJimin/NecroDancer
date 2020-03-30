@@ -197,3 +197,11 @@ bool monsterManager::getBossMonster()
 	}
 	return false;
 }
+
+void monsterManager::setMove(int turn)
+{
+	for (int i = 0; i < _vMonster.size(); ++i)
+	{
+		_vMonster[i]->setIsBeat(turn);
+	}
+}

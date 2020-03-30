@@ -9,6 +9,8 @@
 #include"bomb.h"
 #include"tileNode.h"
 #include"torch.h"
+#include"hpSlot.h"
+#include"apple.h"
 class itemManager :  public singletonBase<itemManager>
 {
 private:

@@ -74,6 +74,8 @@ item * itemManager::addItem(string name,int x, int y)
 	if (name == "날개장화")return new feet("날개장화",FEET,"함정무시",x,y,150);
 
 	if (name == "폭탄")return new bomb("폭탄",BOMB,1,"파괴",x,y,50);
+	if (name == "HP슬롯")return new hpSlot(x,y);
+	if (name == "사과")return new apple("사과",ITEM,1,0.5f,"회복",x,y,10);
 
 }
 

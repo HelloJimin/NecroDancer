@@ -16,7 +16,7 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 	monster::init(name, x, y, coin, map);
 	_direction = LEFT;
 	_aStar = new aStar;
-	_atk = 2.0f;
+	_atk = 1.5f;
 	_breathRenge = 0;
 	_minePower = 2;
 	addHp();
@@ -29,26 +29,28 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 
 void redDragon::frontCheck()
 {
-	if (_isBreath)return;
-
 	_nextTileIndex = _aStar->aStarBoss(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
-	aniCheck();
 	breathCheck();
+	aniCheck();
 }
 
 void redDragon::choiceAction()
 {
-	if (TURN1 && _isBeat)
+	if (_isMove) return;
+
+	if (_isBeat)
 	{
-		if (_isBreath)
+		_isBeat = false;
+		if (_delay)
 		{
+			_isBreath = true;
 			_isAttack = true;
+			return;
 		}
-	}
-	if (TURN2 && _isBeat)
-	{
+
 		frontCheck();
-		if (_isBreath) return;
+
+		if (_delay)return;
 
 		if (playerCheck())
 		{
@@ -78,7 +80,7 @@ void redDragon::choiceAction()
 
 void redDragon::animation()
 {
-	if (!_isBreath)
+	if (!_delay)
 	{
 		if (BEAT->getCnt() % 12 == 0)
 		{
@@ -88,11 +90,14 @@ void redDragon::animation()
 	}
 	else
 	{
-		if (BEAT->getCnt() % 10 == 0)
+		if (BEAT->getCnt() % 22 == 0)
 		{
 			_frameX++;
 			if (_frameX > _monsterImg->getMaxFrameX())
 			{
+				_delay = false;
+				_isBreath = false;
+				_isAttack = false;
 				_isBreath = false;
 				_frameX =0;
 			}
@@ -103,7 +108,7 @@ void redDragon::animation()
 void redDragon::render(HDC hdc)
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
-	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY);
+	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX*2 - TILEX / 2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX + 15, _frameX, _frameY);
 
 	hpRender(hdc);
 }
@@ -111,7 +116,7 @@ void redDragon::render(HDC hdc)
 void redDragon::silhouetteRender(HDC hdc)
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB)) Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
-	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY+2);
+	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX*2 - TILEX/2, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX + 15, _frameX, _frameY+2);
 
 	hpRender(hdc);
 }
@@ -201,13 +206,17 @@ void redDragon::attack()
 {
 	if (_isBreath && _isAttack)
 	{
+		_isBreath = false;
+		_isAttack = false;
+		_isBreath = false;
+
 		_breathRenge = 0;
 		int temp = _nextTileIndex;
 
 		switch (_direction)
 		{
 		case LEFT:
-			EFFECTMANAGER->play("드래곤브레스1L", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y);
+			EFFECTMANAGER->play("드래곤브레스1L", _pCurrentMap[_currentTileIndex-1].x, _pCurrentMap[_currentTileIndex-1].y);
 			while (rengeCheck(temp))
 			{
 				_breathRenge++;
@@ -215,7 +224,7 @@ void redDragon::attack()
 			}
 			break;
 		case RIGHT:
-			EFFECTMANAGER->play("드래곤브레스1R", _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y);
+			EFFECTMANAGER->play("드래곤브레스1R", _pCurrentMap[_currentTileIndex+1].x, _pCurrentMap[_currentTileIndex+1].y);
 			while (rengeCheck(temp))
 			{
 				_breathRenge++;
@@ -231,13 +240,11 @@ void redDragon::attack()
 			wsprintf(breath, "드래곤브레스%d", i%4+2);
 			switch (_direction)
 			{
-			case LEFT:	EFFECTMANAGER->play(breath, _pCurrentMap[_nextTileIndex].x - ((i+1)*48), _pCurrentMap[_nextTileIndex].y);
+			case LEFT:	EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex-1].x - ((i+1)*52), _pCurrentMap[_currentTileIndex-1].y);
 				if (_nextTileIndex - i == PLAYER->currentTile()) PLAYER->hit(_atk);
-				_isAttack = false;
 				break;
-			case RIGHT:EFFECTMANAGER->play(breath, _pCurrentMap[_nextTileIndex].x + ((i+1)*48), _pCurrentMap[_nextTileIndex].y);
+			case RIGHT:EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex+1].x + ((i+1)*52), _pCurrentMap[_currentTileIndex+1].y);
 				if (_nextTileIndex + i == PLAYER->currentTile()) PLAYER->hit(_atk);
-				_isAttack = false;
 				break;
 			}
 		}
@@ -265,9 +272,9 @@ void redDragon::breathCheck()
 	case LEFT:
 		for (int i = 0; i < checkTile; i++)
 		{
-			if (playerTile == _nextTileIndex - i)
+			if (playerTile == _currentTileIndex - i)
 			{
-				_isBreath = true;
+				_delay = true;
 				_frameX = 4;
 				break;
 			}
@@ -276,17 +283,17 @@ void redDragon::breathCheck()
 	case RIGHT:
 		for (int i = 0; i < checkTile; i++)
 		{
-			if (playerTile == _nextTileIndex + i)
+			if (playerTile == _currentTileIndex + i)
 			{
-				_isBreath = true;
+				_delay = true;
 				_frameX = 4;
 				break;
 			}
 		}
 		break;
-	case UP:	_isBreath = false;
+	case UP:	_delay = false;
 		break;
-	case DOWN:	_isBreath = false;
+	case DOWN:	_delay = false;
 		break;
 	}
 }

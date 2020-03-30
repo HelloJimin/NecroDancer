@@ -48,8 +48,9 @@ void ghost::frontCheck()
 
 void ghost::choiceAction()
 {
-	if (TURN1 && _isBeat)
+	if ( _isBeat)
 	{
+		_isBeat = false;
 		atkCnt++;
 		atkCnt %= 2;
 		frontCheck();

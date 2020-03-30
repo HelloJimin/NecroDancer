@@ -55,6 +55,7 @@ private:
 	float spd2;
 
 	float _okTime;
+
 public:
 	beat();
 	~beat();
@@ -87,5 +88,6 @@ public:
 
 	void beatStart();
 	void noteMove();
+
 };
 
