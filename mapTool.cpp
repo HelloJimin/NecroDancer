@@ -808,7 +808,7 @@ const char* mapTool::etcSelect(int frameX, int frameY)
 	if (frameX == 2 && frameY == 2) return "ºË∞©ø ";
 	if (frameX == 3 && frameY == 2) return "µµ∫π";
 
-	if (frameX == 0 && frameY == 3) return "»˚¿«¿Â»≠";
+	if (frameX == 0 && frameY == 3) return "≥Ø∞≥¿Â»≠";
 	if (frameX == 1 && frameY == 3) return "πﬂ∑πΩ¥¡Ó";
 
 	if (frameX == 2 && frameY == 3) return "∆¯≈∫";

@@ -10,7 +10,7 @@ apple::apple(string name, slotType type, int num, float power, string descriptio
 {
 	setItem(type, name, description, x, y, price);
 	_num = num;
-	_button = IMAGEMANAGER->findImage("x버튼");
+	_button = IMAGEMANAGER->findImage("c버튼");
 	_heal = power;
 }
 
@@ -45,7 +45,8 @@ void apple::render(HDC hdc)
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
 		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left + 8, _rc.top + 11);
 		_button->render(CAMERAMANAGER->getCameraDC(), _rc.left + 25, _rc.top + 60);
-		IMAGEMANAGER->frameRender("숫자", CAMERAMANAGER->getCameraDC(), _rc.left + 40, _rc.top + 55, _num, 0);
+		IMAGEMANAGER->frameRender("숫자", CAMERAMANAGER->getCameraDC(), _rc.left + 45, _rc.top + 40, _num, 0);
+		IMAGEMANAGER->render("작은x버튼", CAMERAMANAGER->getCameraDC(), _rc.left + 35, _rc.top + 50);
 	}
 	else if (!_inInventory)
 	{

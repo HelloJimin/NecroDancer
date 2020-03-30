@@ -50,6 +50,7 @@ trap::~trap()
 
 void trap::update()
 {
+	if (PLAYER->getFly()) return;
 	animation();
 	damageCheck();
 }

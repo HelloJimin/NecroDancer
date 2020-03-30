@@ -29,6 +29,12 @@ void inventory::update()
 	{
 		_vItem[i]->update();
 		if (_vItem[i]->getType() == ATTACK) _vItem[i]->active();
+		if (_vItem[i]->getType() == BOMB && _vItem[i]->getValue() == 0)
+		{
+			_vItem.erase(_vItem.begin() + i);
+			--i;
+			itemPosionSet();
+		}
 	}
 }
 

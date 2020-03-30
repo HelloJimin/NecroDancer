@@ -19,12 +19,14 @@ feet::~feet()
 
 HRESULT feet::init()
 {
+	PLAYER->getFly() = false;
+	PLAYER->getBallet() = false;
+
+	if (_name == "발레슈즈")PLAYER->getBallet() = true;
+	else if (_name == "날개장화")PLAYER->getFly() = true;
+
 	_isShop = false;
-	if (_name == "힘의장화" && !check)
-	{
-		PLAYER->playerStatus().atk += 1;
-		check = true;
-	}
+
 	return S_OK;
 }
 

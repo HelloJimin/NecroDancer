@@ -47,6 +47,8 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("인트로", "images/UI/intro.bmp",WINSIZEX,WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("x버튼", "images/UI/x버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("z버튼", "images/UI/z버튼.bmp",10,10, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("c버튼", "images/UI/c버튼.bmp",10,10, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("작은x버튼", "images/UI/작은x버튼.bmp",10,10, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("코인배수", "images/UI/코인배수.bmp",150,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));

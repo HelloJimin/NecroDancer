@@ -326,6 +326,7 @@ void testScene::trapInit()
 
 void testScene::trapUpdate()
 {
+
 	for (int i = 0; i < _vTrap.size(); i++)
 	{
 		_vTrap[i]->update();
