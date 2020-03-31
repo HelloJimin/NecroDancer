@@ -13,15 +13,18 @@ lobbyScene::~lobbyScene()
 
 HRESULT lobbyScene::init()
 {
+	SOUNDMANAGER->init();
 	setUp();
 	load();
 
 	torchInit();
 
-
+	BEAT->init();
 	SOUNDMANAGER->play("lobby");
 
-	PLAYER->setMap(_tiles);
+	PLAYER->setMap(_tiles, "lobby");
+	ITEMMANAGER->init();
+	MONSTERMANAGER->init();
 	return S_OK;
 }
 
@@ -110,6 +113,7 @@ void lobbyScene::setUp()
 
 void lobbyScene::load()
 {
+	memset(&_tiles, 0, sizeof(tagTile) * TILEX * TILEY);
 	HANDLE file;
 	DWORD read;
 	file = CreateFile

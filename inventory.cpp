@@ -56,17 +56,28 @@ void inventory::addItem(item * item)
 	else if (item->getType() == ATTACK)
 	{
 		_vItem.insert(_vItem.begin(), item);
-		//if (_vItem[0]->getType() == BODY)
-		//{
-		//	_vItem.insert(_vItem.begin()+1, item);
-		//}
-		//else
-		//{
-		//	_vItem.insert(_vItem.begin(), item);
-		//}
+
+		for (int i = 0; i < _vItem.size(); ++i)
+		{
+			if (_vItem[i]->getType() == BODY)
+			{
+				swap(_vItem.front(), _vItem[i]);
+			}
+		}
 	}
 
-	else _vItem.push_back(item);
+	else
+	{
+		_vItem.push_back(item);
+		for (int i = 0; i < _vItem.size(); ++i)
+		{
+			if (_vItem[i]->getType() == BOMB || _vItem[i]->getType() == ITEM)
+			{
+				swap(_vItem.back(), _vItem[i]);
+				break;
+			}
+		}
+	}
 
 	itemPosionSet();
 }
@@ -142,13 +153,14 @@ void inventory::itemPosionSet()
 	{
 		_vItem[i]->setInven(true);
 
-		if (_vItem[i]->getType() != BOMB) _vItem[i]->setRect(PointMake(30 + i * 66, 20));
+		if (_vItem[i]->getType() != BOMB && _vItem[i]->getType() != ITEM)
+			_vItem[i]->setRect(PointMake(30 + i * 66, 20));
 
 		if (_vItem[i]->getType() == BOMB)
 		{
 			if (PLAYER->getAtkForm() != FORM_SHORT)
 			{
-				_vItem[i]->setRect(PointMake(30, 50 + 66));
+				_vItem[i]->setRect(PointMake(30, 50 + 46));
 
 			}
 			else if (PLAYER->getAtkForm() == FORM_SHORT)
@@ -165,7 +177,7 @@ void inventory::itemPosionSet()
 		{
 			if (PLAYER->getAtkForm() != FORM_SHORT && getBomb() == NULL)
 			{
-				_vItem[i]->setRect(PointMake(30, 50 + 66));
+				_vItem[i]->setRect(PointMake(30, 50 + 46));
 			}
 			else if (PLAYER->getAtkForm() == FORM_SHORT && getBomb() == NULL)
 			{

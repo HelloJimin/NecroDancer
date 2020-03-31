@@ -22,7 +22,7 @@ HRESULT player::init()
 	_direction = DOWN;
 	
 	_isMove = false;
-	_moveSpeed = 13;
+	_moveSpeed = 6.5f;
 	_coin = _diamond = 0;
 
 	_rhythm = 0;
@@ -59,16 +59,27 @@ HRESULT player::init()
 	_coinFeverNumImg = IMAGEMANAGER->findImage("¼ýÀÚ");
 
 
+	_gameEnd = new gameEnd;
+	_gameEnd->init();
+
 	return S_OK;
 }
 
 void player::release()
 {
 	SAFE_DELETE(_inven);
+	SAFE_DELETE(_gameEnd);
 }
 
 void player::update()
 {
+	if (_isDie)
+	{
+		_gameEnd->update();
+		return;
+	}
+
+
 	_inven->update();
 	keyControl();
 
@@ -84,6 +95,12 @@ void player::update()
 
 void player::render(HDC hdc)
 {
+	if (_isDie)
+	{
+		_gameEnd->render();
+		return;
+	}
+
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(hdc, _collisionRc.left, _collisionRc.top, _collisionRc.right, _collisionRc.bottom);
@@ -286,18 +303,18 @@ void player::move()
 	case UP:
 		if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
 		{
-			_collisionY -= _moveSpeed;
+			_collisionY -= _moveSpeed + 6.5f;
 		}
 
 		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 26) != 0)
 		{
-			_currentY -= _moveSpeed;
+			_currentY -= _moveSpeed + 6.5f;
 		}
 		else _isDrop = true;
 
 		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
 		{
-			_currentY += _moveSpeed;
+			_currentY += _moveSpeed+6.5f;
 		}
 		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
 		{
@@ -308,18 +325,18 @@ void player::move()
 	case DOWN:
 		if (getDistance(_collisionX, _collisionY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
 		{
-			_collisionY += _moveSpeed;
+			_collisionY += _moveSpeed + 6.5f;
 		}
 
 		if (!_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y - 78) != 0)
 		{
-			_currentY -= _moveSpeed;
+			_currentY -= _moveSpeed + 6.5f;
 		}
 		else _isDrop = true;
 
 		if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) != 0)
 		{
-			_currentY += _moveSpeed;
+			_currentY += _moveSpeed + 6.5f;
 		}
 		else if (_isDrop&& getDistance(_currentX, _currentY, _pCurrentMap[_nextTileIndex].x, _pCurrentMap[_nextTileIndex].y) == 0)
 		{
@@ -381,8 +398,9 @@ void player::UIrender(HDC hdc)
 
 }
 
-void player::setMap(tagTile tile[])
+void player::setMap(tagTile tile[], string map)
 {
+	_currentMap = map;
 	_pCurrentMap = NULL;
 	_pCurrentMap = tile;
 	for (int i = 0; i < TILEX * TILEY; i++)
@@ -551,6 +569,19 @@ void player::hit(float damege)
 	_isHit = true;
 	_rhythm = 0;
 	HPbarSet();
+	if (dieCheck())
+	{
+		_isDie = true;
+		_currentTileIndex = 1;
+		_nextTileIndex = 1;
+		_currentX = 1;
+		_currentY = 1;
+		_collisionX = 1;
+		_collisionY = 1;
+
+		_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
+		_collisionRc = RectMakeCenter(_collisionX, _collisionY, 50, 50);
+	}
 }
 
 void player::keyControl()
@@ -663,6 +694,15 @@ bool player::wallCheck(int tile)
 	if (_pCurrentMap[tile].obj == OBJ_DOOR) return true;
 
 	return false;
+}
+
+bool player::dieCheck()
+{
+	for (int i = 0; i < _status.vHp.size(); i++)
+	{
+		if (_status.vHp[i].hp > 0) return false;
+	}
+	return true;
 }
 
 void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
@@ -1148,14 +1188,20 @@ void player::isThrow()
 
 void player::heal(float healPower)
 {
-	for (int i = _status.vHp.size() - 1; i >= 0; i--)
+	for (int i = _status.vHp.size()-1; i >=0; i--)
 	{
-		if (_status.vHp[i].hp <= healPower)
-		{
-			_status.vHp[i].hp += healPower;
-			break;
-		}
-		else continue;
+		if (_status.vHp[i].hp >= 1) continue;
+
+		float temp;
+		if (_status.vHp[i].hp == 0.5f) temp = 0.5f;
+		else if (_status.vHp[i].hp == 0) temp = 1;
+		_status.vHp[i].hp += healPower;
+
+		if (_status.vHp[i].hp >= 1) _status.vHp[i].hp = 1;
+		healPower -= temp;
+
+		if (healPower > 0) continue;
+		else break;
 	}
 	HPbarSet();
 	//for (int i = 0; i < _status.vHp.size(); i++)
@@ -1167,4 +1213,13 @@ void player::heal(float healPower)
 	//	}
 	//	else continue;
 	//}
+}
+
+void player::gameReset(string map)
+{
+	SOUNDMANAGER->stop(_currentMap);
+	heal(_status.vHp.size() + 1);
+	HPbarSet();
+	_isDie = false;
+	SCENEMANAGER->changeScene(map);
 }

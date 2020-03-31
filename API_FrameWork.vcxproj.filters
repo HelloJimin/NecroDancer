@@ -175,6 +175,9 @@
     <ClCompile Include="apple.cpp">
       <Filter>아이템</Filter>
     </ClCompile>
+    <ClCompile Include="gameEnd.cpp">
+      <Filter>플레이어</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -368,6 +371,9 @@
     </ClInclude>
     <ClInclude Include="apple.h">
       <Filter>아이템</Filter>
+    </ClInclude>
+    <ClInclude Include="gameEnd.h">
+      <Filter>플레이어</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,8 @@ bossStage::~bossStage()
 
 HRESULT bossStage::init()
 {
+	memset(&_tiles, 0, sizeof(tagTile) * TILEX * TILEY);
+
 	HANDLE file;
 	DWORD read;
 	file = CreateFile
@@ -27,16 +29,26 @@ HRESULT bossStage::init()
 	ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 	CloseHandle(file);
 
+	for (int i = 97; i < 100; i++)
+	{
+		for (int k = 0; k < 4; k++)
+		{
+			_tiles[i + (k*TILEX)].walkable = false;
+		}
+	}
+
+
 	string map = "boss";
 	SOUNDMANAGER->play(map);
 	BEAT->setMap(map);
 
-	PLAYER->setMap(_tiles);
+	PLAYER->setMap(_tiles, map);
 	MONSTERMANAGER->setMap(_tiles);
 	ITEMMANAGER->setMap();
 
 	torchInit();
 	trapInit();
+	_close = false;
 
 	return S_OK;
 }
@@ -61,6 +73,7 @@ void bossStage::update()
 	addBomb();
 	bombUpdate();
 	close();
+	doorUpdate();
 }
 
 void bossStage::render()
@@ -68,6 +81,7 @@ void bossStage::render()
 	allRender();
 	hitRender();
 	debugRender();
+
 
 	BEAT->render(getMemDC());
 
@@ -174,7 +188,7 @@ void bossStage::allRender()
 
 void bossStage::debugRender()
 {
-			if (KEYMANAGER->isToggleKey(VK_TAB))
+	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		SetBkMode(getMemDC(), TRANSPARENT);
 		SetTextColor(getMemDC(), RGB(255, 0, 0));
@@ -361,4 +375,15 @@ bool bossStage::isWall(int arrNum)
 	if (_tiles[arrNum].obj == OBJ_NEXT) return true;
 
 	return false;
+}
+
+void bossStage::doorUpdate()
+{
+	if (PLAYER->currentTile() == 138)
+	{
+		SOUNDMANAGER->stop("boss");
+		SCENEMANAGER->changeScene("·Îºñ½Å");
+
+	}
+
 }

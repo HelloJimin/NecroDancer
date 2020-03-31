@@ -672,7 +672,6 @@ bool aStar::findPlayer(tagTile tile[], int currentIndex, int endIndex)
 						isFind = true;
 						break;
 					}
-
 				}
 			}
 		}

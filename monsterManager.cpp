@@ -13,7 +13,7 @@ monsterManager::~monsterManager()
 
 HRESULT monsterManager::init()
 {
-
+	_vMonster.clear();
 	return S_OK;
 }
 

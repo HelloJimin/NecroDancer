@@ -3,6 +3,7 @@
 #include "tileNode.h"
 #include "inventory.h"
 #include"raycast.h"
+#include"gameEnd.h"
 enum DIRECTION
 {
 	LEFT,
@@ -34,9 +35,9 @@ struct coinUI
 class player : public singletonBase<player>
 {
 private:
-	int _currentX, _currentY;
+	float _currentX, _currentY;
 	RECT _rc;
-	int _collisionX, _collisionY;
+	float _collisionX, _collisionY;
 	RECT _collisionRc;
 	int _frameX, _frameY;
 
@@ -51,7 +52,7 @@ private:
 	DIRECTION _direction;
 
 	tagTile* _pCurrentMap;	
-	
+	gameEnd* _gameEnd;
 	int _rhythm;
 
 	//스탯
@@ -88,8 +89,8 @@ private:
 	image* _coinFeverNumImg;
 
 	vector<int> _vTarget;
-
-	bool _isTurn;
+	bool _isDie;
+	string _currentMap;
 public:
 	player();
 	~player();
@@ -100,7 +101,7 @@ public:
 	void render(HDC hdc);
 	void UIrender(HDC hdc);
 
-	void setMap(tagTile tile[]);	// 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
+	void setMap(tagTile tile[], string map);	// 현재 돌아가는 씬이 갖고 있는 타일의 주소값을 받아온다
 	tagTile* getMap() { return _pCurrentMap; }
 	void frontCheck();
 	void attack();
@@ -123,6 +124,7 @@ public:
 	void animation();
 	bool walkableCheck();
 	bool wallCheck(int tile);
+	bool dieCheck();
 
 	int getX() { return _collisionRc.left ; }
 	int getY() { return _collisionRc.top ; }
@@ -165,5 +167,6 @@ public:
 
 	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
 
+	void gameReset(string map);
 };
 

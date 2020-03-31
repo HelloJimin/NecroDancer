@@ -14,7 +14,7 @@ testScene::~testScene()
 HRESULT testScene::init()
 {
 	_currentMap = "1-1";
-
+	_oldMap = "";
 	//setUp();
 	load();
 
@@ -214,6 +214,7 @@ void testScene::setUp()
 
 void testScene::load()
 {
+	memset(&_tiles, 0, sizeof(tagTile) * TILEX * TILEY);
 	if (_currentMap == "º¸½º½Å")
 	{
 		SOUNDMANAGER->stop(_oldMap);
@@ -260,7 +261,7 @@ void testScene::load()
 
 		BEAT->setMap(_currentMap);
 
-		PLAYER->setMap(_tiles);
+		PLAYER->setMap(_tiles, _currentMap);
 		MONSTERMANAGER->setMap(_tiles);
 		ITEMMANAGER->setMap();
 

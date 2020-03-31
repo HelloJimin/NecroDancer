@@ -13,6 +13,7 @@ itemManager::~itemManager()
 
 HRESULT itemManager::init()
 {
+	_vItem.clear();
 	return S_OK;
 }
 

@@ -38,6 +38,7 @@ public:
 
 	void animation() override;
 
+	bool die() override;
 	void render(HDC hdc) override;
 	void silhouetteRender(HDC hdc) override;
 	void attack() override;

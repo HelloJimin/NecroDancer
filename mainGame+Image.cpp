@@ -54,11 +54,14 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("출구계단열림", "images/UI/출구계단열림.bmp",180,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("hit", "images/UI/hit.bmp",1024,768, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("죽었습니다", "images/UI/death.bmp",233*3,15*3, false, RGB(255, 0, 255));
 
 
 	IMAGEMANAGER->addFrameImage("스타트", "images/UI/스타트.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴", "images/UI/맵툴.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("나가기", "images/UI/나가기.bmp",330, 162,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("로비로돌아가기", "images/UI/로비로돌아가기.bmp",100, 24,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("빠른재시작", "images/UI/빠른재시작.bmp",100, 24,1,2, true, RGB(255, 0, 255));
 
 
 	IMAGEMANAGER->addFrameImage("숫자", "images/UI/number.bmp",120, 18,10,1, true, RGB(255, 0, 255));

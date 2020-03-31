@@ -17,6 +17,7 @@ HRESULT deathmetal::init(string name, int x, int y, int coin, tagTile * map)
 
 	_aStar = new aStar;
 	_isBoss = true;
+
 	_atk = 1.5f;
 	addHp();
 	addHp();
@@ -97,7 +98,7 @@ void deathmetal::frontCheck()
 			}
 		}
 
-		if (metal == player)
+		if (metal == player && _turnCnt % 2 == 0)
 		{
 			_nextTileIndex = _currentTileIndex;
 			_isSkill = true;
@@ -140,7 +141,7 @@ void deathmetal::choiceAction()
 			}
 			break;
 		case PHASE_TWO:
-			if (_turnCnt % 4 == 0 )
+			if (_turnCnt % 6 == 0 )
 			{
 				_isSkill = true;
 				summon("½ºÄÌ·¹Åæ");
@@ -191,6 +192,29 @@ void deathmetal::animation()
 		_frameX++;
 		if (_frameX > _monsterImg->getMaxFrameX())_frameX = 0;
 	}
+}
+
+bool deathmetal::die()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0.0f) return false;
+	}
+	for (int i = 97; i < 100; i++)
+	{
+		for (int k = 0; k < 4; k++)
+		{
+			_pCurrentMap[i + (k*TILEX)].walkable = true;
+		}
+	}
+	for (int i = 217; i < 220; i++)
+	{
+		_pCurrentMap[i].obj = OBJ_NONE;
+		_pCurrentMap[i].objFrameX = 0;
+		_pCurrentMap[i].objFrameY = 0;
+
+	}
+	return true;
 }
 
 void deathmetal::render(HDC hdc)
@@ -474,20 +498,20 @@ void deathmetal::hit(float damage)
 	_isHit = true;
 	_hitCnt++;
 
-	//if (_hitCnt == 1)
-	//{
-	//	_turnSpeed = 2;
-	//	_phase = PHASE_THREE;
-	//	_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
-	//}
-	if (_hitCnt == 3)
+	if (_hitCnt == 1)
 	{
 		_turnSpeed = 2;
-		_phase = PHASE_TWO;
+		_phase = PHASE_THREE;
 		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
 	}
+	//if (_hitCnt == 3)
+	//{
+	//	_turnSpeed = 2;
+	//	_phase = PHASE_TWO;
+	//	_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
+	//}
 
-	if (_hitCnt == 6) _phase = PHASE_THREE;
+	//if (_hitCnt == 6) _phase = PHASE_THREE;
 
 	for (int i = 0; i < _vHp.size(); i++)
 	{

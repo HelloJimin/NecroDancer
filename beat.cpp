@@ -23,8 +23,8 @@ HRESULT beat::init()
 	_okTime = 0;
 
 	_heart = IMAGEMANAGER->findImage("½ÉÀå");
-	_heartBox = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, 90, _heart->getFrameHeight());
-	_collisionHeart = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 120, 130, 50 * 2);
+	_heartBox = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 100, 110, _heart->getFrameHeight());
+	_collisionHeart = RectMakeCenter(WINSIZEX / 2, WINSIZEY - 120, 140, 50 * 2);
 
 	return S_OK;
 }
@@ -65,13 +65,15 @@ void beat::render(HDC hdc)
 	{
 		_vMiss[i].img->render(CAMERAMANAGER->getCameraDC(), _vMiss[i].rc.left, _vMiss[i].rc.top);
 	}
+	//GdiTransparentBlt(CAMERAMANAGER->getCameraDC(), 0, WINSIZEY, WINSIZEX, WINSIZEY, CAMERAMANAGER->getCameraDC(), 0, 0, WINSIZEX, WINSIZEY, RGB(0, 0, 255));
+
 	for (int i = 0; i < _vNoteL.size(); i++)
 	{
 		if (!_vNoteL[i].render)continue;
 		_vNoteL[i].img->alphaRender(CAMERAMANAGER->getCameraDC(), _vNoteL[i].rc.left, _vNoteL[i].rc.top, 255);
 		_vNoteR[i].img->alphaRender(CAMERAMANAGER->getCameraDC(), _vNoteR[i].rc.left, _vNoteR[i].rc.top, 255);
 	}
-	_heart->frameRender(CAMERAMANAGER->getCameraDC(), _heartBox.left, _heartBox.top, _anime, 0);
+	_heart->frameRender(CAMERAMANAGER->getCameraDC(), WINSIZEX/2- _heart->getFrameWidth()/2, _heartBox.top, _anime, 0);
 
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
@@ -193,7 +195,7 @@ void beat::addNote(float lapse)
 	_note.alpha = 0;
 	_note.colHeart = false;
 	_note.render = true;
-	_note.speed = lerp(0, WINSIZEX/2, (_deltaTime / ((tempMS) / 1000.0f)) /4);
+	_note.speed = lerp(0, WINSIZEX/2, (_deltaTime / ((tempMS+bpm) / 1000.0f)) /4);
 	//_note.speed = _deltaTime * tempMS / 2;
 
 
@@ -201,7 +203,7 @@ void beat::addNote(float lapse)
 
 	_note.x = WINSIZEX;
 	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
-	_note.speed = lerp(WINSIZEX, WINSIZEX/2, (_deltaTime / ((tempMS) / 1000.0f)) /4);
+	_note.speed = lerp(WINSIZEX, WINSIZEX/2, (_deltaTime / ((tempMS+bpm) / 1000.0f)) /4);
 	//_note.speed = _deltaTime * tempMS * (tempMS/1000.0f);
 
 
@@ -221,9 +223,13 @@ void beat::noteMove()
 	{
 		_vNoteL[i].x += _vNoteL[i].speed;
 		_vNoteL[i].rc = RectMakeCenter(_vNoteL[i].x, _vNoteL[i].y, _vNoteL[i].img->getWidth(), _vNoteL[i].img->getHeight());
+		//_vNoteL[i].alpha+=5;
+		//if (_vNoteL[i].alpha >= 255) _vNoteL[i].alpha = 255;
 
 		_vNoteR[i].x += _vNoteR[i].speed;
 		_vNoteR[i].rc = RectMakeCenter(_vNoteR[i].x, _vNoteR[i].y, _vNoteR[i].img->getWidth(), _vNoteR[i].img->getHeight());
+		//_vNoteR[i].alpha+=5;
+		//if (_vNoteR[i].alpha >= 255) _vNoteL[i].alpha = 255;
 
 		if (IntersectRect(&_temp, &_vNoteL[i].rc, &_heartBox))
 		{
