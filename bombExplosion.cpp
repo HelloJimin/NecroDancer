@@ -11,7 +11,7 @@ bombExplosion::bombExplosion(int tileNum, tagTile tile[])
 	_tile = tile;
 	_tileNum = tileNum;
 	_img = IMAGEMANAGER->findImage("ÆøÅº¾Ö´Ï");
-
+	_bombName = IMAGEMANAGER->findImage("ÆøÅºÀÌ¸§");
 	_frameX = 0;
 }
 
@@ -52,7 +52,8 @@ void bombExplosion::update()
 			}
 			if (_tile[check].obj != OBJ_IRONWALL &&
 				_tile[check].obj != OBJ_NEXT &&
-				_tile[check].obj != OBJ_BLOCK )
+				_tile[check].obj != OBJ_BLOCK &&
+				_tile[check].obj != OBJ_NEVERWALL )
 			{	
 				_tile[check].obj = OBJ_NONE;
 				_tile[check].strength = 0;
@@ -62,7 +63,7 @@ void bombExplosion::update()
 			}
 			if (check == PLAYER->currentTile())
 			{
-				PLAYER->hit(3);
+				PLAYER->hit(3 , _bombName);
 			}
 		}
 	}

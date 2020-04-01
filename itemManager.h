@@ -36,5 +36,7 @@ public:
 	void removeItem(int arrNum);
 
 	void addItemList(string name,int x, int y);
+
+	void shopKeeperDie();
 };
 

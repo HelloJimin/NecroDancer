@@ -49,19 +49,22 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("z버튼", "images/UI/z버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("c버튼", "images/UI/c버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("작은x버튼", "images/UI/작은x버튼.bmp",10,10, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("게임요약", "images/UI/게임요약.bmp",102*3,24*3, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("코인배수", "images/UI/코인배수.bmp",150,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("출구계단열림", "images/UI/출구계단열림.bmp",180,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("hit", "images/UI/hit.bmp",1024,768, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("죽었습니다", "images/UI/death.bmp",233*3,15*3, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("다음적에게죽음", "images/UI/다음적에게죽음.bmp",86*3,12*3, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("코인점수", "images/UI/코인점수.bmp",51*3,12*3, false, RGB(255, 0, 255));
 
 
 	IMAGEMANAGER->addFrameImage("스타트", "images/UI/스타트.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("맵툴", "images/UI/맵툴.bmp",330, 162,1,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("나가기", "images/UI/나가기.bmp",330, 162,1,2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("로비로돌아가기", "images/UI/로비로돌아가기.bmp",100, 24,1,2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("빠른재시작", "images/UI/빠른재시작.bmp",100, 24,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("로비로돌아가기", "images/UI/로비로돌아가기.bmp",100*4, 24*4,1,2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("빠른재시작", "images/UI/빠른재시작.bmp",100*4, 24*4,1,2, true, RGB(255, 0, 255));
 
 
 	IMAGEMANAGER->addFrameImage("숫자", "images/UI/number.bmp",120, 18,10,1, true, RGB(255, 0, 255));
@@ -132,6 +135,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("폭탄애니", "images/item/폭탄애니.bmp",96*2, 48,4,1, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("사과", "images/item/사과.bmp",48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("치킨", "images/item/치킨.bmp",48, 48, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("작은코인", "images/item/smallCoin.bmp",52, 52, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("큰코인", "images/item/bigCoin.bmp",52, 52, true, RGB(255, 0, 255));
@@ -158,12 +162,27 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("데스메탈1", "images/boss/phase1.bmp",168*3, 424*3,2,8, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("데스메탈2", "images/boss/phase2.bmp",168*3, 424*3,2,8, true, RGB(255, 0, 255));
 
+	IMAGEMANAGER->addImage("그린슬라임이름", "images/monster/그린슬라임이름.bmp", 93 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("데스메탈이름", "images/monster/데스메탈이름.bmp", 69 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("드래곤이름", "images/monster/드래곤이름.bmp", 94 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("망령이름", "images/monster/망령이름.bmp", 32 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("미노타우로스이름", "images/monster/미노타우로스이름.bmp", 106 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("박쥐이름", "images/monster/박쥐이름.bmp", 32 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("블루슬라임이름", "images/monster/블루슬라임이름.bmp", 93 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("상점주인이름", "images/monster/상점주인이름.bmp", 75 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("스켈레톤이름", "images/monster/스켈레톤이름.bmp", 77 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("유령이름", "images/monster/유령이름.bmp", 33 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("좀비이름", "images/monster/좀비이름.bmp", 33 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("클론이름", "images/monster/클론이름.bmp", 33 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("폭탄이름", "images/monster/폭탄이름.bmp", 33 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("함정이름", "images/monster/함정이름.bmp", 33 * 2, 18 * 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("혼령이름", "images/monster/혼령이름.bmp", 33 * 2, 18 * 2, true, RGB(255, 0, 255));
 
 
 	//SOUND
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.ogg", true, true);
 	SOUNDMANAGER->addSound("1-2", "sound/1-2.ogg", true, true);
-	SOUNDMANAGER->addSound("1-1shop", "sound/1-1shop.mp3", true, true);
+	SOUNDMANAGER->addSound("1-1shop", "sound/1-1shop.ogg", true, true);
 	SOUNDMANAGER->addSound("intro", "sound/intro.mp3", true, true);
 	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);
 	SOUNDMANAGER->addSound("boss", "sound/boss.ogg", true, true);

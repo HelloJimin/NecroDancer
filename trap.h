@@ -13,6 +13,8 @@ private:
 	image* _img;
 
 	OBJECT _obj;
+
+	image* _trapName;
 public:
 	trap();
 	trap(OBJECT obj , int tileNum , tagTile tile[]);

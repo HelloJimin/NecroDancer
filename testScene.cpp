@@ -239,6 +239,7 @@ void testScene::load()
 
 			ReadFile(file, _tiles, sizeof(tagTile) * TILEX * TILEY, &read, NULL);
 			CloseHandle(file);
+			SOUNDMANAGER->play("1-1shop", 0.0f);
 		}
 		if (_currentMap == "1-2")
 		{
@@ -258,7 +259,6 @@ void testScene::load()
 		}
 		SOUNDMANAGER->stop(_oldMap);
 		SOUNDMANAGER->play(_currentMap);
-
 		BEAT->setMap(_currentMap);
 
 		PLAYER->setMap(_tiles, _currentMap);
@@ -423,6 +423,7 @@ void testScene::doorUpdate()
 	}
 	if (_tiles[_nextDoorNum].obj == OBJ_NEXT && _nextDoorNum == PLAYER->currentTile())
 	{
+		SOUNDMANAGER->stop("1-1shop");
 		load();
 	}
 }

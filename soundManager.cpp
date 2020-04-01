@@ -107,6 +107,21 @@ void soundManager::play(string keyName, float volume)
 	}
 }
 
+void soundManager::volumeSet(string keyName, float volume)
+{
+	int count = 0;
+
+	arrSoundIter iter = m_totalSounds.begin();
+
+	for (iter; iter != m_totalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			m_channel[count]->setVolume(volume);
+		}
+	}
+}
+
 void soundManager::stop(string keyName)
 {
 	int count = 0;

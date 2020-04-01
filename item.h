@@ -76,7 +76,7 @@ public:
 	float getX() { return _x; }
 	float getY() { return _y; }
 
-	bool getIsShop() { return _isShop; }
+	bool& getIsShop() { return _isShop; }
 	int getPrice() { return _price; }
 
 	void setPrice(int price);

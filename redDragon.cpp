@@ -24,6 +24,7 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 	addHp();
 	addHp();
 	_isBoss = true;
+	_monsterNameImg = IMAGEMANAGER->findImage("µå·¡°ïÀÌ¸§");
 	return S_OK;
 }
 
@@ -241,10 +242,10 @@ void redDragon::attack()
 			switch (_direction)
 			{
 			case LEFT:	EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex-1].x - ((i+1)*52), _pCurrentMap[_currentTileIndex-1].y);
-				if (_nextTileIndex - i == PLAYER->currentTile()) PLAYER->hit(_atk);
+				if (_nextTileIndex - i == PLAYER->currentTile()) PLAYER->hit(_atk, _monsterNameImg);
 				break;
 			case RIGHT:EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex+1].x + ((i+1)*52), _pCurrentMap[_currentTileIndex+1].y);
-				if (_nextTileIndex + i == PLAYER->currentTile()) PLAYER->hit(_atk);
+				if (_nextTileIndex + i == PLAYER->currentTile()) PLAYER->hit(_atk , _monsterNameImg);
 				break;
 			}
 		}

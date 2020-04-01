@@ -16,6 +16,7 @@ HRESULT blueSlime::init(string name, int x, int y, int coin, tagTile * map)
 	monster::init(name, x, y, coin, map);
 	addHp();
 	_atk = 0.5f;
+	_monsterNameImg = IMAGEMANAGER->findImage("블루슬라임이름");
 	return S_OK;
 }
 

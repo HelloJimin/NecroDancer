@@ -13,6 +13,7 @@ private:
 
 	bool _trigger;
 
+	image* _bombName;
 public:
 	bombExplosion();
 	bombExplosion(int tileNum, tagTile tile[]);

@@ -24,6 +24,7 @@ HRESULT zombie::init(string name, int x, int y, int coin, tagTile * map)
 	}
 	aniCheck();
 	_atk = 0.5f;
+	_monsterNameImg = IMAGEMANAGER->findImage("좀비이름");
 	return S_OK;
 }
 

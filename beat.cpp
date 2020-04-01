@@ -122,7 +122,7 @@ void beat::load(string map)
 void beat::setMap(string currentMap)
 {
 	_currentMap = currentMap;
-	if (_currentMap != _oldMap)
+//	if (_currentMap != _oldMap)
 	{
 		_vRenge.clear();
 		_vNoteL.clear();
@@ -135,10 +135,10 @@ void beat::setMap(string currentMap)
 		_cnt = 0;
 		_okTime = 0;
 		_noteStartTiming = 0;
+		_noteTiming = 0;
 
 		load(currentMap);
 		_oldMap = _currentMap;
-		_noteTiming = 0;
 		int tempMS = _vRenge[_currentNoteCnt + 1] - _vRenge[_currentNoteCnt];
 		//int tempMS =  _vRenge[_currentNoteCnt+1] - _vRenge[_currentNoteCnt]+ lapse;
 		int bpm = 60000 / tempMS;

@@ -69,7 +69,7 @@ HRESULT sceneManager::changeScene(string sceneName)
 	if (find == _mSceneList.end())return E_FAIL;
 
 	//바꾸려는씬이 현재씬이랑 같아도 E_FAIL
-	if (find->second == _currentScene)return E_FAIL;
+//	if (find->second == _currentScene)return E_FAIL;
 
 	//여기까지 왔다면 문제가 없다 즉 씬을 초기화하고 변경하자.
 	if (SUCCEEDED(find->second->init()))

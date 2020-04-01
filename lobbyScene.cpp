@@ -13,6 +13,7 @@ lobbyScene::~lobbyScene()
 
 HRESULT lobbyScene::init()
 {
+	PLAYER->getInven()->init();
 	SOUNDMANAGER->init();
 	setUp();
 	load();
@@ -25,6 +26,7 @@ HRESULT lobbyScene::init()
 	PLAYER->setMap(_tiles, "lobby");
 	ITEMMANAGER->init();
 	MONSTERMANAGER->init();
+
 	return S_OK;
 }
 

@@ -54,5 +54,7 @@ public:
 	bool endLineCheck();
 
 	virtual void setIsBeat(int turn) { if (turn % _turnSpeed == 0) _isBeat = true; }
+
+	int currentHpCheck();
 };
 

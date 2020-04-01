@@ -17,6 +17,7 @@ HRESULT ghost::init(string name, int x, int y, int coin, tagTile * map)
 	_atk = 0.5f;
 	_alpha = 255;
 	_aStar = new aStar;
+	_monsterNameImg = IMAGEMANAGER->findImage("유령이름");
 	return S_OK;
 }
 
@@ -37,13 +38,13 @@ void ghost::silhouetteRender(HDC hdc)
 void ghost::frontCheck()
 {
 	alphaCheck();
-	aniCheck();
 
 	_nextTileIndex = _aStar->aStarTile(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
 	if (atkCnt==1)
 	{
 		if (PLAYER->currentTile() == _nextTileIndex) _isAttack = true;
 	}
+	aniCheck();
 }
 
 void ghost::choiceAction()

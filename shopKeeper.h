@@ -19,6 +19,9 @@ public:
 	void render(HDC hdc) override;
 	void silhouetteRender(HDC hdc) override;
 
+	bool die() override;
+	void hit(float damage) override;
+	void BGMcheck();
 
 };
 

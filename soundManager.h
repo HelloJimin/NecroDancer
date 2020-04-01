@@ -15,9 +15,6 @@ private:
 	typedef map<string, Sound**>arrSounds;
 	typedef map<string, Sound**>::iterator arrSoundIter;
 
-	string songName[6];
-	int currentNum = 0 ;
-
 	System* m_system;		
 
 
@@ -42,7 +39,7 @@ public:
 
 	//사운드 플레이	(키값, 볼륨 0.0~1.0f)
 	void play(string keyName, float volume = 1.0f);
-
+	void volumeSet(string keyName, float volume);
 	void stop(string keyName);
 	void pause(string keyName);
 	void resume(string keyName);
@@ -52,13 +49,6 @@ public:
 	//일시 정지 중이냐
 	bool isPauseSound(string keyName);
 
-	void setSongName() { songName[0] = "인트로브금"; songName[1] = "마을브금"; songName[2] = "던전브금"; 
-	songName[3] = "상점브금"; songName[4] = "회복방브금"; songName[5] = "보스방브금";
-	}
-
-	int getCurrentNum() { return currentNum; }
-	void setCurrentNum(int num) { currentNum = num; }
-	string getCurrentSong() { return songName[currentNum]; }
 
 	int getPosition(string keyName, unsigned int& pos);						//현재길이 받아옴
 	int getLength(string keyName);

@@ -25,12 +25,13 @@ HRESULT shopKeeper::init(string name, int x, int y, int coin, tagTile * map)
 	addHp();
 	addHp();
 	addHp();
-
+	_monsterNameImg = IMAGEMANAGER->findImage("상점주인이름");
 	return S_OK;
 }
 
 void shopKeeper::update()
 {
+	BGMcheck();
 	if (BEAT->getIsBeat() && !_isBeat)
 	{
 		_turnCnt++;
@@ -106,4 +107,39 @@ void shopKeeper::silhouetteRender(HDC hdc)
 	_monsterImg->frameRender(hdc, _collisionRc.left - TILEX, _collisionRc.top - _monsterImg->getFrameHeight() + TILEX, _frameX, _frameY + 2);
 
 	hpRender(hdc);
+}
+
+bool shopKeeper::die()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0.0f) return false;
+	}
+	SOUNDMANAGER->stop("1-1shop");
+	ITEMMANAGER->shopKeeperDie();
+	return true;
+}
+
+void shopKeeper::hit(float damage)
+{
+	monster::hit(damage);
+	SOUNDMANAGER->stop("1-1shop");
+}
+
+void shopKeeper::BGMcheck()
+{
+	if (_isHit) return;
+
+
+	float distance = getDistance(_currentX, _currentY, PLAYER->getX(), PLAYER->getY());
+	if (distance <= 1000)
+	{
+		float volume = 1000 / distance ;
+		 SOUNDMANAGER->volumeSet("1-1shop", volume * 0.15f);
+	}
+	else SOUNDMANAGER->volumeSet("1-1shop", 0.0f);
+
+
+	//if (distance  < 1000) SOUNDMANAGER->volumeSet("1-1shop",1.0f);
+	//else SOUNDMANAGER->volumeSet("1-1shop", 0.0f);
 }

@@ -12,7 +12,7 @@ trap::trap(OBJECT obj, int tileNum , tagTile tile[])
 	_tileNum = tileNum;
 	_img = IMAGEMANAGER->findImage("함정");
 	_trigger = false;
-
+	_trapName  = IMAGEMANAGER->findImage("함정이름");
 	_frameX = 0;
 
 	_obj = obj;
@@ -50,7 +50,6 @@ trap::~trap()
 
 void trap::update()
 {
-	if (PLAYER->getFly()) return;
 	animation();
 	damageCheck();
 }
@@ -103,13 +102,14 @@ void trap::damageCheck()
 	RECT temp;
 	if (IntersectRect(&temp, &_rc, &PLAYER->getCollisionRc()) && !PLAYER->getMove())
 	{
+		if (PLAYER->getFly()) return;
 		_frameX++;
 
 		_trigger = true;
 		switch (_obj)
 		{
 		case OBJ_TRAP:
-			PLAYER->hit(2.0f);
+			PLAYER->hit(2.0f, _trapName);
 			break;
 		case OBJ_LEFT:
 			PLAYER->setDirection(LEFT);

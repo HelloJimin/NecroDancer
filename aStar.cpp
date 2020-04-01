@@ -113,7 +113,7 @@ int aStar::aStarStraight(tagTile tile[], int currentIndex, int endIndex)
 		}
 		if (isFind) continue;
 		// not Find
-		if (openList.size() == 0 || noPathCheck(tile, endIndex) || closeList.size() > 50)
+		if (openList.size() == 0  || closeList.size() > 50)
 		{
 			noPath = true;
 			continue;
@@ -253,7 +253,7 @@ int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 		}
 		if (isFind) continue;
 		// not Find
-		if (openList.size() == 0 || noPathCheck(tile, endIndex) || closeList.size() > 40)
+		if (openList.size() == 0  || closeList.size() > 40)
 		{
 			noPath = true;
 			continue;
@@ -286,7 +286,7 @@ int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 		check++;
 		nextTile = tile[nextTile].node;
 	}
-	if (check > 5) return randomMove(currentIndex);
+	if (check > 8) return randomMove(currentIndex);
 	else return nextTile;
 }
 

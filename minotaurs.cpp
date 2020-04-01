@@ -26,6 +26,7 @@ HRESULT minotaurs::init(string name, int x, int y, int coin, tagTile * map)
 	_isRage = false;
 	_downCnt = 0;
 	_isBoss = true;
+	_monsterNameImg = IMAGEMANAGER->findImage("미노타우로스이름");
 	return S_OK;
 }
 

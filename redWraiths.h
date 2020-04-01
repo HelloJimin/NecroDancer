@@ -19,5 +19,7 @@ public:
 	void move() override;
 	void animation() override;
 	void teleport();
+
+	virtual void setIsBeat(int turn) { if (turn % 1 == 0) _isBeat = true; }
 };
 

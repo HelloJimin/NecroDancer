@@ -14,11 +14,12 @@ deathmetal::~deathmetal()
 HRESULT deathmetal::init(string name, int x, int y, int coin, tagTile * map)
 {
 	monster::init(name, x, y, coin, map);
-
+	_monsterNameImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»ÀÌ¸§");
 	_aStar = new aStar;
 	_isBoss = true;
 
 	_atk = 1.5f;
+	addHp();
 	addHp();
 	addHp();
 	addHp();
@@ -302,7 +303,7 @@ void deathmetal::attack()
 			wsprintf(breath, "µå·¡°ïºê·¹½º%d", i % 4 + 2);
 
 			EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex - 1].x - ((i + 1) * 52), _pCurrentMap[_currentTileIndex - 1].y);
-			if (_currentTileIndex - 1 - i == PLAYER->currentTile()) PLAYER->hit(_atk);
+			if (_currentTileIndex - 1 - i == PLAYER->currentTile()) PLAYER->hit(_atk , _monsterNameImg);
 			_isAttack = false;
 		}
 		for (int i = 0; i < _breathRengeR; i++)
@@ -310,7 +311,7 @@ void deathmetal::attack()
 			wsprintf(breath, "µå·¡°ïºê·¹½º%d", i % 4 + 2);
 
 			EFFECTMANAGER->play(breath, _pCurrentMap[_currentTileIndex + 1].x + ((i + 1) * 52), _pCurrentMap[_currentTileIndex + 1].y);
-			if (_currentTileIndex + 1 + i == PLAYER->currentTile()) PLAYER->hit(_atk);
+			if (_currentTileIndex + 1 + i == PLAYER->currentTile()) PLAYER->hit(_atk , _monsterNameImg);
 			_isAttack = false;
 		}
 
@@ -498,19 +499,23 @@ void deathmetal::hit(float damage)
 	_isHit = true;
 	_hitCnt++;
 
-	if (_hitCnt == 1)
-	{
-		_turnSpeed = 2;
-		_phase = PHASE_THREE;
-		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
-	}
-	//if (_hitCnt == 3)
+	//if (_hitCnt == 1)
 	//{
 	//	_turnSpeed = 2;
-	//	_phase = PHASE_TWO;
+	//	_phase = PHASE_THREE;
 	//	_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
 	//}
-
+	if (currentHpCheck() <= 7)
+	{
+		_turnSpeed = 2;
+		_phase = PHASE_TWO;
+		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
+	}
+	if (currentHpCheck()<= 4)
+	{
+		_turnSpeed = 1;
+		_phase = PHASE_THREE;
+	}
 	//if (_hitCnt == 6) _phase = PHASE_THREE;
 
 	for (int i = 0; i < _vHp.size(); i++)
@@ -625,4 +630,15 @@ bool deathmetal::endLineCheck()
 	}
 
 	return false;
+}
+
+int deathmetal::currentHpCheck()
+{
+	float hp = 0;
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0) hp += _vHp[i].hp;
+	}
+
+	return hp;
 }

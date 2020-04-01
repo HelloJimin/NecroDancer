@@ -15,6 +15,7 @@ protected:
 	tagTile* _pCurrentMap;
 
 	image* _monsterImg;
+	image* _monsterNameImg;
 	RECT _collisionRc;
 
 	int _currentX, _currentY;

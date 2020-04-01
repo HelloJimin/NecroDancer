@@ -13,8 +13,11 @@ inventory::~inventory()
 
 HRESULT inventory::init()
 {
+	_vItem.clear();
+	PLAYER->setFrameY(0);
 	addItem(ITEMMANAGER->addItem("±âº»»ð",1,1));
 	addItem(ITEMMANAGER->addItem("±âº»´Ü°Ë",1,1));
+	addItem(ITEMMANAGER->addItem("ÆøÅº",1,1));
 
 	return S_OK;
 }
@@ -30,6 +33,12 @@ void inventory::update()
 		_vItem[i]->update();
 		if (_vItem[i]->getType() == ATTACK) _vItem[i]->active();
 		if (_vItem[i]->getType() == BOMB && _vItem[i]->getValue() == 0)
+		{
+			_vItem.erase(_vItem.begin() + i);
+			--i;
+			itemPosionSet();
+		}
+		if (_vItem[i]->getType() == ITEM && _vItem[i]->getValue() == 0)
 		{
 			_vItem.erase(_vItem.begin() + i);
 			--i;
@@ -71,7 +80,7 @@ void inventory::addItem(item * item)
 		_vItem.push_back(item);
 		for (int i = 0; i < _vItem.size(); ++i)
 		{
-			if (_vItem[i]->getType() == BOMB || _vItem[i]->getType() == ITEM)
+			if (_vItem[i]->getType() == BOMB )
 			{
 				swap(_vItem.back(), _vItem[i]);
 				break;
@@ -84,7 +93,7 @@ void inventory::addItem(item * item)
 
 void inventory::swapItem(int arrNum, item*& _item, int itemNum)
 {
-	if (_item->getType() == BOMB)
+	if (_item->getType() == BOMB )
 	{
 		_vItem[arrNum]->setValue(_item->getValue());
 		ITEMMANAGER->removeItem(itemNum);
@@ -175,7 +184,7 @@ void inventory::itemPosionSet()
 		}
 		if (_vItem[i]->getType() == ITEM)
 		{
-			if (PLAYER->getAtkForm() != FORM_SHORT && getBomb() == NULL)
+			if (getWeapon()==NULL && getBomb() == NULL)
 			{
 				_vItem[i]->setRect(PointMake(30, 50 + 46));
 			}

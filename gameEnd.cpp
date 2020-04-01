@@ -20,7 +20,7 @@ HRESULT gameEnd::init()
 
 	for (int i = 0; i < 2; i++)
 	{
-		_button[i].rc = RectMakeCenter(WINSIZEX / 2 + WINSIZEX / 4 + 20, WINSIZEY / 2 + (i*_button[i].img->getFrameHeight()), _button[i].img->getFrameWidth(), _button[i].img->getFrameHeight());
+		_button[i].rc = RectMakeCenter(WINSIZEX / 2 , WINSIZEY / 2 + _button[i].img->getFrameHeight()*3+ (i*_button[i].img->getFrameHeight()), _button[i].img->getFrameWidth(), _button[i].img->getFrameHeight());
 	}
 	_buttonNum = 0;
 	_check = _button[_buttonNum].rc;
@@ -58,6 +58,7 @@ void gameEnd::update()
 
 			if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 			{
+				_buttonNum = 0;
 				_aClick = false;
 				switch (i)
 				{
@@ -77,11 +78,26 @@ void gameEnd::update()
 	}
 }
 
-void gameEnd::render()
+void gameEnd::render(int coin)
 {
 	if(!_aClick) IMAGEMANAGER->render("죽었습니다", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 233 * 3 / 2, WINSIZEY / 2 + 200);
 	else
 	{
+		
+		IMAGEMANAGER->render("게임요약", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 51*3, 100);
+		IMAGEMANAGER->render("다음적에게죽음", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 86*5, 300);
+		PLAYER->nameImage()->render(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 86 * 5 + 20 + IMAGEMANAGER->findImage("다음적에게죽음")->getWidth() , 300);
+		IMAGEMANAGER->render("코인점수", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 86*4 + 20, 400);
+
+		int temp = 0;
+		for (int i = 0; i < 3; i++)
+		{
+			if (coin < 100 && i == 0)continue;
+			if (coin < 10 && i == 1)continue;
+			PLAYER->getCoinUI().coinImg[i].img->frameRender(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 86 * 4 +40 + IMAGEMANAGER->findImage("코인점수")->getWidth() + (temp*PLAYER->getCoinUI().coinImg[i].img->getFrameWidth()), 405, PLAYER->getCoinUI().coinImg[i].frameX, 0);
+			temp++;
+		}
+
 		for (int i = 0; i < 2; i++)
 		{
 			_button[i].img->frameRender(CAMERAMANAGER->getCameraDC(), _button[i].rc.left, _button[i].rc.top, 0, _button[i].frameY);

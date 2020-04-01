@@ -77,6 +77,7 @@ item * itemManager::addItem(string name,int x, int y)
 	if (name == "ÆøÅº")return new bomb("ÆøÅº",BOMB,1,"ÆÄ±«",x,y,50);
 	if (name == "HP½½·Ô")return new hpSlot(x,y);
 	if (name == "»ç°ú")return new apple("»ç°ú",ITEM,1,0.5f,"È¸º¹",x,y,10);
+	if (name == "Ä¡Å²")return new apple("Ä¡Å²",ITEM,1,3.0f,"È¸º¹",x,y,10);
 
 }
 
@@ -112,4 +113,14 @@ void itemManager::removeItem(int arrNum)
 void itemManager::addItemList(string name, int x, int y)
 {
 	_vItem.push_back(addItem(name, x, y));
+}
+
+void itemManager::shopKeeperDie()
+{
+	for (int i = 0; i < _vItem.size(); ++i)
+	{
+		if (!_vItem[i]->getIsShop())continue;
+		_vItem[i]->getIsShop() = false;
+
+	}
 }

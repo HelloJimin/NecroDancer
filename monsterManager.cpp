@@ -33,7 +33,7 @@ void monsterManager::update()
 		{
 			tagTile* temp = PLAYER->getMap();
 			temp[_vMonster[i]->currentTile()].walkable = true;
-			ITEMMANAGER->addCoin(_vMonster[i]->getCoin(), temp[_vMonster[i]->currentTile()].x, temp[_vMonster[i]->currentTile()].y);
+			if(_vMonster[i]->getCoin() > 0 )ITEMMANAGER->addCoin(_vMonster[i]->getCoin(), temp[_vMonster[i]->currentTile()].x, temp[_vMonster[i]->currentTile()].y);
 			_vMonster.erase(_vMonster.begin() + i);
 		}
 
@@ -134,7 +134,7 @@ void monsterManager::summonZombie(string name, int x, int y)
 void monsterManager::summonBoss(string name, int x, int y)
 {
 	monster* mob = new deathmetal;
-	mob->init(name, x, y, 100, _map);
+	mob->init(name, x, y, 0, _map);
 	_vMonster.push_back(mob);
 }
 

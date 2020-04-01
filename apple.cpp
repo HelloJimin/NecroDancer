@@ -41,12 +41,10 @@ void apple::render(HDC hdc)
 {
 	if (_inInventory && _num > 0)
 	{
-		_itemImg = IMAGEMANAGER->findImage("사과");
+		_itemImg = IMAGEMANAGER->findImage(_name);
 		_slotImg->render(CAMERAMANAGER->getCameraDC(), _rc.left, _rc.top);
 		_itemImg->render(CAMERAMANAGER->getCameraDC(), _rc.left + 8, _rc.top + 11);
 		_button->render(CAMERAMANAGER->getCameraDC(), _rc.left + 25, _rc.top + 60);
-		IMAGEMANAGER->frameRender("숫자", CAMERAMANAGER->getCameraDC(), _rc.left + 45, _rc.top + 40, _num, 0);
-		IMAGEMANAGER->render("작은x버튼", CAMERAMANAGER->getCameraDC(), _rc.left + 35, _rc.top + 50);
 	}
 	else if (!_inInventory)
 	{

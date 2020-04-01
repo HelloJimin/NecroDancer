@@ -91,6 +91,8 @@ private:
 	vector<int> _vTarget;
 	bool _isDie;
 	string _currentMap;
+
+	image* _monsterName;
 public:
 	player();
 	~player();
@@ -118,7 +120,7 @@ public:
 	void HPbarSet();
 	void mine();
 	void getItem(int itemTile);
-	void hit(float damege);
+	void hit(float damege , image* name);
 
 	void keyControl();
 	void animation();
@@ -168,5 +170,10 @@ public:
 	float lerp(float start, float end, float timeAmount) { return (float)((end - start) * timeAmount); }
 
 	void gameReset(string map);
+
+	coinUI getCoinUI() { return _coinUI; }
+
+	image* nameImage() { return _monsterName; }
+	string currentMapName() { return _currentMap; }
 };
 

@@ -15,6 +15,7 @@ HRESULT bat::init(string name, int x, int y, int coin, tagTile * map)
 {
 	monster::init(name, x, y, coin, map);
 	_atk = 0.5f;
+	_monsterNameImg = IMAGEMANAGER->findImage("¹ÚÁãÀÌ¸§");
 	return S_OK;
 }
 

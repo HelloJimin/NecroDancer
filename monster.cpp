@@ -120,7 +120,7 @@ void monster::attack()
 {
 	if (!_isAttack) return;
 
-	PLAYER->hit(_atk);
+	PLAYER->hit(_atk , _monsterNameImg);
 	int x = PLAYER->getCollisionRc().left + (PLAYER->getCollisionRc().right - PLAYER->getCollisionRc().left) / 2;
 	int y = PLAYER->getCollisionRc().top + (PLAYER->getCollisionRc().bottom - PLAYER->getCollisionRc().top) / 2;
 	EFFECTMANAGER->play("грдШ╠Б", x , y);

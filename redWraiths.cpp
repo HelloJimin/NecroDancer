@@ -17,6 +17,7 @@ HRESULT redWraiths::init(string name, int x, int y, int coin, tagTile * map)
 	_direction = LEFT;
 	_aStar = new aStar;
 	_atk = 0.5f;
+	_monsterNameImg = IMAGEMANAGER->findImage("È¥·ÉÀÌ¸§");
 	return S_OK;
 }
 
@@ -26,8 +27,9 @@ void redWraiths::frontCheck()
 	aniCheck();
 
 	_teleportCnt++;
-	if (_teleportCnt == 5)
+	if (_teleportCnt == 15)
 	{
+		teleport();
 		_isTeleport = true;
 	}
 }
@@ -61,7 +63,6 @@ void redWraiths::choiceAction()
 			_isMove = false;
 			_nextTileIndex = _currentTileIndex;
 		}
-		teleport();
 	}
 }
 
@@ -93,18 +94,22 @@ void redWraiths::move()
 
 void redWraiths::animation()
 {
-	if (_isTeleport)
+	if (_isTeleport && BEAT->getCnt()%12 == 0)
 	{
-
+		_frameX++;
+		if (_frameX > _monsterImg->getMaxFrameX())
+		{
+			_isTeleport = false;
+			_frameX = 0;
+		}
 	}
 }
 
 void redWraiths::teleport()
 {
-	if (_isTeleport)
+	//if (_isTeleport)
 	{
 		_teleportCnt++;
-		_isTeleport = false;
 		_isMove = false;
 		int playerTile = PLAYER->currentTile();
 

@@ -16,6 +16,7 @@ HRESULT greenSlime::init(string name, int x, int y, int coin, tagTile * map)
 {
 	monster::init(name, x, y, coin, map);
 	_atk = 0.0f;
+	_monsterNameImg = IMAGEMANAGER->findImage("그린슬라임이름");
 	return S_OK;
 }
 

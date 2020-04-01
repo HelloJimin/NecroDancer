@@ -17,6 +17,7 @@ HRESULT skeleton::init(string name, int x, int y, int coin, tagTile * map)
 	_direction = LEFT;
 	_aStar = new aStar;
 	_atk = 0.5f;
+	_monsterNameImg = IMAGEMANAGER->findImage("½ºÄÌ·¹ÅæÀÌ¸§");
 	return S_OK;
 }
 

@@ -21,12 +21,12 @@ HRESULT player::init()
 
 	_direction = DOWN;
 	
-	_isMove = false;
 	_moveSpeed = 6.5f;
+	_isMove = false;
 	_coin = _diamond = 0;
 
 	_rhythm = 0;
-
+	_isFever = false;
 
 	//½ºÅÈ
 	_hp.currentX = 2;
@@ -97,7 +97,7 @@ void player::render(HDC hdc)
 {
 	if (_isDie)
 	{
-		_gameEnd->render();
+		_gameEnd->render(_coin);
 		return;
 	}
 
@@ -547,7 +547,7 @@ void player::getItem(int itemTile)
 	}
 }
 
-void player::hit(float damege)
+void player::hit(float damege, image* name)
 {
 	float _damege = damege - _status.def;
 	if (_isTaekwondo) _damege *= 2;
@@ -565,19 +565,19 @@ void player::hit(float damege)
 		}
 		else break;
 	}
-
+	_monsterName = name;
 	_isHit = true;
 	_rhythm = 0;
 	HPbarSet();
 	if (dieCheck())
 	{
 		_isDie = true;
-		_currentTileIndex = 1;
-		_nextTileIndex = 1;
-		_currentX = 1;
-		_currentY = 1;
-		_collisionX = 1;
-		_collisionY = 1;
+		_currentTileIndex = 999;
+		_nextTileIndex = 999;
+		_currentX = 999;
+		_currentY = 999;
+		_collisionX = 999;
+		_collisionY = 999;
 
 		_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
 		_collisionRc = RectMakeCenter(_collisionX, _collisionY, 50, 50);
@@ -1217,9 +1217,16 @@ void player::heal(float healPower)
 
 void player::gameReset(string map)
 {
+	SOUNDMANAGER->stop("1-1shop");
 	SOUNDMANAGER->stop(_currentMap);
 	heal(_status.vHp.size() + 1);
 	HPbarSet();
 	_isDie = false;
+	_isMove = false;
+	_coin = _diamond = 0;
+	_rhythm = 0;
+	_isFever = false;
+	_inven->init();
 	SCENEMANAGER->changeScene(map);
+	
 }
