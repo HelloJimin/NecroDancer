@@ -488,6 +488,7 @@ void player::mine()
 
 void player::getItem(int itemTile)
 {
+	SOUNDMANAGER->play("pickup_general");
 	//ÄÚÀÎÀ» ¸Ô¾úÀ¸¸é ÄÚÀÎ¸Ô°í ³¡
 	if (ITEMMANAGER->getItemList()[itemTile]->getName() == "HP½½·Ô")
 	{
@@ -578,7 +579,7 @@ void player::hit(float damege, image* name)
 		_currentY = 999;
 		_collisionX = 999;
 		_collisionY = 999;
-
+		SOUNDMANAGER->play("death");
 		_rc = RectMakeCenter(_currentX, _currentY, 50, 50);
 		_collisionRc = RectMakeCenter(_collisionX, _collisionY, 50, 50);
 	}

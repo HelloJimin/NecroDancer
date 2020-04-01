@@ -224,6 +224,8 @@ void testScene::load()
 
 	if (_currentMap != _oldMap)
 	{
+		SOUNDMANAGER->stop("1-1shop");
+
 		if (_currentMap == "1-1")
 		{
 			HANDLE file;
@@ -258,7 +260,7 @@ void testScene::load()
 			CloseHandle(file);
 		}
 		SOUNDMANAGER->stop(_oldMap);
-		SOUNDMANAGER->play(_currentMap);
+		SOUNDMANAGER->play(_currentMap, 0.7f);
 		BEAT->setMap(_currentMap);
 
 		PLAYER->setMap(_tiles, _currentMap);

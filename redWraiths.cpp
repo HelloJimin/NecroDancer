@@ -107,6 +107,7 @@ void redWraiths::animation()
 
 void redWraiths::teleport()
 {
+	SOUNDMANAGER->play("wraith_cry");
 	//if (_isTeleport)
 	{
 		_teleportCnt++;
@@ -139,4 +140,14 @@ void redWraiths::teleport()
 		}
 		_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
 	}
+}
+
+bool redWraiths::die()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0.0f) return false;
+	}
+	SOUNDMANAGER->play("wraith_death");
+	return true;
 }

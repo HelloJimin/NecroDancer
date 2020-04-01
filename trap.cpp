@@ -110,26 +110,31 @@ void trap::damageCheck()
 		{
 		case OBJ_TRAP:
 			PLAYER->hit(2.0f, _trapName);
+			SOUNDMANAGER->play("trap_spike");
 			break;
 		case OBJ_LEFT:
 			PLAYER->setDirection(LEFT);
 			PLAYER->nextTile() = PLAYER->currentTile() - 1;
 			PLAYER->moveCheck();
+			SOUNDMANAGER->play("trap_bounce");
 			break;
 		case OBJ_RIGHT:
 			PLAYER->setDirection(RIGHT);
 			PLAYER->nextTile() = PLAYER->currentTile() + 1;
 			PLAYER->moveCheck();
+			SOUNDMANAGER->play("trap_bounce");
 			break;
 		case OBJ_UP:
 			PLAYER->setDirection(UP);
 			PLAYER->nextTile() = PLAYER->currentTile() - TILEX;
 			PLAYER->moveCheck();
+			SOUNDMANAGER->play("trap_bounce");
 			break;
 		case OBJ_DOWN:
 			PLAYER->setDirection(DOWN);
 			PLAYER->nextTile() = PLAYER->currentTile() + TILEX;
 			PLAYER->moveCheck();
+			SOUNDMANAGER->play("trap_bounce");
 			break;
 		case OBJ_BOMBTRAP:
 			PLAYER->getBomb() = true;
@@ -145,6 +150,7 @@ void trap::damageCheck()
 		{
 			_frameX++;
 			_trigger = true;
+			SOUNDMANAGER->play("trap_spike");
 			MONSTERMANAGER->getMonster()[i]->hit(2);
 			MONSTERMANAGER->getMonster()[i]->getHit() = false;
 		}

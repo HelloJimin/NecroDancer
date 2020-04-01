@@ -33,7 +33,7 @@ HRESULT attack::init()
 	PLAYER->setWeapom(_form);
 	PLAYER->playerStatus().atk = _power;
 	PLAYER->playerStatus().atkRenge.clear();
-
+	SOUNDMANAGER->play("pickup_weapon");
 	switch (_form)
 	{
 	case FORM_SHORT:

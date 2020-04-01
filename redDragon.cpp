@@ -306,6 +306,7 @@ bool redDragon::die()
 		if (_vHp[i].hp > 0.0f) return false;
 	}
 
+	SOUNDMANAGER->play("dragon_death");
 	BEAT->addHint("출구계단열림");
 	return true;
 }

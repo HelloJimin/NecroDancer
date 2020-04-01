@@ -40,6 +40,7 @@ HRESULT bossStage::init()
 
 	string map = "boss";
 	SOUNDMANAGER->play(map);
+	SOUNDMANAGER->play("deathmetal_welcome");
 	BEAT->setMap(map);
 
 	PLAYER->setMap(_tiles, map);
@@ -225,6 +226,7 @@ void bossStage::close()
 	if (_close) return;
 	if (PLAYER->currentTile() < 737)
 	{
+		SOUNDMANAGER->play("bossStart");
 		_close = true;
 		for (int i = 737; i < 740; ++i)
 		{

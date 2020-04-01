@@ -104,6 +104,7 @@ void deathmetal::frontCheck()
 			_nextTileIndex = _currentTileIndex;
 			_isSkill = true;
 			_delay = true;
+			SOUNDMANAGER->play("deathmetal_fireball");
 			return;
 		}
 
@@ -148,6 +149,7 @@ void deathmetal::choiceAction()
 				summon("½ºÄÌ·¹Åæ");
 				summon("½ºÄÌ·¹Åæ");
 				summon("½ºÄÌ·¹Åæ");
+				SOUNDMANAGER->play("deathmetal_fireball");
 				return;
 			}
 			break;
@@ -215,6 +217,9 @@ bool deathmetal::die()
 		_pCurrentMap[i].objFrameY = 0;
 
 	}
+
+
+	SOUNDMANAGER->play("deathmetal_death");
 	return true;
 }
 
@@ -451,12 +456,14 @@ void deathmetal::aniCheck()
 
 void deathmetal::hit(float damage)
 {
+
 	if (_phase == PHASE_ONE)
 	{
 		DIRECTION pDirection = PLAYER->getPlayerDir();
 		if (_direction == 0 && pDirection == 1 || _direction == 1 && pDirection == 0 ||
 			_direction == 2 && pDirection == 3 || _direction == 3 && pDirection == 2)
 		{
+			SOUNDMANAGER->play("deathmetal_shieldhit");
 			switch (_direction)
 			{
 			case LEFT:
@@ -490,7 +497,7 @@ void deathmetal::hit(float damage)
 			return;
 		}
 	}
-
+	SOUNDMANAGER->play("deathmetal_hit");
 	_delay = false;
 	_isSkill = false;
 	_isAttack = false;
@@ -505,16 +512,16 @@ void deathmetal::hit(float damage)
 	//	_phase = PHASE_THREE;
 	//	_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
 	//}
-	if (currentHpCheck() <= 7)
-	{
-		_turnSpeed = 2;
-		_phase = PHASE_TWO;
-		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
-	}
 	if (currentHpCheck()<= 4)
 	{
 		_turnSpeed = 1;
 		_phase = PHASE_THREE;
+	}
+	else if (currentHpCheck() <= 7)
+	{
+		_turnSpeed = 2;
+		_phase = PHASE_TWO;
+		_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
 	}
 	//if (_hitCnt == 6) _phase = PHASE_THREE;
 

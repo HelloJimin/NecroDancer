@@ -21,5 +21,7 @@ public:
 	void teleport();
 
 	virtual void setIsBeat(int turn) { if (turn % 1 == 0) _isBeat = true; }
+
+	bool die() override;
 };
 

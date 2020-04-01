@@ -32,6 +32,7 @@ void apple::update()
 	if (!_inInventory)return;
 	if (KEYMANAGER->isOnceKeyDown('C') && _num > 0)
 	{
+		SOUNDMANAGER->play("eat");
 		PLAYER->heal(_heal);
 		_num--;
 	}

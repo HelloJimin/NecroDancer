@@ -246,6 +246,7 @@ void minotaurs::rageCheck()
 			if (playerTile == _nextTileIndex - i)
 			{
 				_isRage = true;
+				SOUNDMANAGER->play("minotaur_charge");
 			}
 		}
 		break;
@@ -255,6 +256,7 @@ void minotaurs::rageCheck()
 			if (playerTile == _nextTileIndex + i)
 			{
 				_isRage = true;
+				SOUNDMANAGER->play("minotaur_charge");
 			}
 		}
 		break;
@@ -264,6 +266,7 @@ void minotaurs::rageCheck()
 			if (playerTile == _nextTileIndex - (i*TILEX))
 			{
 				_isRage = true;
+				SOUNDMANAGER->play("minotaur_charge");
 			}
 		}
 		break;
@@ -273,6 +276,7 @@ void minotaurs::rageCheck()
 			if (playerTile == _nextTileIndex + (i*TILEX))
 			{
 				_isRage = true;
+				SOUNDMANAGER->play("minotaur_charge");
 			}
 		}
 		break;
@@ -286,6 +290,7 @@ bool minotaurs::die()
 		if (_vHp[i].hp > 0.0f) return false;
 	}
 
+	SOUNDMANAGER->play("minotaur_death");
 	BEAT->addHint("출구계단열림");
 	return true;
 }

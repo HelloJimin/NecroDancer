@@ -189,14 +189,34 @@ void mainGame::imagesInit()
 
 	//효과음
 	SOUNDMANAGER->addSound("hit", "sound/hit.mp3", false, false);
-	SOUNDMANAGER->addSound("mineOK", "sound/mineOK.mp3", false, false);
-	SOUNDMANAGER->addSound("mineFAIL", "sound/mineFAIL.mp3", false, false);
-	SOUNDMANAGER->addSound("openDoor", "sound/openDoor.mp3", false, false);
+	SOUNDMANAGER->addSound("mineOK", "sound/mineOK.ogg", false, false);
+	SOUNDMANAGER->addSound("mineFAIL", "sound/mineFAIL.ogg", false, false);
+	SOUNDMANAGER->addSound("openDoor", "sound/openDoor.ogg", false, false);
 	SOUNDMANAGER->addSound("bomb", "sound/bomb.mp3", false, false);
-	SOUNDMANAGER->addSound("eat", "sound/eat.mp3", false, false);
+	SOUNDMANAGER->addSound("eat", "sound/eat.ogg", false, false);
 	SOUNDMANAGER->addSound("dig", "sound/dig.mp3", false, false);
 	SOUNDMANAGER->addSound("atk", "sound/atk.mp3", false, false);
-	SOUNDMANAGER->addSound("armor", "sound/armor.mp3", false, false);
+	SOUNDMANAGER->addSound("armor", "sound/armor.ogg", false, false);
+	SOUNDMANAGER->addSound("death", "sound/death.mp3", false, false);
+	SOUNDMANAGER->addSound("bossStart", "sound/bossStart.ogg", false, false);
+	SOUNDMANAGER->addSound("deathmetal_welcome", "sound/deathmetal_welcome.ogg", false, false);
+	SOUNDMANAGER->addSound("wraith_death", "sound/wraith_death.ogg", false, false);
+	SOUNDMANAGER->addSound("deathmetal_shieldhit", "sound/deathmetal_shieldhit.ogg", false, false);
+	SOUNDMANAGER->addSound("deathmetal_shielddrop", "sound/deathmetal_shielddrop.ogg", false, false);
+	SOUNDMANAGER->addSound("deathmetal_hit", "sound/deathmetal_hit.ogg", false, false);
+	SOUNDMANAGER->addSound("deathmetal_death", "sound/deathmetal_death.ogg", false, false);
+	SOUNDMANAGER->addSound("deathmetal_fireball", "sound/deathmetal_fireball.ogg", false, false);
+	SOUNDMANAGER->addSound("wraith_cry", "sound/wraith_cry.ogg", false, false);
+	SOUNDMANAGER->addSound("pickup_weapon", "sound/pickup_weapon.ogg", false, false);
+	SOUNDMANAGER->addSound("pickup_general", "sound/pickup_general.ogg", false, false);
+	SOUNDMANAGER->addSound("trap_spike", "sound/trap_spike.ogg", false, false);
+	SOUNDMANAGER->addSound("trap_bounce", "sound/trap_bounce.ogg", false, false);
+	SOUNDMANAGER->addSound("minotaur_charge", "sound/minotaur_charge.ogg", false, false);
+	SOUNDMANAGER->addSound("minotaur_death", "sound/minotaur_death.ogg", false, false);
+	SOUNDMANAGER->addSound("minotaur_hit", "sound/minotaur_hit.ogg", false, false);
+	SOUNDMANAGER->addSound("dragon_death", "sound/dragon_death.ogg", false, false);
+
+
 
 	//EFFECT
 	EFFECTMANAGER->addEffect("할퀴기", "images/effect/할퀴기.bmp", 120*2, 23*2, 30*2, 23*2, 1, 0.3f,1);
