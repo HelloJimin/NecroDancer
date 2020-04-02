@@ -33,6 +33,7 @@ HRESULT player::init()
 	_hp.img = IMAGEMANAGER->findImage("HP바");
 	_hp.hp = 1.0f;
 
+	_status.vHp.clear();
 	_status.atk = 0;
 	_status.def = 0;
 	_status.minePower = 0;
@@ -178,12 +179,19 @@ void player::attack()
 		MONSTERMANAGER->getMonster()[_vTarget[i]]->hit(_status.atk);
 		if (_isTaekwondo)MONSTERMANAGER->getMonster()[_vTarget[i]]->hit(_status.atk);
 
-		if (!_isFever)
+		if (!_isFever && MONSTERMANAGER->getMonster()[_vTarget[i]]->die())
 		{
 			for (int i = 0; i < TILEX * TILEY; i++)
 			{
 				if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
-				if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
+				if (_pCurrentMap[i].terrainFrameX == 0)
+				{
+					_pCurrentMap[i].terrainFrameY = 4;
+				}
+				else if (_pCurrentMap[i].terrainFrameX == 2)
+				{
+					_pCurrentMap[i].terrainFrameY = 5;
+				}
 			}
 			_isFever = true;
 		}
@@ -422,8 +430,20 @@ void player::setMap(tagTile tile[], string map)
 	_currentTileIndex = _tileX + _tileY * TILEX;
 	_nextTileIndex = _tileX + (_tileY + 1) * TILEX;
 	_isMove = false;
+	_rhythm = 0;
+	_isFever = false;
+	_coin = _diamond = 0;
 	_ray->init(_pCurrentMap);
 	_ray->playerRay(_currentTileIndex,_rayPower);
+	_status.vHp.clear();
+	_status.atk = 0;
+	_status.def = 0;
+	_status.minePower = 0;
+	_status.vHp.push_back(_hp);
+	_status.vHp.push_back(_hp);
+	_status.vHp.push_back(_hp);
+	_inven->init();
+	HPbarSet();
 }
 
 void player::HPbarSet()
@@ -552,7 +572,7 @@ void player::hit(float damege, image* name)
 {
 	float _damege = damege - _status.def;
 	if (_isTaekwondo) _damege *= 2;
-
+	_isHit = true;
 	for (int i = 0; i < _status.vHp.size(); i++)
 	{
 		if (_status.vHp[i].hp <= 0) continue;
@@ -567,8 +587,7 @@ void player::hit(float damege, image* name)
 		else break;
 	}
 	_monsterName = name;
-	_isHit = true;
-	_rhythm = 0;
+	feverTimeReset();
 	HPbarSet();
 	if (dieCheck())
 	{
@@ -602,7 +621,7 @@ void player::keyControl()
 		{
 			BEAT->removeNote();
 			BEAT->addMiss();
-			_rhythm = 0;
+			if(!_isBallet)feverTimeReset();
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
@@ -618,7 +637,7 @@ void player::keyControl()
 		{
 			BEAT->removeNote();
 			BEAT->addMiss();
-			_rhythm = 0;
+			if (!_isBallet)feverTimeReset();
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_UP))
@@ -634,7 +653,7 @@ void player::keyControl()
 		{
 			BEAT->removeNote();
 			BEAT->addMiss();
-			_rhythm = 0;
+			if (!_isBallet)feverTimeReset();
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
@@ -650,7 +669,7 @@ void player::keyControl()
 		{
 			BEAT->removeNote();
 			BEAT->addMiss();
-			_rhythm = 0;
+			if (!_isBallet)feverTimeReset();
 		}
 	}
 }
@@ -714,16 +733,16 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 		switch (_direction)
 		{
 		case LEFT:
-			EFFECTMANAGER->play("단검L", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("단검L", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;
 		case RIGHT:
-			EFFECTMANAGER->play("단검R", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("단검R", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;
 		case UP:
-			EFFECTMANAGER->play("단검Up", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("단검Up", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;
 		case DOWN:
-			EFFECTMANAGER->play("단검Down", MONSTERMANAGER->getMonster()[monArrNum]->getXY().x, MONSTERMANAGER->getMonster()[monArrNum]->getXY().y);
+			EFFECTMANAGER->play("단검Down", _pCurrentMap[_status.atkRenge[0]].x, _pCurrentMap[_status.atkRenge[0]].y);
 			break;
 		}
 		break;
@@ -989,17 +1008,6 @@ void player::feverTime()
 		_coinMultiplier = 2;
 		if (_rhythm > 10) _coinMultiplier = 3;
 	}
-	if (_rhythm == 0 && _isFever)
-	{
-		BEAT->addHint("코인배수사라짐");
-		for (int i = 0; i < TILEX * TILEY; i++)
-		{
-			if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
-			if (_pCurrentMap[i].terrainFrameY == 0) continue;
-			_pCurrentMap[i].terrainFrameY = 0;
-		}
-		_isFever = false;
-	}
 }
 
 void player::coinUIupdate()
@@ -1158,7 +1166,14 @@ void player::isThrow()
 						for (int i = 0; i < TILEX * TILEY; i++)
 						{
 							if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
-							if (_pCurrentMap[i].terrainFrameX == 0) _pCurrentMap[i].terrainFrameY = 4;
+							if (_pCurrentMap[i].terrainFrameX == 0)
+							{
+									_pCurrentMap[i].terrainFrameY = 4;
+							}
+							else if (_pCurrentMap[i].terrainFrameX == 2)
+							{
+								_pCurrentMap[i].terrainFrameY = 5;
+							}
 						}
 						_isFever = true;
 					}
@@ -1230,4 +1245,34 @@ void player::gameReset(string map)
 	_inven->init();
 	SCENEMANAGER->changeScene(map);
 	
+}
+
+void player::feverTimeReset(string hintName)
+{
+	_rhythm = 0;
+	//_isFever = false;
+
+	if (_rhythm == 0 && _isFever)
+	{
+		BEAT->addHint(hintName);
+		if (_currentMap != "boss")
+		{
+			for (int i = 0; i < TILEX * TILEY; i++)
+			{
+				if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+				if (_pCurrentMap[i].terrainFrameY == 0) continue;
+				_pCurrentMap[i].terrainFrameY = 0;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < TILEX * TILEY; i++)
+			{
+				if (_pCurrentMap[i].terrain != TERRAIN_GROUND) continue;
+				if (_pCurrentMap[i].terrainFrameY == 1) continue;
+				_pCurrentMap[i].terrainFrameY = 1;
+			}
+		}
+		_isFever = false;
+	}
 }

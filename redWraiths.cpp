@@ -108,38 +108,29 @@ void redWraiths::animation()
 void redWraiths::teleport()
 {
 	SOUNDMANAGER->play("wraith_cry");
-	//if (_isTeleport)
-	{
-		_teleportCnt++;
-		_isMove = false;
-		int playerTile = PLAYER->currentTile();
 
-		if (_pCurrentMap[playerTile - 5].walkable)
-		{
-			_currentX = _pCurrentMap[playerTile - 5].x;
-			_currentY = _pCurrentMap[playerTile - 5].y;
-			_currentTileIndex = playerTile - 5;
-		}
-		else if (_pCurrentMap[playerTile - TILEX*5].walkable)
-		{
-			_currentX = _pCurrentMap[playerTile - TILEX*5].x;
-			_currentY = _pCurrentMap[playerTile - TILEX*5].y;
-			_currentTileIndex = playerTile - TILEX*5;
-		}
-		else if (_pCurrentMap[playerTile + 5].walkable)
-		{
-			_currentX = _pCurrentMap[playerTile + 5].x;
-			_currentY = _pCurrentMap[playerTile + 5].y;
-			_currentTileIndex = playerTile + 5;
-		}
-		else if (_pCurrentMap[playerTile + TILEX*5].walkable)
-		{
-			_currentX = _pCurrentMap[playerTile + TILEX*5].x;
-			_currentY = _pCurrentMap[playerTile + TILEX*5].y;
-			_currentTileIndex = playerTile + TILEX*5;
-		}
-		_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
+	int playerTile = PLAYER->currentTile();
+	int renge = RND->getInt(5)+2;
+	int summonPosition;
+	bool ok = true;
+	int randomCheck[] = { playerTile - renge , playerTile - TILEX * renge  , playerTile + renge , playerTile + TILEX * renge };
+
+	while (ok)
+	{
+		int random = RND->getInt(4);
+		summonPosition = randomCheck[random];
+
+		if (_pCurrentMap[randomCheck[random]].walkable) ok = false;
 	}
+
+	_isMove = false;
+	_pCurrentMap[_currentTileIndex].walkable = true;
+	_currentTileIndex = summonPosition;
+	_currentX = _pCurrentMap[_currentTileIndex].x;
+	_currentY = _pCurrentMap[_currentTileIndex].y;
+	_nextTileIndex = summonPosition + TILEX;
+	_direction = DOWN;
+	_collisionRc = RectMakeCenter(_currentX, _currentY, 50, 50);
 }
 
 bool redWraiths::die()

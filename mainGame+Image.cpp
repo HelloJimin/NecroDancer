@@ -23,7 +23,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("로드버튼", "images/maptool/로드.bmp", 35, 15, true, RGB(255, 0, 255));
 
 
-	IMAGEMANAGER->addImage("어둡게", "images/어둡게.bmp", 52, 52, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("어둡게", "images/어둡게.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 
 
 	//플레이어
@@ -42,8 +42,10 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("심장", "images/UI/heart.bmp",80*2, 50*2, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("노트전부", "images/UI/noteAll.bmp",18*2, 30*2, 3, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("HP바", "images/UI/hpBar.bmp",72*2, 22*2,3,1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("monsterHpBar", "images/UI/monsterHpBar.bmp",36*3, 11*3,3,1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("노트", "images/UI/note1.bmp",6*2, 30*2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("빗나감", "images/UI/missed.bmp",36*2, 13*2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("박자건너뜀", "images/UI/박자건너뜀.bmp",92*2, 13*2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("인트로", "images/UI/intro.bmp",WINSIZEX,WINSIZEY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("x버튼", "images/UI/x버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("z버튼", "images/UI/z버튼.bmp",10,10, true, RGB(255, 0, 255));
@@ -58,6 +60,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("죽었습니다", "images/UI/death.bmp",233*3,15*3, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("다음적에게죽음", "images/UI/다음적에게죽음.bmp",86*3,12*3, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("코인점수", "images/UI/코인점수.bmp",51*3,12*3, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("승리", "images/UI/승리.bmp",26*3,12*3, false, RGB(255, 0, 255));
 
 
 	IMAGEMANAGER->addFrameImage("스타트", "images/UI/스타트.bmp",330, 162,1,2, true, RGB(255, 0, 255));
@@ -215,6 +218,10 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("minotaur_death", "sound/minotaur_death.ogg", false, false);
 	SOUNDMANAGER->addSound("minotaur_hit", "sound/minotaur_hit.ogg", false, false);
 	SOUNDMANAGER->addSound("dragon_death", "sound/dragon_death.ogg", false, false);
+	SOUNDMANAGER->addSound("bat_attack", "sound/bat_attack.ogg", false, false);
+	SOUNDMANAGER->addSound("bat_death", "sound/bat_death.ogg", false, false);
+	SOUNDMANAGER->addSound("dragon_attack_fire", "sound/dragon_attack_fire.ogg", false, false);
+	SOUNDMANAGER->addSound("dragon_cry", "sound/dragon_cry	.ogg", false, false);
 
 
 

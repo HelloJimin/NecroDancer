@@ -83,7 +83,7 @@ void gameEnd::render(int coin)
 	if(!_aClick) IMAGEMANAGER->render("죽었습니다", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 233 * 3 / 2, WINSIZEY / 2 + 200);
 	else
 	{
-		
+		IMAGEMANAGER->alphaRender("어둡게", EFFECTMANAGER->getDC(), CAMERAX, CAMERAY, 150);
 		IMAGEMANAGER->render("게임요약", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 51*3, 100);
 		IMAGEMANAGER->render("다음적에게죽음", CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 86*5, 300);
 		PLAYER->nameImage()->render(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2 - 86 * 5 + 20 + IMAGEMANAGER->findImage("다음적에게죽음")->getWidth() , 300);

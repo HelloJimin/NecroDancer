@@ -61,12 +61,12 @@ void monster::update()
 
 	_pCurrentMap[_currentTileIndex].walkable = false;
 
+	animation();
 	choiceAction();
 	
 	attack();
 	move();
 
-	animation();
 	hpSet();
 }
 
@@ -222,7 +222,7 @@ void monster::addHp()
 {
 	hp _hp;
 	_hp.currentX = 2;
-	_hp.img = IMAGEMANAGER->findImage("HP¹Ù");
+	_hp.img = IMAGEMANAGER->findImage("monsterHpBar");
 	_hp.hp = 1.0f;
 
 	_vHp.push_back(_hp);
@@ -236,8 +236,11 @@ void monster::hpSet()
 		if (_vHp[i].hp == 0.5f) _vHp[i].currentX = 1;
 		if (_vHp[i].hp == 1.0f) _vHp[i].currentX = 0;
 
-		if(i<4) _vHp[i].rc = RectMakeCenter(_collisionRc.left+(i*_vHp[i].img->getFrameWidth())/2, _collisionRc.top - _vHp[i].img->getFrameHeight()*3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
-		else   _vHp[i].rc = RectMakeCenter(_collisionRc.left + ((i-4)*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight()*2, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+		_vHp[i].rc = RectMakeCenter(_collisionRc.right+ _vHp[i].img->getFrameWidth() - (i*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight() * 3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+
+
+	/*	if(i<4) _vHp[i].rc = RectMakeCenter(_collisionRc.left+(i*_vHp[i].img->getFrameWidth())/2, _collisionRc.top - _vHp[i].img->getFrameHeight()*3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+		else   _vHp[i].rc = RectMakeCenter(_collisionRc.left + ((i-4)*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight()*2, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());*/
 	}
 }
 

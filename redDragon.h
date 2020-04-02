@@ -10,6 +10,8 @@ private:
 	int _minePower;
 	bool _isBreath;
 	bool _delay;
+	int _turn;
+	int _delayTime;
 public:
 	redDragon();
 	~redDragon();
@@ -26,13 +28,13 @@ public:
 	void move() override;
 	void attack() override;
 	void mine();
-
+	void hit(float damage) override;
 	void breathCheck();
 	bool rengeCheck(int tile);
 
 
 	bool die() override;
 
-	virtual void setIsBeat(int turn) { if (turn % 2 == 0) _isBeat = true; }
+	virtual void setIsBeat(int turn) { _turn = turn;  if (turn % 2 == 0) _isBeat = true; }
 };
 

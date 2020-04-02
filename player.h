@@ -175,5 +175,9 @@ public:
 
 	image* nameImage() { return _monsterName; }
 	string currentMapName() { return _currentMap; }
+
+	void feverTimeReset(string hintName = "코인배수사라짐");
+
+	bool getIsBallet() { return _isBallet; }
 };
 

@@ -19,13 +19,10 @@ HRESULT deathmetal::init(string name, int x, int y, int coin, tagTile * map)
 	_isBoss = true;
 
 	_atk = 1.5f;
-	addHp();
-	addHp();
-	addHp();
-	addHp();
-	addHp();
-	addHp();
-	addHp();
+	for(int i = 0 ; i<12; i++)
+	{
+		addHp();
+	}
 
 	_direction = LEFT;
 	_phase = PHASE_ONE;
@@ -81,7 +78,8 @@ void deathmetal::frontCheck()
 
 		break;
 	case PHASE_TWO:
-		_nextTileIndex = _aStar->aStarReverse(_pCurrentMap, _currentTileIndex, endTileFind());
+		_nextTileIndex = _aStar->randomMove(_currentTileIndex);
+			//aStarReverse(_pCurrentMap, _currentTileIndex, endTileFind());
 
 		break;
 	case PHASE_THREE:
@@ -218,7 +216,7 @@ bool deathmetal::die()
 
 	}
 
-
+	BEAT->addHint("½Â¸®");
 	SOUNDMANAGER->play("deathmetal_death");
 	return true;
 }
@@ -463,6 +461,11 @@ void deathmetal::hit(float damage)
 		if (_direction == 0 && pDirection == 1 || _direction == 1 && pDirection == 0 ||
 			_direction == 2 && pDirection == 3 || _direction == 3 && pDirection == 2)
 		{
+			if (_isMove)return;
+			summon("¹ÚÁã");
+			summon("¹ÚÁã");
+			summon("¹ÚÁã");
+			//¹ÚÁã¼ÒÈ¯½ºÅ³ ¼Ò¸® Ãß°¡¤¡¤¡
 			SOUNDMANAGER->play("deathmetal_shieldhit");
 			switch (_direction)
 			{
@@ -490,10 +493,6 @@ void deathmetal::hit(float damage)
 				_pCurrentMap[_nextTileIndex].walkable = false;
 				_currentTileIndex = _nextTileIndex;
 			}
-
-			summon("¹ÚÁã");
-			summon("¹ÚÁã");
-			summon("¹ÚÁã");
 			return;
 		}
 	}
@@ -512,12 +511,12 @@ void deathmetal::hit(float damage)
 	//	_phase = PHASE_THREE;
 	//	_monsterImg = IMAGEMANAGER->findImage("µ¥½º¸ÞÅ»2");
 	//}
-	if (currentHpCheck()<= 4)
+	if (currentHpCheck()<= 5)
 	{
 		_turnSpeed = 1;
 		_phase = PHASE_THREE;
 	}
-	else if (currentHpCheck() <= 7)
+	else if (currentHpCheck() <= 9)
 	{
 		_turnSpeed = 2;
 		_phase = PHASE_TWO;

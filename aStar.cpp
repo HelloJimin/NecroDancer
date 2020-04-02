@@ -138,11 +138,14 @@ int aStar::aStarStraight(tagTile tile[], int currentIndex, int endIndex)
 		}
 	}
 
-	if (noPath) return currentIndex;
+	if (noPath) return randomMove(currentIndex);
 
 	int nextTile = endTile;
+	int check = 0;
 	while (tile[nextTile].node != startTile && isFind)
 	{
+		check++;
+		if (check > 10) return randomMove(currentIndex);
 		nextTile = tile[nextTile].node;
 	}
 	return nextTile;

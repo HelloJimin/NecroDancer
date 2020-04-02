@@ -31,28 +31,38 @@ HRESULT redDragon::init(string name, int x, int y, int coin, tagTile * map)
 void redDragon::frontCheck()
 {
 	_nextTileIndex = _aStar->aStarBoss(_pCurrentMap, _currentTileIndex, PLAYER->currentTile());
-	breathCheck();
+	//breathCheck();
 	aniCheck();
 }
 
 void redDragon::choiceAction()
 {
 	if (_isMove) return;
+	if (_delay)
+	{
+		_delayTime++;
+	}
+
+	if (_turn % 1 == 0)
+	{
+		if (_delay && _delayTime % 57 == 0)
+		{
+			_delayTime++;
+			_isBreath = true;
+			_isAttack = true;
+			_isBeat = false;
+			return;
+		}
+
+		breathCheck();
+	}
 
 	if (_isBeat)
 	{
 		_isBeat = false;
-		if (_delay)
-		{
-			_isBreath = true;
-			_isAttack = true;
-			return;
-		}
-
-		frontCheck();
-
 		if (_delay)return;
 
+		frontCheck();
 		if (playerCheck())
 		{
 			_isAttack = true;
@@ -91,7 +101,7 @@ void redDragon::animation()
 	}
 	else
 	{
-		if (BEAT->getCnt() % 22 == 0)
+		if (BEAT->getCnt() % 19 == 0)
 		{
 			_frameX++;
 			if (_frameX > _monsterImg->getMaxFrameX())
@@ -100,6 +110,7 @@ void redDragon::animation()
 				_isBreath = false;
 				_isAttack = false;
 				_isBreath = false;
+				_delayTime = 0;
 				_frameX =0;
 			}
 		}
@@ -209,11 +220,12 @@ void redDragon::attack()
 	{
 		_isBreath = false;
 		_isAttack = false;
-		_isBreath = false;
+		_delayTime = 0;
 
 		_breathRenge = 0;
-		int temp = _nextTileIndex;
 
+		int temp = _nextTileIndex;
+		SOUNDMANAGER->play("dragon_attack_fire");
 		switch (_direction)
 		{
 		case LEFT:
@@ -261,41 +273,46 @@ void redDragon::mine()
 		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
 		_pCurrentMap[_nextTileIndex].strength = 0;
 		_pCurrentMap[_nextTileIndex].walkable = true;
+		_pCurrentMap[_nextTileIndex].itemPoint = "";
 	}
+}
+
+void redDragon::hit(float damage)
+{
+	monster::hit(damage);
+	SOUNDMANAGER->play("dragon_cry");
 }
 
 void redDragon::breathCheck()
 {
+	if (_delay) return;
+
+
 	int playerTile = PLAYER->currentTile();
 	int checkTile = 5;
-	switch (_direction)
+
+	for (int i = 0; i < checkTile; i++)
 	{
-	case LEFT:
-		for (int i = 0; i < checkTile; i++)
+		if (!rengeCheck(_currentTileIndex - i)) return;
+		if (playerTile == _currentTileIndex - i)
 		{
-			if (playerTile == _currentTileIndex - i)
-			{
-				_delay = true;
-				_frameX = 4;
-				break;
-			}
+			_delay = true;
+			_frameX = 4;
+			_direction = LEFT;
+			return;
 		}
-		break;
-	case RIGHT:
-		for (int i = 0; i < checkTile; i++)
+	}
+
+	for (int i = 0; i < checkTile; i++)
+	{
+		if (!rengeCheck(_currentTileIndex + i)) return;
+		if (playerTile == _currentTileIndex + i)
 		{
-			if (playerTile == _currentTileIndex + i)
-			{
-				_delay = true;
-				_frameX = 4;
-				break;
-			}
+			_delay = true;
+			_frameX = 4;
+			_direction = RIGHT;
+			return;
 		}
-		break;
-	case UP:	_delay = false;
-		break;
-	case DOWN:	_delay = false;
-		break;
 	}
 }
 

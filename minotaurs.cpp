@@ -148,6 +148,7 @@ void minotaurs::mine()
 		_pCurrentMap[_nextTileIndex].obj = OBJ_NONE;
 		_pCurrentMap[_nextTileIndex].strength = 0;
 		_pCurrentMap[_nextTileIndex].walkable = true;
+		_pCurrentMap[_nextTileIndex].itemPoint = "";
 	}
 }
 
@@ -293,4 +294,10 @@ bool minotaurs::die()
 	SOUNDMANAGER->play("minotaur_death");
 	BEAT->addHint("출구계단열림");
 	return true;
+}
+
+void minotaurs::hit(float damage)
+{
+	monster::hit(damage);
+	SOUNDMANAGER->play("minotaur_hit");
 }

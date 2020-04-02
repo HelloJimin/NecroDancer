@@ -55,6 +55,7 @@ void beat::update()
 			_noteTiming = 0;
 		}
 	}
+	_okTime = 1;
 	missUpdate();
 }
 
@@ -250,6 +251,14 @@ void beat::noteMove()
 			_vNoteR.erase(_vNoteR.begin() + i);
 			_okTime = 0;
 			PLAYER->setIsBeat(false);
+			if (!KEYMANAGER->isOnceKeyDown(VK_UP) &&
+				!KEYMANAGER->isOnceKeyDown(VK_DOWN) && 
+				!KEYMANAGER->isOnceKeyDown(VK_LEFT) && 
+				!KEYMANAGER->isOnceKeyDown(VK_RIGHT) &&
+				!PLAYER->getIsBallet())
+			{
+				PLAYER->feverTimeReset("¹ÚÀÚ°Ç³Ê¶Ü");
+			}
 		}
 		else
 		{
@@ -321,10 +330,11 @@ void beat::addMiss()
 void beat::addHint(string keyname)
 {
 	miss _temp;
+	tagTile* temp = PLAYER->getMap();
 
 	_temp.alpha = 0;
 	_temp.img = IMAGEMANAGER->findImage(keyname);
-	_temp.rc = RectMakeCenter(WINSIZEX/2, WINSIZEY/2, _temp.img->getWidth(), _temp.img->getHeight());
+	_temp.rc = RectMakeCenter(temp[PLAYER->currentTile()].x - CAMERAX, temp[PLAYER->currentTile()].y - CAMERAY, _temp.img->getWidth(), _temp.img->getHeight());
 	_temp.speed = 1;
 	_temp.max = WINSIZEY/2 - 100;
 	_vMiss.push_back(_temp);

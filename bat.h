@@ -12,5 +12,8 @@ public:
 	void move() override;
 	void frontCheck() override;
 	void choiceAction() override;
+	void attack() override;
+	bool die() override;
+
 };
 

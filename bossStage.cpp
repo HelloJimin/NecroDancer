@@ -51,6 +51,13 @@ HRESULT bossStage::init()
 	trapInit();
 	_close = false;
 
+	for (int i = 0; i < TILEX*TILEY; i++)
+	{
+		if (_tiles[i].terrain == TERRAIN_NONE)continue;
+		_tiles[i].terrainFrameX += 2;
+		_tiles[i].terrainFrameY += 1;
+		
+	}
 	return S_OK;
 }
 
@@ -191,18 +198,15 @@ void bossStage::debugRender()
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		SetBkMode(getMemDC(), TRANSPARENT);
-		SetTextColor(getMemDC(), RGB(255, 0, 0));
-
+		char str[128];
 		for (int i = 0; i < TILEX * TILEY; i++)
 		{
-			if (!_tiles[i].look)continue;
+			if (_tiles[i].ray == 0)continue;
 
-			char str[128];
 			sprintf_s(str, "%d", i);
 			TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
 			sprintf_s(str, "%d", _tiles[i].ray);
-			TextOut(getMemDC(), _tiles[i].rc.left+20, _tiles[i].rc.top+20, str, strlen(str));
+			TextOut(getMemDC(), _tiles[i].rc.left + 20, _tiles[i].rc.top + 20, str, strlen(str));
 		}
 	}
 }
@@ -317,25 +321,26 @@ void bossStage::groundPattern()
 			{
 				_tiles[i].terrainFrameX += 1;
 
-				if (_tiles[i].terrainFrameX > 1)
+				if (_tiles[i].terrainFrameX > 3)
 				{
-					_tiles[i].terrainFrameX = 0;
+					_tiles[i].terrainFrameX = 2;
 				}
 
 				if (!PLAYER->getFever())continue;
 
 				_tiles[i].terrainFrameX += 1;
 
-				if (_tiles[i].terrainFrameX > 1)
+				if (_tiles[i].terrainFrameX > 3)
 				{
-					_tiles[i].terrainFrameX = 0;
+					_tiles[i].terrainFrameX = 2;
 				}
 
-				if (_tiles[i].terrainFrameY == 0) _tiles[i].terrainFrameY = 4;
-				else _tiles[i].terrainFrameY = 0;
+				if (_tiles[i].terrainFrameY == 1) _tiles[i].terrainFrameY = 5;
+				else _tiles[i].terrainFrameY = 1;
 			}
 		}
 	}
+
 }
 
 void bossStage::addBomb()
