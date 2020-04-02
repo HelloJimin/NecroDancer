@@ -390,7 +390,7 @@ void bossStage::doorUpdate()
 	{
 		SOUNDMANAGER->stop("boss");
 		SCENEMANAGER->changeScene("·Îºñ½Å");
-
+		PLAYER->playerInfoInit();
 	}
 
 }

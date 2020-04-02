@@ -404,6 +404,7 @@ void player::UIrender(HDC hdc)
 	wsprintf(_str, "¹ÚÀÚ¸ÂÃá È½¼ö%d", _rhythm);
 	TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX - 60, 125, _str, strlen(_str));
 
+	miniMap();
 }
 
 void player::setMap(tagTile tile[], string map)
@@ -432,18 +433,8 @@ void player::setMap(tagTile tile[], string map)
 	_isMove = false;
 	_rhythm = 0;
 	_isFever = false;
-	_coin = _diamond = 0;
 	_ray->init(_pCurrentMap);
 	_ray->playerRay(_currentTileIndex,_rayPower);
-	_status.vHp.clear();
-	_status.atk = 0;
-	_status.def = 0;
-	_status.minePower = 0;
-	_status.vHp.push_back(_hp);
-	_status.vHp.push_back(_hp);
-	_status.vHp.push_back(_hp);
-	_inven->init();
-	HPbarSet();
 }
 
 void player::HPbarSet()
@@ -781,31 +772,31 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 		switch (_direction)
 		{
 		case LEFT:
-			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïL0", _collisionX-30,_collisionY);
+			if		(renge == 3)EFFECTMANAGER->play("Ã¤ÂïL0", _collisionX-30,_collisionY);
 			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïL1", _collisionX-30,_collisionY);
-			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïL2", _collisionX-30,_collisionY);
-			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïL3", _collisionX-30,_collisionY);
+			else if (renge == 0)EFFECTMANAGER->play("Ã¤ÂïL2", _collisionX-30,_collisionY);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïL3", _collisionX-30,_collisionY);
 			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïL4", _collisionX-30,_collisionY);
 			break;													
 		case RIGHT:													
-			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïR0", _collisionX+30,_collisionY);
+			if		(renge == 3)EFFECTMANAGER->play("Ã¤ÂïR0", _collisionX+30,_collisionY);
 			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïR1", _collisionX+30,_collisionY);
-			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïR2", _collisionX+30,_collisionY);
-			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïR3", _collisionX+30,_collisionY);
+			else if (renge == 0)EFFECTMANAGER->play("Ã¤ÂïR2", _collisionX+30,_collisionY);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïR3", _collisionX+30,_collisionY);
 			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïR4", _collisionX+30,_collisionY);
 			break;													
 		case UP:													
-			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïU0", _collisionX,_collisionY-30);
+			if		(renge == 3)EFFECTMANAGER->play("Ã¤ÂïU0", _collisionX,_collisionY-30);
 			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïU1", _collisionX,_collisionY-30);
-			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïU2", _collisionX,_collisionY-30);
-			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïU3", _collisionX,_collisionY-30);
+			else if (renge == 0)EFFECTMANAGER->play("Ã¤ÂïU2", _collisionX,_collisionY-30);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïU3", _collisionX,_collisionY-30);
 			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïU4", _collisionX,_collisionY-30);
 			break;													
 		case DOWN:													
-			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïD0", _collisionX,_collisionY+30);
+			if		(renge == 3)EFFECTMANAGER->play("Ã¤ÂïD0", _collisionX,_collisionY+30);
 			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïD1", _collisionX,_collisionY+30);
-			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïD2", _collisionX,_collisionY+30);
-			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïD3", _collisionX,_collisionY+30);
+			else if (renge == 0)EFFECTMANAGER->play("Ã¤ÂïD2", _collisionX,_collisionY+30);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïD3", _collisionX,_collisionY+30);
 			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïD4", _collisionX,_collisionY+30);
 			break;
 		}
@@ -1094,6 +1085,7 @@ void player::attackCheck()
 
 void player::isThrow()
 {
+	SOUNDMANAGER->play("throw");
 	int arrowRenge = 0;
 	int temp = _nextTileIndex;
 
@@ -1243,6 +1235,9 @@ void player::gameReset(string map)
 	_rhythm = 0;
 	_isFever = false;
 	_inven->init();
+	playerInfoInit();
+
+
 	SCENEMANAGER->changeScene(map);
 	
 }
@@ -1275,4 +1270,125 @@ void player::feverTimeReset(string hintName)
 		}
 		_isFever = false;
 	}
+}
+
+void player::playerInfoInit()
+{
+	_status.vHp.clear();
+	_coin = _diamond = 0;
+	_status.atk = 0;
+	_status.def = 0;
+	_status.minePower = 0;
+	_status.vHp.push_back(_hp);
+	_status.vHp.push_back(_hp);
+	_status.vHp.push_back(_hp);
+	_inven->init();
+	HPbarSet();
+
+	_isHit = false;
+	_isTaekwondo = false;
+	_isFly = false;
+	_isBallet = false;
+}
+
+void player::miniMap()
+{
+		HPEN h_null_pen = CreatePen(PS_NULL, 0, RGB(0, 0, 0));
+		HGDIOBJ h_old_pen = SelectObject(CAMERAMANAGER->getCameraDC(), h_null_pen);
+		int renge = 1;
+	for (int i = 0; i < TILEX*TILEY; ++i)
+	{
+		if (!_pCurrentMap[i].look)continue;
+
+		if (_pCurrentMap[i].terrain != TERRAIN_NONE)
+		{
+			HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(207, 196, 170));
+			HBRUSH oldBrush = (HBRUSH)SelectObject(CAMERAMANAGER->getCameraDC(), myBrush);
+			Rectangle(CAMERAMANAGER->getCameraDC(), _pCurrentMap[i].rc.left / 5 + WINSIZEX/2 + 200- renge, _pCurrentMap[i].rc.top / 5 + WINSIZEX/2-100- renge, _pCurrentMap[i].rc.right / 5 + WINSIZEX/2 + 200 + renge, _pCurrentMap[i].rc.bottom / 5 + WINSIZEX/2-100+ renge);
+			SelectObject(CAMERAMANAGER->getCameraDC(), oldBrush);
+			DeleteObject(myBrush);
+		}
+
+		if (_pCurrentMap[i].obj == OBJ_NONE) continue;
+
+		int r, g, b;
+		switch (_pCurrentMap[i].obj)
+		{
+		case OBJ_NOMALWALL:
+			r = 161; g = 116; b = 40;
+			break;
+		case OBJ_SKULLWALL:
+			r = 127; g = 82; b = 29;
+			break;
+		case OBJ_WHITEWALL:
+			r = 144; g = 142; b = 141;
+			break;
+		case OBJ_GOLDWALL:
+			r = 255; g = 230; b = 148;
+			break;
+		case OBJ_NEVERWALL:
+			r = 70; g = 70; b = 70;
+			break;
+		case OBJ_TRAP:
+			r = 218; g = 218; b = 218;
+			break;
+		case OBJ_BOMBTRAP:
+			r = 218; g = 218; b = 218;
+			break;
+		case OBJ_LEFT:
+			r = 218; g = 218; b = 218;
+			break;
+		case OBJ_RIGHT:
+			r = 218; g = 218; b = 218;
+			break;
+		case OBJ_UP:
+			r = 218; g = 218; b = 218;
+			break;
+		case OBJ_DOWN:
+			r = 218; g = 218; b = 218;
+			break;
+		case OBJ_DOOR:
+			r = 130; g = 255; b = 0;
+			break;
+		default:
+			r = 161; g = 116; b = 40;
+			break;
+		}
+		
+		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(r, g, b));
+		HBRUSH oldBrush = (HBRUSH)SelectObject(CAMERAMANAGER->getCameraDC(), myBrush);
+		Rectangle(CAMERAMANAGER->getCameraDC(), _pCurrentMap[i].rc.left / 5 + WINSIZEX/2 + 200- renge, _pCurrentMap[i].rc.top / 5 + WINSIZEX/2-100- renge, _pCurrentMap[i].rc.right / 5 + WINSIZEX/2 + 200 + renge, _pCurrentMap[i].rc.bottom / 5 + WINSIZEX/2-100+ renge);
+		SelectObject(CAMERAMANAGER->getCameraDC(), oldBrush);
+		DeleteObject(myBrush);
+		
+		
+	}
+	for (int i = 0; i < MONSTERMANAGER->getMonster().size(); i++)
+	{
+		if (!_pCurrentMap[MONSTERMANAGER->getMonster()[i]->currentTile()].look)continue;
+	
+		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(255, 0, 0));
+		HBRUSH oldBrush = (HBRUSH)SelectObject(CAMERAMANAGER->getCameraDC(), myBrush);
+		Rectangle(CAMERAMANAGER->getCameraDC(), _pCurrentMap[MONSTERMANAGER->getMonster()[i]->currentTile()].rc.left / 5 + WINSIZEX/2 + 200 - renge, _pCurrentMap[MONSTERMANAGER->getMonster()[i]->currentTile()].rc.top / 5 + WINSIZEX/2-100 - renge, _pCurrentMap[MONSTERMANAGER->getMonster()[i]->currentTile()].rc.right / 5 + WINSIZEX/2 + 200 + renge, _pCurrentMap[MONSTERMANAGER->getMonster()[i]->currentTile()].rc.bottom / 5 + WINSIZEX/2-100 + renge);
+		SelectObject(CAMERAMANAGER->getCameraDC(), oldBrush);
+		DeleteObject(myBrush);
+	}
+	for (int i = 0; i < ITEMMANAGER->getItemList().size(); i++)
+	{
+		if (!_pCurrentMap[ITEMMANAGER->getItemList()[i]->getCurrentTile()].look)continue;
+		HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(69, 137, 92));
+		HBRUSH oldBrush = (HBRUSH)SelectObject(CAMERAMANAGER->getCameraDC(), myBrush);
+		Rectangle(CAMERAMANAGER->getCameraDC(), _pCurrentMap[ITEMMANAGER->getItemList()[i]->getCurrentTile()].rc.left / 5 + WINSIZEX/2 + 200 - renge, _pCurrentMap[ITEMMANAGER->getItemList()[i]->getCurrentTile()].rc.top / 5 + WINSIZEX/2-100 - renge, _pCurrentMap[ITEMMANAGER->getItemList()[i]->getCurrentTile()].rc.right / 5 + WINSIZEX/2 + 200 + renge, _pCurrentMap[ITEMMANAGER->getItemList()[i]->getCurrentTile()].rc.bottom / 5 + WINSIZEX/2-100 + renge);
+		SelectObject(CAMERAMANAGER->getCameraDC(), oldBrush);
+		DeleteObject(myBrush);
+	}
+
+	HBRUSH myBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 255));
+	HBRUSH oldBrush = (HBRUSH)SelectObject(CAMERAMANAGER->getCameraDC(), myBrush);
+	Rectangle(CAMERAMANAGER->getCameraDC(), _pCurrentMap[_currentTileIndex].rc.left / 5 + WINSIZEX/2 + 200 - renge, _pCurrentMap[_currentTileIndex].rc.top / 5 + WINSIZEX/2-100 - renge, _pCurrentMap[_currentTileIndex].rc.right / 5 + WINSIZEX/2 + 200 + renge, _pCurrentMap[_currentTileIndex].rc.bottom / 5 + WINSIZEX/2-100 + renge);
+	SelectObject(CAMERAMANAGER->getCameraDC(), oldBrush);
+	DeleteObject(myBrush);
+
+		SelectObject(CAMERAMANAGER->getCameraDC(), h_old_pen);
+		DeleteObject(h_null_pen);
 }

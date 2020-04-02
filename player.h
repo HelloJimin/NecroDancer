@@ -179,5 +179,8 @@ public:
 	void feverTimeReset(string hintName = "코인배수사라짐");
 
 	bool getIsBallet() { return _isBallet; }
+	void playerInfoInit();
+
+	void miniMap();
 };
 

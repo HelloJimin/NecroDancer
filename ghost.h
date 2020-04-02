@@ -20,7 +20,7 @@ public:
 	void choiceAction() override;
 	virtual void move() override;
 	void alphaCheck();
-
+	bool die() override;
 	virtual void setIsBeat(int turn) { if (turn % 1 == 0) _isBeat = true; }
 };
 

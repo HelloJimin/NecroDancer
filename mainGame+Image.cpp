@@ -52,6 +52,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addImage("c버튼", "images/UI/c버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("작은x버튼", "images/UI/작은x버튼.bmp",10,10, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("게임요약", "images/UI/게임요약.bmp",102*3,24*3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보호막에막힘", "images/UI/보호막에막힘.bmp",118*2,18*2, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("코인배수", "images/UI/코인배수.bmp",150,30, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("코인배수사라짐", "images/UI/코인배수사라짐.bmp",180,30, true, RGB(255, 0, 255));
@@ -186,6 +187,7 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("1-1", "sound/1-1.ogg", true, true);
 	SOUNDMANAGER->addSound("1-2", "sound/1-2.ogg", true, true);
 	SOUNDMANAGER->addSound("1-1shop", "sound/1-1shop.ogg", true, true);
+	SOUNDMANAGER->addSound("1-2shop", "sound/1-2shop.ogg", true, true);
 	SOUNDMANAGER->addSound("intro", "sound/intro.mp3", true, true);
 	SOUNDMANAGER->addSound("lobby", "sound/lobby.mp3", true, true);
 	SOUNDMANAGER->addSound("boss", "sound/boss.ogg", true, true);
@@ -221,7 +223,10 @@ void mainGame::imagesInit()
 	SOUNDMANAGER->addSound("bat_attack", "sound/bat_attack.ogg", false, false);
 	SOUNDMANAGER->addSound("bat_death", "sound/bat_death.ogg", false, false);
 	SOUNDMANAGER->addSound("dragon_attack_fire", "sound/dragon_attack_fire.ogg", false, false);
-	SOUNDMANAGER->addSound("dragon_cry", "sound/dragon_cry	.ogg", false, false);
+	SOUNDMANAGER->addSound("dragon_cry", "sound/dragon_cry.ogg", false, false);
+	SOUNDMANAGER->addSound("skel_death", "sound/skel_death.ogg", false, false);
+	SOUNDMANAGER->addSound("ghost_attack", "sound/ghost_attack.ogg", false, false);
+	SOUNDMANAGER->addSound("throw", "sound/throw.ogg", false, false);
 
 
 

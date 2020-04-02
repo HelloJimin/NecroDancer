@@ -68,3 +68,14 @@ void skeleton::animation()
 		if (_frameX > _monsterImg->getMaxFrameX())_frameX = 0;
 	}
 }
+
+bool skeleton::die()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0.0f) return false;
+	}
+	SOUNDMANAGER->play("skel_death");
+	return true;	
+
+}

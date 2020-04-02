@@ -62,6 +62,11 @@ void mapTool::update()
 	}
 	controlSampleWindow();
 	cameraMove();
+
+	if (KEYMANAGER->isOnceKeyDown('V'))
+	{
+		SCENEMANAGER->changeScene("ÀÎÆ®·Î½Å");
+	}
 }
 
 void mapTool::render()
@@ -797,7 +802,7 @@ const char* mapTool::etcSelect(int frameX, int frameY)
 	if (frameX == 3 && frameY == 0) return "ºû³ª´ÂÈ¶ºÒ";
 
 	if (frameX == 0 && frameY == 1) return "Æ¼Å¸´½´Ü°Ë";
-	if (frameX == 1 && frameY == 1) return "Æ¼Å¸´½´ë°Ë";
+	if (frameX == 1 && frameY == 1) return "±âº»´ë°Ë";
 
 	if (frameX == 2 && frameY == 1) return "Æ¼Å¸´½È°";
 	if (frameX == 3 && frameY == 1) return "Æ¼Å¸´½Ã¢";
@@ -812,7 +817,7 @@ const char* mapTool::etcSelect(int frameX, int frameY)
 	if (frameX == 1 && frameY == 3) return "¹ß·¹½´Áî";
 
 	if (frameX == 2 && frameY == 3) return "ÆøÅº";
-	if (frameX == 3 && frameY == 3) return "»ç°ú";
+	if (frameX == 3 && frameY == 3) return "Ä¡Å²";
 
 	return "";
 }

@@ -55,7 +55,6 @@ void beat::update()
 			_noteTiming = 0;
 		}
 	}
-	_okTime = 1;
 	missUpdate();
 }
 
@@ -190,7 +189,7 @@ void beat::addNote(float lapse)
 	note _note;
 
 	_note.img = IMAGEMANAGER->findImage("³ëÆ®");
-	_note.x = 0;
+	_note.x = 0+ lapse;
 	_note.y = WINSIZEY - 100;
 	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
 	_note.alpha = 0;
@@ -202,7 +201,7 @@ void beat::addNote(float lapse)
 
 	_vNoteL.push_back(_note);
 
-	_note.x = WINSIZEX;
+	_note.x = WINSIZEX - lapse;
 	_note.rc = RectMakeCenter(_note.x, _note.y, _note.img->getWidth(), _note.img->getHeight());
 	_note.speed = lerp(WINSIZEX, WINSIZEX/2, (_deltaTime / ((tempMS+bpm) / 1000.0f)) /4);
 	//_note.speed = _deltaTime * tempMS * (tempMS/1000.0f);

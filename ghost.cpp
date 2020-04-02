@@ -114,3 +114,13 @@ void ghost::alphaCheck()
 	if (_direction == LEFT) _monsterImg = IMAGEMANAGER->findImage("투명고스트L");
 	if (_direction == RIGHT) _monsterImg = IMAGEMANAGER->findImage("투명고스트R");
 }
+
+bool ghost::die()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp > 0.0f) return false;
+	}
+	SOUNDMANAGER->play("ghost_attack");
+	return true;
+}

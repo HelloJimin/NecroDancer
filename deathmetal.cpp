@@ -454,7 +454,6 @@ void deathmetal::aniCheck()
 
 void deathmetal::hit(float damage)
 {
-
 	if (_phase == PHASE_ONE)
 	{
 		DIRECTION pDirection = PLAYER->getPlayerDir();
@@ -467,6 +466,7 @@ void deathmetal::hit(float damage)
 			summon("박쥐");
 			//박쥐소환스킬 소리 추가ㄱㄱ
 			SOUNDMANAGER->play("deathmetal_shieldhit");
+			BEAT->addHint("보호막에막힘");
 			switch (_direction)
 			{
 			case LEFT:
@@ -499,9 +499,6 @@ void deathmetal::hit(float damage)
 	SOUNDMANAGER->play("deathmetal_hit");
 	_delay = false;
 	_isSkill = false;
-	_isAttack = false;
-	_isMove = false;
-
 	_isHit = true;
 	_hitCnt++;
 
@@ -537,7 +534,7 @@ void deathmetal::hit(float damage)
 		else break;
 	}
 
-	if (_phase != PHASE_ONE)
+	if (_phase != PHASE_ONE && !_isMove)
 	{
 		teleport();
 	}

@@ -179,7 +179,7 @@ void inventory::itemPosionSet()
 
 			if(getWeapon() == NULL)
 			{
-				_vItem[i]->setRect(PointMake(30, 50 + 66));
+				_vItem[i]->setRect(PointMake(30, 50 + 46));
 			}
 		}
 		if (_vItem[i]->getType() == ITEM)

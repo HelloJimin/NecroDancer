@@ -21,10 +21,8 @@ HRESULT shopKeeper::init(string name, int x, int y, int coin, tagTile * map)
 	addHp();
 	addHp();
 	addHp();
-	addHp();
-	addHp();
-	addHp();
-	addHp();
+
+
 	_monsterNameImg = IMAGEMANAGER->findImage("상점주인이름");
 	return S_OK;
 }
@@ -38,7 +36,6 @@ void shopKeeper::update()
 		_isBeat = true;
 	}
 	if (!BEAT->getIsBeat()) _isBeat = false;
-
 
 	_pCurrentMap[_currentTileIndex].walkable = false;
 	animation();
@@ -115,7 +112,7 @@ bool shopKeeper::die()
 	{
 		if (_vHp[i].hp > 0.0f) return false;
 	}
-	SOUNDMANAGER->stop("1-1shop");
+	SOUNDMANAGER->stop("1-2shop");
 	ITEMMANAGER->shopKeeperDie();
 	return true;
 }
@@ -123,7 +120,7 @@ bool shopKeeper::die()
 void shopKeeper::hit(float damage)
 {
 	monster::hit(damage);
-	SOUNDMANAGER->stop("1-1shop");
+	SOUNDMANAGER->stop("1-2shop");
 }
 
 void shopKeeper::BGMcheck()
@@ -132,12 +129,12 @@ void shopKeeper::BGMcheck()
 
 
 	float distance = getDistance(_currentX, _currentY, PLAYER->getX(), PLAYER->getY());
-	if (distance <= 1000)
+	if (distance <= 700)
 	{
-		float volume = 1000 / distance ;
-		 SOUNDMANAGER->volumeSet("1-1shop", volume * 0.15f);
+		float volume = 700 / distance ;
+		 SOUNDMANAGER->volumeSet("1-2shop", volume * 0.15f);
 	}
-	else SOUNDMANAGER->volumeSet("1-1shop", 0.0f);
+	else SOUNDMANAGER->volumeSet("1-2shop", 0.0f);
 
 
 	//if (distance  < 1000) SOUNDMANAGER->volumeSet("1-1shop",1.0f);
