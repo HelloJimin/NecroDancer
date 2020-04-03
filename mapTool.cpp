@@ -769,7 +769,7 @@ const char* mapTool::monsterSelect(int frameX, int frameY)
 	if (frameX == 1 && frameY == 1) return "박쥐";
 
 	if (frameX == 2 && frameY == 1) return "좀비";
-	if (frameX == 3 && frameY == 1) return "";
+	if (frameX == 3 && frameY == 1) return "클론";
 
 	if (frameX == 0 && frameY == 2) return "미노타우로스";
 	if (frameX == 1 && frameY == 2) return "레드드래곤";

@@ -28,7 +28,7 @@ public:
 	void move() override;
 
 	void mine();
-
+	void hpSet() override;
 	void rageCheck();
 	bool die() override;
 	void hit(float damage) override;

@@ -78,18 +78,18 @@ void lobbyScene::debugRender()
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
+		//SetBkMode(getMemDC(), TRANSPARENT);
+		//SetTextColor(getMemDC(), RGB(255, 0, 0));
+
+		char str[128];
 		for (int i = 0; i < TILEX * TILEY; i++)
 		{
-			if (CAMERAX - 100 < _tiles[i].x && _tiles[i].x < CAMERAX + WINSIZEX + 100 && CAMERAY - 100 < _tiles[i].y&& _tiles[i].y < CAMERAY + WINSIZEY + 100)
-			{
-				SetBkMode(getMemDC(), TRANSPARENT);
-				//»ö»ó
-				SetTextColor(getMemDC(), RGB(255, 0, 0));
+			if (_tiles[i].ray == 0)continue;
 
-				char str[128];
-				sprintf_s(str, "%d", i);
-				TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
-			}
+			sprintf_s(str, "%d", i);
+			TextOut(getMemDC(), _tiles[i].rc.left, _tiles[i].rc.top, str, strlen(str));
+			sprintf_s(str, "%d", _tiles[i].ray);
+			TextOut(getMemDC(), _tiles[i].rc.left + 20, _tiles[i].rc.top + 20, str, strlen(str));
 		}
 	}
 }

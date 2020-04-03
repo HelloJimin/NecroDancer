@@ -152,6 +152,22 @@ void minotaurs::mine()
 	}
 }
 
+void minotaurs::hpSet()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp <= 0.0f) _vHp[i].currentX = 2;
+		if (_vHp[i].hp == 0.5f) _vHp[i].currentX = 1;
+		if (_vHp[i].hp == 1.0f) _vHp[i].currentX = 0;
+
+		_vHp[i].rc = RectMakeCenter(_collisionRc.right + _vHp[i].img->getFrameWidth() - (i*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight() * 3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+
+
+		/*	if(i<4) _vHp[i].rc = RectMakeCenter(_collisionRc.left+(i*_vHp[i].img->getFrameWidth())/2, _collisionRc.top - _vHp[i].img->getFrameHeight()*3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+			else   _vHp[i].rc = RectMakeCenter(_collisionRc.left + ((i-4)*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight()*2, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());*/
+	}
+}
+
 void minotaurs::move()
 {
 	if (!_isMove) return;

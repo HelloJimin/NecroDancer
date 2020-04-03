@@ -23,7 +23,7 @@
     <ProjectGuid>{8FF13C43-33AC-4F4E-825D-B864A3A51362}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>APIFrameWork</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -161,6 +161,7 @@
     <ClInclude Include="bombExplosion.h" />
     <ClInclude Include="bossStage.h" />
     <ClInclude Include="cameraManager.h" />
+    <ClInclude Include="clone.h" />
     <ClInclude Include="coin.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="deathmetal.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="bombExplosion.cpp" />
     <ClCompile Include="bossStage.cpp" />
     <ClCompile Include="cameraManager.cpp" />
+    <ClCompile Include="clone.cpp" />
     <ClCompile Include="coin.cpp" />
     <ClCompile Include="deathmetal.cpp" />
     <ClCompile Include="effect.cpp" />

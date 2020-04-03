@@ -18,7 +18,7 @@ protected:
 	image* _monsterNameImg;
 	RECT _collisionRc;
 
-	int _currentX, _currentY;
+	float _currentX, _currentY;
 	int _frameX, _frameY;
 
 	int _tileX, _tileY;
@@ -66,7 +66,7 @@ public:
 	virtual void move();
 	virtual bool die();
 	void addHp();
-	void hpSet();
+	virtual void hpSet();
 	void hpRender(HDC hdc);
 	virtual void hit(float damage);
 	virtual void aniCheck();

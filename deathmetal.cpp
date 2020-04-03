@@ -78,7 +78,7 @@ void deathmetal::frontCheck()
 
 		break;
 	case PHASE_TWO:
-		_nextTileIndex = _aStar->randomMove(_currentTileIndex);
+		_nextTileIndex = _aStar->randomMove(_pCurrentMap,_currentTileIndex);
 			//aStarReverse(_pCurrentMap, _currentTileIndex, endTileFind());
 
 		break;
@@ -97,7 +97,7 @@ void deathmetal::frontCheck()
 			}
 		}
 
-		if (metal == player && _turnCnt % 2 == 0)
+		if (metal == player)
 		{
 			_nextTileIndex = _currentTileIndex;
 			_isSkill = true;
@@ -192,6 +192,22 @@ void deathmetal::animation()
 	{
 		_frameX++;
 		if (_frameX > _monsterImg->getMaxFrameX())_frameX = 0;
+	}
+}
+
+void deathmetal::hpSet()
+{
+	for (int i = 0; i < _vHp.size(); ++i)
+	{
+		if (_vHp[i].hp <= 0.0f) _vHp[i].currentX = 2;
+		if (_vHp[i].hp == 0.5f) _vHp[i].currentX = 1;
+		if (_vHp[i].hp == 1.0f) _vHp[i].currentX = 0;
+
+		_vHp[i].rc = RectMakeCenter(_collisionRc.right + _vHp[i].img->getFrameWidth() - (i*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight() * 3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+
+
+		/*	if(i<4) _vHp[i].rc = RectMakeCenter(_collisionRc.left+(i*_vHp[i].img->getFrameWidth())/2, _collisionRc.top - _vHp[i].img->getFrameHeight()*3, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());
+			else   _vHp[i].rc = RectMakeCenter(_collisionRc.left + ((i-4)*_vHp[i].img->getFrameWidth()) / 2, _collisionRc.top - _vHp[i].img->getFrameHeight()*2, _vHp[i].img->getFrameWidth(), _vHp[i].img->getFrameHeight());*/
 	}
 }
 
@@ -510,7 +526,7 @@ void deathmetal::hit(float damage)
 	//}
 	if (currentHpCheck()<= 5)
 	{
-		_turnSpeed = 1;
+		_turnSpeed = 2;
 		_phase = PHASE_THREE;
 	}
 	else if (currentHpCheck() <= 9)

@@ -138,14 +138,14 @@ int aStar::aStarStraight(tagTile tile[], int currentIndex, int endIndex)
 		}
 	}
 
-	if (noPath) return randomMove(currentIndex);
+	if (noPath) return randomMove(tile, currentIndex);
 
 	int nextTile = endTile;
 	int check = 0;
 	while (tile[nextTile].node != startTile && isFind)
 	{
 		check++;
-		if (check > 10) return randomMove(currentIndex);
+		if (check > 10) return randomMove(tile, currentIndex);
 		nextTile = tile[nextTile].node;
 	}
 	return nextTile;
@@ -153,7 +153,7 @@ int aStar::aStarStraight(tagTile tile[], int currentIndex, int endIndex)
 
 int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 {
-	if (!tile[currentIndex].look) return randomMove(currentIndex);
+	if (!tile[currentIndex].look) return randomMove(tile, currentIndex);
 
 	reset(tile);
 	
@@ -281,7 +281,7 @@ int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 		}
 	}
 
-	if (noPath) return randomMove(currentIndex);
+	if (noPath) return randomMove(tile , currentIndex);
 	int check = 0;
 	int nextTile = endTile;
 	while (tile[nextTile].node != startTile && isFind)
@@ -289,7 +289,7 @@ int aStar::aStarTile(tagTile tile[], int currentIndex, int endIndex)
 		check++;
 		nextTile = tile[nextTile].node;
 	}
-	if (check > 8) return randomMove(currentIndex);
+	if (check > 8) return randomMove(tile, currentIndex);
 	else return nextTile;
 }
 
@@ -561,7 +561,7 @@ int aStar::aStarBoss(tagTile tile[], int currentIndex, int endIndex)
 		}
 	}
 
-	if (noPath) return randomMove(currentIndex);
+	if (noPath) return randomMove(tile, currentIndex);
 	int check = 0;
 	int nextTile = endTile;
 	while (tile[nextTile].node != startTile && isFind)
@@ -569,7 +569,7 @@ int aStar::aStarBoss(tagTile tile[], int currentIndex, int endIndex)
 		check++;
 		nextTile = tile[nextTile].node;
 	}
-	if (check > 10) return randomMove(currentIndex);
+	if (check > 10) return randomMove(tile , currentIndex);
 	else return nextTile;
 }
 
@@ -758,24 +758,33 @@ bool aStar::noPathCheck(tagTile tile[], int endIndex)
 	return false;
 }
 
-int aStar::randomMove(int currentTile)
+int aStar::randomMove(tagTile tile[], int currentTile)
 {
-	int rnd = RND->getInt(4);
-	switch (rnd)
+	bool check = true;
+	int rndTile;
+	while (check)
 	{
-	case 0:
-		return currentTile - 1;
-		break;
-	case 1:
-		return currentTile + 1;
-		break;
-	case 2:
-		return currentTile - TILEX;
-		break;
-	case 3:
-		return currentTile + TILEX;
-		break;
+		int rnd = RND->getInt(4);
+		switch (rnd)
+		{
+		case 0:
+			rndTile = currentTile - 1;
+			break;
+		case 1:
+		 rndTile= currentTile + 1;
+			break;
+		case 2:
+			rndTile= currentTile - TILEX;
+			break;
+		case 3:
+			rndTile= currentTile + TILEX;
+			break;
+		}
+		if (PLAYER->currentTile() == rndTile) continue;
+		if (tile[rndTile].walkable) check = false;
 	}
+
+	return rndTile;
 }
 
 	

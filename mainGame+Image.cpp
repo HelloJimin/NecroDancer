@@ -151,6 +151,7 @@ void mainGame::imagesInit()
 	IMAGEMANAGER->addFrameImage("블루슬라임", "images/monster/blueSlime.bmp",92*3, 40*3,4,2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("박쥐", "images/monster/bat.bmp",104*3, 32*3*2,4,4, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("스켈레톤", "images/monster/해골.bmp",200*3, 60*3*2,8,4, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("클론", "images/monster/clone.bmp",68*3, 92*3,4,4, true, RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("투명고스트L", "images/monster/ghostAlphaL.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("투명고스트R", "images/monster/ghostAlphaR.bmp", 18 * 3, 22 * 3, true, RGB(255, 0, 255));

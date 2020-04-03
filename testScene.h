@@ -52,4 +52,5 @@ public:
 	bool isWall(int arrNum);
 
 	void doorUpdate();
+
 };

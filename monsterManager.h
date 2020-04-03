@@ -11,6 +11,7 @@
 #include"shopKeeper.h"
 #include"zombie.h"
 #include"deathmetal.h"
+#include"clone.h"
 class monsterManager : public singletonBase<monsterManager>
 {
 private:
@@ -38,6 +39,7 @@ public:
 	void summonShopKeeper(string name, int x, int y);
 	void summonZombie(string name, int x, int y);
 	void summonBoss(string name, int x, int y);
+	void summonClone(string name, int x, int y);
 
 
 	void summonControl(string name, int x, int y);

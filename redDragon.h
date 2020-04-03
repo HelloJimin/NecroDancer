@@ -31,7 +31,7 @@ public:
 	void hit(float damage) override;
 	void breathCheck();
 	bool rengeCheck(int tile);
-
+	void hpSet() override;
 
 	bool die() override;
 

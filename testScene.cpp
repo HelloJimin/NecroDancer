@@ -322,6 +322,8 @@ void testScene::torchUpdate()
 
 void testScene::torchInit()
 {
+	_vTorch.clear();
+
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (_tiles[i].itemPoint == "º®È¶ºÒ")
@@ -333,6 +335,8 @@ void testScene::torchInit()
 
 void testScene::trapInit()
 {
+	_vTrap.clear();
+
 	for (int i = 0; i < TILEX * TILEY; i++)
 	{
 		if (_tiles[i].obj == OBJ_LEFT || _tiles[i].obj == OBJ_RIGHT || _tiles[i].obj == OBJ_UP ||

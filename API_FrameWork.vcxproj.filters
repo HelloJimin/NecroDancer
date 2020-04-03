@@ -178,6 +178,9 @@
     <ClCompile Include="gameEnd.cpp">
       <Filter>플레이어</Filter>
     </ClCompile>
+    <ClCompile Include="clone.cpp">
+      <Filter>몬스터</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationManager.h">
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="gameEnd.h">
       <Filter>플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="clone.h">
+      <Filter>몬스터</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

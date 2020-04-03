@@ -60,7 +60,7 @@ public:
 
 	bool noPathCheck(tagTile tile[],int endIndex);
 
-	int randomMove(int currentTile);
+	int randomMove(tagTile tile[] , int currentTile);
 
 	int getNextTile() { return nextTile; }
 };

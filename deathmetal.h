@@ -37,7 +37,7 @@ public:
 	void choiceAction() override;
 
 	void animation() override;
-
+	void hpSet() override;
 	bool die() override;
 	void render(HDC hdc) override;
 	void silhouetteRender(HDC hdc) override;
