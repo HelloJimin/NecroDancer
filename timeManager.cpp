@@ -49,7 +49,7 @@ void timeManager::render(HDC hdc)
 
 	if (_timer != nullptr)
 	{
-		//if(KEYMANAGER->isToggleKey(VK_TAB))
+		if(KEYMANAGER->isToggleKey(VK_TAB))
 		{
 			//FPS
 			sprintf_s(str, "FPS :  %d", _timer->getFrameRate());

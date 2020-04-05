@@ -82,11 +82,11 @@ void beat::render(HDC hdc)
 		
 		UINT b = SOUNDMANAGER->getPosition(_currentMap,b);
 	
-		char str[128];
-		wsprintf(str, "%d", _songLength);
-		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2,str, strlen(str));
-		wsprintf(str, "%d", b);
-		TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2+100, str,strlen(str));
+		//char str[128];
+		//wsprintf(str, "%d", _songLength);
+		//TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2,str, strlen(str));
+		//wsprintf(str, "%d", b);
+		//TextOut(CAMERAMANAGER->getCameraDC(), WINSIZEX / 2, WINSIZEY / 2+100, str,strlen(str));
 	}
 }
 void beat::load(string map)

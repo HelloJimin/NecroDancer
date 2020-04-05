@@ -781,11 +781,11 @@ void player::effectControl(attackForm form, int rengeArrNum, int monArrNum)
 			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïL4", _collisionX-30,_collisionY);
 			break;													
 		case RIGHT:													
-			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïR0", _collisionX+30,_collisionY);
+			if		(renge == 3)EFFECTMANAGER->play("Ã¤ÂïR0", _collisionX+30,_collisionY+30);
 			else if (renge == 1)EFFECTMANAGER->play("Ã¤ÂïR1", _collisionX+30,_collisionY);
-			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïR2", _collisionX+30,_collisionY);
-			else if (renge == 3)EFFECTMANAGER->play("Ã¤ÂïR3", _collisionX+30,_collisionY);
-			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïR4", _collisionX+30,_collisionY);
+			else if (renge == 0)EFFECTMANAGER->play("Ã¤ÂïR2", _collisionX+30,_collisionY);
+			else if (renge == 2)EFFECTMANAGER->play("Ã¤ÂïR3", _collisionX+30,_collisionY);
+			else if (renge == 4)EFFECTMANAGER->play("Ã¤ÂïR4", _collisionX+30,_collisionY-30);
 			break;													
 		case UP:													
 			if		(renge == 0)EFFECTMANAGER->play("Ã¤ÂïU0", _collisionX,_collisionY-30);
